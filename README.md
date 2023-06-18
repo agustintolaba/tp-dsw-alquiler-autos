@@ -1,8 +1,8 @@
-# tpalquilerautos
+# tpalquilervehiculos
 
 Trabajo practico DSW
 
-# Propusta Alquiler de AUTOS
+# Propusta Alquiler de Vehiculos
 
 ## Grupo
 
