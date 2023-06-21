@@ -26,7 +26,7 @@ La empresa objeto de nuestro trabajo brinda el servicio de alquiler de vehículo
 
 ### Modelo
 
-![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/17c49039f525637f8b1add30c01b2f2eb30ab308/images/modelo-dominio.png)
+![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/6b26e571f43473752812ab28ab2e38d898c4a5dd/images/modelo_modificado.png)
 
 _Nota_: incluir un link con la imagen de un modelo, puede ser modelo de dominio, diagrama de clases, DER.
 
