@@ -9,7 +9,7 @@ Trabajo practico DSW
 ### Integrantes
 
 - Alvarez, Thiago
-- Joffre, Lucas
+- 46178, Joffre Lucas
 - Tell, Nino
 - 48964, Tolaba Agustin
 
