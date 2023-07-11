@@ -15,8 +15,8 @@ Trabajo practico DSW
 
 ### Repositorios
 
-- [Frontend]([http://hyperlinkToGihubOrGitlab](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/client))
-- [Backend]([http://hyperlinkToGihubOrGitlab](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/server))
+- [Frontend](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/client)
+- [Backend](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/server)
 
 ## Tema
 
