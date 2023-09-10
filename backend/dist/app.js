@@ -25,7 +25,7 @@ app.get('/api/provincia', (req, res) => {
 app.get('/api/provincia/:idProvincia', (req, res) => {
     const provincia = prov.find((prov) => prov.idProvincia === req.params.idProvincia);
     if (!provincia) {
-        res.status(404).send({ message: 'Provincia no encontrada' });
+        return res.status(404).send({ message: 'Provincia no encontrada' });
     }
     res.json(provincia);
 });
@@ -33,31 +33,36 @@ app.post('/api/provincia', sanitizeProvinciaInput, (req, res) => {
     const input = req.body.sanitizedInput;
     const provinciaNueva = new Provincia(input.idProvincia, input.descripcionProvincia);
     prov.push(provinciaNueva);
-    res.status(201).send({ message: 'Se cargo nueva provincia', data: provinciaNueva });
+    return res.status(201).send({ message: 'Se cargo nueva provincia', data: provinciaNueva });
 });
 app.put('/api/provincia/:idProvincia', sanitizeProvinciaInput, (req, res) => {
     const provinciaInx = prov.findIndex((prov) => prov.idProvincia === req.params.idProvincia);
     if (provinciaInx === -1) {
-        res.status(404).send({ message: 'Provincia no encontrada' });
+        return res.status(404).send({ message: 'Provincia no encontrada' });
     }
     prov[provinciaInx] = { ...prov[provinciaInx], ...req.body.sanitizedInput };
-    res.status(200).send({ message: 'Provincia actualizada correctamente', data: prov[provinciaInx] });
+    return res.status(200).send({ message: 'Provincia actualizada correctamente', data: prov[provinciaInx] });
 });
 app.patch('/api/provincia/:idProvincia', sanitizeProvinciaInput, (req, res) => {
     const provinciaInx = prov.findIndex((prov) => prov.idProvincia === req.params.idProvincia);
     if (provinciaInx === -1) {
-        res.status(404).send({ message: 'Provincia no encontrada' });
+        return res.status(404).send({ message: 'Provincia no encontrada' });
     }
-    prov[provinciaInx] = { ...prov[provinciaInx], ...req.body.sanitizedInput };
-    res.status(200).send({ message: 'Provincia actualizada correctamente', data: prov[provinciaInx] });
+    Object.assign(prov[provinciaInx], req.body.sanitizedInput);
+    return res.status(200).send({ message: 'Provincia actualizada correctamente', data: prov[provinciaInx] });
 });
 app.delete('/api/provincia/:idProvincia', (req, res) => {
     const provinciaInx = prov.findIndex((prov) => prov.idProvincia === req.params.idProvincia);
     if (provinciaInx === -1) {
         res.status(404).send({ message: 'Provincia no encontrada' });
     }
-    prov.splice(provinciaInx, 1);
-    res.status(200).send({ message: 'Provincia eliminada correctamente' });
+    else {
+        prov.splice(provinciaInx, 1);
+        res.status(200).send({ message: 'Provincia eliminada correctamente' });
+    }
+});
+app.use((_req, res) => {
+    return res.status(404).send({ message: 'Recurso no encontrado' });
 });
 app.listen(3000, () => {
     console.log('Server running...');
