@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express'
-import {Provincia} from './provincias.js'
+import {Provincia} from './provincia/provincias.entity.js'
 
 const app= express()
 
