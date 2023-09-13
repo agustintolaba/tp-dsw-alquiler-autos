@@ -1,0 +1,36 @@
+### Obtener todas las provincias 
+GET http://localhost:3000/api/provincia
+
+
+### Obtener una provincia 
+GET http://localhost:3000/api/provincia/1
+
+### Crear una nueva provincia
+POST http://localhost:3000/api/provincia
+Content-Type: application/json
+
+{
+  "idProvincia":"7",
+  "descripcionProvincia": "Buenos Aires"
+}
+
+### Modificar una nueva provincia (recurso completo e idempotente)
+PUT http://localhost:3000/api/provincia/7
+Content-Type: application/json
+
+{
+  "idProvincia":"7",
+  "descripcionProvincia": "Entre Rios"
+}
+
+### Modificar una nueva provincia (recurso parcial)
+PATCH http://localhost:3000/api/provincia/7
+Content-Type: application/json
+
+{
+  "idProvincia":"7",
+  "descripcionProvincia": "Misiones"
+}
+
+###Borar una provincia
+DELETE http://localhost:3000/api/provincia/7
