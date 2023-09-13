@@ -28,6 +28,8 @@ La empresa objeto de nuestro trabajo brinda el servicio de alquiler de vehículo
 
 ![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/6b26e571f43473752812ab28ab2e38d898c4a5dd/images/modelo_modificado.png)
 
+![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/2b86f926c221bc7586316e5b6c11395205105cba/images/DER-corregido.png)
+
 _Nota_: incluir un link con la imagen de un modelo, puede ser modelo de dominio, diagrama de clases, DER.
 
 Reglas de Negocio:
