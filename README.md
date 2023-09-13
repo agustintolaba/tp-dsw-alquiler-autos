@@ -54,6 +54,10 @@ Reglas de Negocio:
 20. Un vehículo tiene uno de los siguientes estados: disponible, reservado, alquilado.<br>
 21. Una reserva tiene los estados: pendiente, activa, en proceso, finalizada, cancelada.<br>
 
+### Modelo entidad relacion
+
+![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/2b86f926c221bc7586316e5b6c11395205105cba/images/DER-corregido.png)
+
 ## Alcance Funcional
 
 | Req                     | Detalle                                                                                                                                                                                                                                                          |
