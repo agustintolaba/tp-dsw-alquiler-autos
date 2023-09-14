@@ -1,0 +1,38 @@
+### Obtener todos los seguros
+GET http://localhost:3000/api/seguro
+
+
+### Obtener un seguro
+GET http://localhost:3000/api/seguro/1
+
+### Crear un nuevo seguro
+POST http://localhost:3000/api/seguro
+Content-Type: application/json
+
+{
+  "idSeguro":"2",
+  "nombreSeguro": "Plan Platinium ",
+  "companiaSeguro": "La Segunda Seguros"
+}
+
+### Modificar un seguro existente (recurso completo e idempotente)
+PUT http://localhost:3000/api/seguro/2
+Content-Type: application/json
+
+{
+  "idSeguro":"2",
+  "nombreSeguro": "Plan Millenials ",
+  "companiaSeguro": "La Segunda Seguros"
+}
+
+### Modificar un seguro existente (recurso parcial)
+PATCH http://localhost:3000/api/seguro/2
+Content-Type: application/json
+
+{
+  "idSeguro":"2",
+  "nombreSeguro": "Plan Esmeralda"
+}
+
+###Borar un seguro
+DELETE http://localhost:3000/api/seguro/2

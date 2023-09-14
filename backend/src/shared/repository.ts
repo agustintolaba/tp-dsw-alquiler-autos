@@ -21,3 +21,11 @@ export interface RepositoryTipoVehiculo <T>{
   update(item: T): T| undefined
   delete(item: {idTipoVehiculo: string}): T| undefined
 }
+
+export interface RepositorySeguro <T>{
+  findAll(): T[] | undefined
+  findOne(item: {idSeguro: string}): T| undefined
+  add(item: T): T| undefined
+  update(item: T): T| undefined
+  delete(item: {idSeguro: string}): T| undefined
+}
