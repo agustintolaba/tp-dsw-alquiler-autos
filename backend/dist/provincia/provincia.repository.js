@@ -1,30 +1,30 @@
 import { Provincia } from "./provincias.entity.js";
-const prov = [
+const MisProvincias = [
     new Provincia('1', 'Santa Fe'),
 ];
 export class ProvinciaRepository {
     findAll() {
-        return prov;
+        return MisProvincias;
     }
     findOne(item) {
-        return prov.find((prov) => prov.idProvincia === item.idProvincia);
+        return MisProvincias.find((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
     }
     add(item) {
-        prov.push(item);
+        MisProvincias.push(item);
         return item;
     }
     update(item) {
-        const provinciaInx = prov.findIndex((prov) => prov.idProvincia === item.idProvincia);
+        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
         if (provinciaInx !== -1) {
-            prov[provinciaInx] = { ...prov[provinciaInx], ...item };
+            MisProvincias[provinciaInx] = { ...MisProvincias[provinciaInx], ...item };
         }
-        return prov[provinciaInx];
+        return MisProvincias[provinciaInx];
     }
     delete(item) {
-        const provinciaInx = prov.findIndex((prov) => prov.idProvincia === item.idProvincia);
+        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
         if (provinciaInx !== -1) {
-            const deleteProvincia = prov[provinciaInx];
-            prov.splice(provinciaInx, 1);
+            const deleteProvincia = MisProvincias[provinciaInx];
+            MisProvincias.splice(provinciaInx, 1);
             return deleteProvincia;
         }
     }
