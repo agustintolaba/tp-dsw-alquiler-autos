@@ -1,0 +1,55 @@
+### Obtener todas los usuarios 
+GET http://localhost:3000/api/usuario
+
+
+### Obtener un usuario 
+GET http://localhost:3000/api/usuario/1
+
+### Crear un nuevo usuario
+POST http://localhost:3000/api/usuario
+Content-Type: application/json
+
+{
+   "idUsuario": "2", 
+    "nombreUsuario": "Marcos",
+    "apellidoUsuario": "Del Potro",
+    "fechaNacimientoUsuario": "19600202",
+    "cuitCliente": "20-4034567456-0",
+    "razonSocialCliente": "Hipoglos",
+    "telefonoCliente": "341-5432245",
+    "idEmpleado": "",
+    "fechaContratacion": "", 
+    "idTipoUsuario": "1-Cliente"
+}
+
+### Modificar un nuevo usuario (recurso completo e idempotente)
+PUT http://localhost:3000/api/usuario/2
+Content-Type: application/json
+
+{
+   "idUsuario": "2", 
+    "nombreUsuario": "Jorge Osvaldo",
+    "apellidoUsuario": "Del Potro",
+    "fechaNacimientoUsuario": "19600202",
+    "cuitCliente": "20-4034567456-0",
+    "razonSocialCliente": "Hipoglos",
+    "telefonoCliente": "341-5432245",
+    "idEmpleado": "",
+    "fechaContratacion": "", 
+    "idTipoUsuario": "1-Cliente"
+}
+
+### Modificar un nuevo usuario (recurso parcial)
+PATCH http://localhost:3000/api/usuario/2
+Content-Type: application/json
+
+{
+    "idUsuario": "2", 
+    "nombreUsuario": "Marcos Jorge Osbaldo",
+    "apellidoUsuario": "Del Potro Gimenez",
+    "fechaNacimientoUsuario": "20230202"
+    
+}
+
+###Borar un usuario
+DELETE http://localhost:3000/api/usuario/2
