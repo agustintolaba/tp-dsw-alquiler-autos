@@ -7,21 +7,21 @@ export class UsuarioRepository {
         return MisUsuarios;
     }
     findOne(item) {
-        return MisUsuarios.find((MisUsuarios) => MisUsuarios.idUsuario === item.idUsuario);
+        return MisUsuarios.find((MisUsuarios) => MisUsuarios.id === item.id);
     }
     add(item) {
         MisUsuarios.push(item);
         return item;
     }
     update(item) {
-        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.idUsuario === item.idUsuario);
+        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.id === item.id);
         if (usuarioInx !== -1) {
             MisUsuarios[usuarioInx] = { ...MisUsuarios[usuarioInx], ...item };
         }
         return MisUsuarios[usuarioInx];
     }
     delete(item) {
-        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.idUsuario === item.idUsuario);
+        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.id === item.id);
         if (usuarioInx !== -1) {
             const deleteUsuario = MisUsuarios[usuarioInx];
             MisUsuarios.splice(usuarioInx, 1);

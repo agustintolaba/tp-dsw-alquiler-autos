@@ -7,21 +7,21 @@ export class TipoVehiculoRepository {
         return MisTiposVehiculos;
     }
     findOne(item) {
-        return MisTiposVehiculos.find((MisTiposVehiculos) => MisTiposVehiculos.idTipoVehiculo === item.idTipoVehiculo);
+        return MisTiposVehiculos.find((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
     }
     add(item) {
         MisTiposVehiculos.push(item);
         return item;
     }
     update(item) {
-        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.idTipoVehiculo === item.idTipoVehiculo);
+        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
         if (tipoInx !== -1) {
             MisTiposVehiculos[tipoInx] = { ...MisTiposVehiculos[tipoInx], ...item };
         }
         return MisTiposVehiculos[tipoInx];
     }
     delete(item) {
-        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.idTipoVehiculo === item.idTipoVehiculo);
+        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
         if (tipoInx !== -1) {
             const deleteTipoVehiculo = MisTiposVehiculos[tipoInx];
             MisTiposVehiculos.splice(tipoInx, 1);

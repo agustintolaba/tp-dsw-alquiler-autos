@@ -1,4 +1,4 @@
-import { RepositorySeguro } from "../shared/repository.js";
+import { Repository } from "../shared/repository.js";
 import { Seguro } from "./seguro.entity.js";
 
 const MisSeguros= [
@@ -7,13 +7,13 @@ const MisSeguros= [
   ),
 ]
 
-export class SegurosRepository implements RepositorySeguro<Seguro>{
+export class SegurosRepository implements Repository<Seguro>{
   public findAll(): Seguro[] | undefined {
     return MisSeguros
   }
 
-  public findOne(item: {idSeguro: string}): Seguro | undefined {
-    return MisSeguros.find((MisSeguros)=> MisSeguros.idSeguro=== item.idSeguro)
+  public findOne(item: {id: string}): Seguro | undefined {
+    return MisSeguros.find((MisSeguros)=> MisSeguros.id=== item.id)
   }
 
   public add(item: Seguro): Seguro | undefined {
@@ -22,15 +22,15 @@ export class SegurosRepository implements RepositorySeguro<Seguro>{
   }
 
   public update(item: Seguro): Seguro | undefined {
-    const seguroInx= MisSeguros.findIndex((MisSeguros)=> MisSeguros.idSeguro=== item.idSeguro)
+    const seguroInx= MisSeguros.findIndex((MisSeguros)=> MisSeguros.id=== item.id)
     if(seguroInx!==-1){
      MisSeguros[seguroInx]={...MisSeguros[seguroInx], ...item}
     } 
     return MisSeguros[seguroInx]
   }
 
-  public delete(item: { idSeguro: string; }): Seguro | undefined {
-    const seguroInx= MisSeguros.findIndex((MisSeguros)=> MisSeguros.idSeguro=== item.idSeguro)
+  public delete(item: { id: string; }): Seguro | undefined {
+    const seguroInx= MisSeguros.findIndex((MisSeguros)=> MisSeguros.id=== item.id)
     if(seguroInx!==-1){
       const deleteSeguro= MisSeguros[seguroInx]
       MisSeguros.splice(seguroInx,1)

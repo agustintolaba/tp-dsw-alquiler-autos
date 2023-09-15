@@ -12,8 +12,8 @@ export class ProvinciaRepository implements Repository<Provincia>{
     return MisProvincias
   }
 
-  public findOne(item: {idProvincia: string}): Provincia | undefined {
-    return MisProvincias.find((MisProvincias)=> MisProvincias.idProvincia=== item.idProvincia)
+  public findOne(item: {id: string}): Provincia | undefined {
+    return MisProvincias.find((MisProvincias)=> MisProvincias.id=== item.id)
   }
 
   public add(item: Provincia): Provincia | undefined {
@@ -22,15 +22,15 @@ export class ProvinciaRepository implements Repository<Provincia>{
   }
 
   public update(item: Provincia): Provincia | undefined {
-    const provinciaInx= MisProvincias.findIndex((MisProvincias)=> MisProvincias.idProvincia=== item.idProvincia)
+    const provinciaInx= MisProvincias.findIndex((MisProvincias)=> MisProvincias.id=== item.id)
     if(provinciaInx!==-1){
      MisProvincias[provinciaInx]={...MisProvincias[provinciaInx], ...item}
     } 
     return MisProvincias[provinciaInx]
   }
 
-  public delete(item: { idProvincia: string; }): Provincia | undefined {
-    const provinciaInx= MisProvincias.findIndex((MisProvincias)=> MisProvincias.idProvincia=== item.idProvincia)
+  public delete(item: { id: string; }): Provincia | undefined {
+    const provinciaInx= MisProvincias.findIndex((MisProvincias)=> MisProvincias.id=== item.id)
     if(provinciaInx!==-1){
       const deleteProvincia= MisProvincias[provinciaInx]
       MisProvincias.splice(provinciaInx,1)

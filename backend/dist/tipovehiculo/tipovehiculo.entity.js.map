@@ -1,1 +1,1 @@
-{"version":3,"file":"tipovehiculo.entity.js","sourceRoot":"","sources":["../../src/tipovehiculo/tipovehiculo.entity.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,aAAa;IACxB,YACS,cAAsB,EACtB,uBAA+B;QAD/B,mBAAc,GAAd,cAAc,CAAQ;QACtB,4BAAuB,GAAvB,uBAAuB,CAAQ;IACnC,CAAC;CACP"}
+{"version":3,"file":"tipovehiculo.entity.js","sourceRoot":"","sources":["../../src/tipovehiculo/tipovehiculo.entity.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,aAAa;IACxB,YACS,EAAU,EACV,uBAA+B;QAD/B,OAAE,GAAF,EAAE,CAAQ;QACV,4BAAuB,GAAvB,uBAAuB,CAAQ;IACnC,CAAC;CACP"}

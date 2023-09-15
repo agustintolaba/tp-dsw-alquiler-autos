@@ -7,7 +7,7 @@ const repository = new SegurosRepository()
 
 function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
-    idSeguro: req.body.idSeguro,
+    id: req.body.id,
     nombreSeguro: req.body.nombreSeguro,
     companiaSeguro: req.body.companiaSeguro
   }
@@ -24,8 +24,8 @@ function findAll(req: Request,res: Response){
 }
 
 function findOne(req: Request,res: Response){
-    const idSeguro=req.params.idSeguro
-    const seguroBuscado= repository.findOne({idSeguro})
+    const id=req.params.id
+    const seguroBuscado= repository.findOne({id})
     if(!seguroBuscado){
     return res.status(404).send({message: 'Seguro no encontrado'})
     }
@@ -36,7 +36,7 @@ function add(req: Request,res: Response){
 const input = req.body.sanitizedInput
 const seguroNuevo= 
   new Seguro(
-    input.idSeguro, 
+    input.id, 
     input.nombreSeguro,
     input.companiaSeguro
   )
@@ -45,7 +45,7 @@ return res.status(201).send({message: 'Se cargo un nuevo Seguro', data: Nuevo})
 }
 
 function update(req: Request,res: Response){
-    req.body.sanitizedInput.idSeguro=req.params.idSeguro 
+    req.body.sanitizedInput.id=req.params.id
     const seguroMod= repository.update(req.body.sanitizedInput)
     if(!seguroMod){
      return res.status(404).send({message: 'Seguro no encontrado'})
@@ -55,8 +55,8 @@ function update(req: Request,res: Response){
 
 
 function remove(req: Request,res: Response){
-    const idSeguro=req.params.idSeguro
-    const seguroBorrar= repository.delete({idSeguro})
+    const id=req.params.id
+    const seguroBorrar= repository.delete({id})
     if(!seguroBorrar){
       res.status(404).send({message: 'Seguro no encontrado'})
     }else{

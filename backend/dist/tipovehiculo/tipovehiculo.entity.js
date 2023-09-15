@@ -1,6 +1,6 @@
 export class Tipo_Vehiculo {
-    constructor(idTipoVehiculo, descripcionTipoVehiculo) {
-        this.idTipoVehiculo = idTipoVehiculo;
+    constructor(id, descripcionTipoVehiculo) {
+        this.id = id;
         this.descripcionTipoVehiculo = descripcionTipoVehiculo;
     }
 }

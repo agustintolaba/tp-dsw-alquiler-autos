@@ -3,7 +3,7 @@ import { Provincia } from "./provincias.entity.js";
 const repository = new ProvinciaRepository();
 function sanitizeProvinciaInput(req, res, next) {
     req.body.sanitizedInput = {
-        idProvincia: req.body.idProvincia,
+        id: req.body.id,
         descripcionProvincia: req.body.descripcionProvincia
     };
     //MAS VALIDACIONES ACA
@@ -20,8 +20,8 @@ function findAll(req, res) {
 }
 function findOne(req, res) {
     /*const provincia= prov.find((prov)=> prov.idProvincia=== req.params.idProvincia)*/
-    const idProvincia = req.params.idProvincia;
-    const provincia = repository.findOne({ idProvincia });
+    const id = req.params.id;
+    const provincia = repository.findOne({ id });
     if (!provincia) {
         return res.status(404).send({ message: 'Provincia no encontrada' });
     }
@@ -29,13 +29,13 @@ function findOne(req, res) {
 }
 function add(req, res) {
     const input = req.body.sanitizedInput;
-    const provinciaNueva = new Provincia(input.idProvincia, input.descripcionProvincia);
+    const provinciaNueva = new Provincia(input.id, input.descripcionProvincia);
     const ProvNueva = repository.add(provinciaNueva);
     return res.status(201).send({ message: 'Se cargo nueva provincia', data: ProvNueva });
 }
 function update(req, res) {
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
-    req.body.sanitizedInput.idProvincia = req.params.idProvincia; /*PARA MODIFICAR TAMBIEN EL ID*/
+    req.body.sanitizedInput.id = req.params.id; /*PARA MODIFICAR TAMBIEN EL ID*/
     const ProvMod = repository.update(req.body.sanitizedInput);
     if (!ProvMod) {
         return res.status(404).send({ message: 'Provincia no encontrada' });
@@ -46,8 +46,8 @@ function update(req, res) {
 /*TAMBIEN SIRVE PARA EL PATCH */
 function remove(req, res) {
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
-    const idProvincia = req.params.idProvincia;
-    const ProvBorrar = repository.delete({ idProvincia });
+    const id = req.params.id;
+    const ProvBorrar = repository.delete({ id });
     if (!ProvBorrar) {
         res.status(404).send({ message: 'Provincia no encontrada' });
     }

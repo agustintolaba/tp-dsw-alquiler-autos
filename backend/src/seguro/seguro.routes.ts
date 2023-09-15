@@ -4,8 +4,8 @@ import { sanitizeProvinciaInput, findAll, findOne, add, update, remove } from ".
 export const seguroRouter= Router()
 
 seguroRouter.get('/', findAll) 
-seguroRouter.get('/:idSeguro', findOne)
+seguroRouter.get('/:id', findOne)
 seguroRouter.post('/', sanitizeProvinciaInput, add)
-seguroRouter.put('/:idSeguro', sanitizeProvinciaInput, update)
-seguroRouter.patch('/:idSeguro', sanitizeProvinciaInput, update)
-seguroRouter.delete('/:idSeguro', remove) 
+seguroRouter.put('/:id', sanitizeProvinciaInput, update)
+seguroRouter.patch('/:id', sanitizeProvinciaInput, update)
+seguroRouter.delete('/:id', remove) 

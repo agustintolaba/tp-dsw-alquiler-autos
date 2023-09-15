@@ -1,4 +1,4 @@
-import { RepositoryUsuario } from "../shared/repository.js";
+import { Repository } from "../shared/repository.js";
 import { Usuario} from "./usuario.entity.js";
 
 const MisUsuarios= [
@@ -7,13 +7,13 @@ const MisUsuarios= [
   ),
 ]
 
-export class UsuarioRepository implements RepositoryUsuario<Usuario>{
+export class UsuarioRepository implements Repository<Usuario>{
   public findAll(): Usuario[] | undefined {
     return MisUsuarios
   }
 
-  public findOne(item: {idUsuario: string}): Usuario | undefined {
-    return MisUsuarios.find((MisUsuarios)=> MisUsuarios.idUsuario=== item.idUsuario)
+  public findOne(item: {id: string}): Usuario | undefined {
+    return MisUsuarios.find((MisUsuarios)=> MisUsuarios.id=== item.id)
   }
 
   public add(item: Usuario): Usuario | undefined {
@@ -22,15 +22,15 @@ export class UsuarioRepository implements RepositoryUsuario<Usuario>{
   }
 
   public update(item: Usuario): Usuario | undefined {
-    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.idUsuario=== item.idUsuario)
+    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.id=== item.id)
     if(usuarioInx!==-1){
      MisUsuarios[usuarioInx]={...MisUsuarios[usuarioInx], ...item}
     } 
     return MisUsuarios[usuarioInx]
   }
 
-  public delete(item: { idUsuario: string; }): Usuario | undefined {
-    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.idUsuario=== item.idUsuario)
+  public delete(item: { id: string; }): Usuario | undefined {
+    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.id=== item.id)
     if(usuarioInx!==-1){
       const deleteUsuario= MisUsuarios[usuarioInx]
       MisUsuarios.splice(usuarioInx,1)

@@ -4,8 +4,8 @@ import { sanitizeProvinciaInput, findAll, findOne, add, update, remove } from ".
 export const tipoVehiculoRouter= Router()
 
 tipoVehiculoRouter.get('/', findAll)
-tipoVehiculoRouter.get('/:idTipoVehiculo', findOne)
+tipoVehiculoRouter.get('/:id', findOne)
 tipoVehiculoRouter.post('/', sanitizeProvinciaInput, add)
-tipoVehiculoRouter.put('/:idTipoVehiculo', sanitizeProvinciaInput, update)
-tipoVehiculoRouter.patch('/:idTipoVehiculo', sanitizeProvinciaInput, update)
-tipoVehiculoRouter.delete('/:idTipoVehiculo', remove)
+tipoVehiculoRouter.put('/:id', sanitizeProvinciaInput, update)
+tipoVehiculoRouter.patch('/:id', sanitizeProvinciaInput, update)
+tipoVehiculoRouter.delete('/:id', remove)

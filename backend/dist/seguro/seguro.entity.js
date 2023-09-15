@@ -1,6 +1,6 @@
 export class Seguro {
-    constructor(idSeguro, nombreSeguro, companiaSeguro) {
-        this.idSeguro = idSeguro;
+    constructor(id, nombreSeguro, companiaSeguro) {
+        this.id = id;
         this.nombreSeguro = nombreSeguro;
         this.companiaSeguro = companiaSeguro;
     }

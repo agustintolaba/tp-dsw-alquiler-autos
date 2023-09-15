@@ -10,7 +10,7 @@ POST http://localhost:3000/api/tipovehiculo
 Content-Type: application/json
 
 {
-  "idTipoVehiculo":"2",
+  "id":"2",
   "descripcionTipoVehiculo": "Auto de 5 puertas"
 }
 
@@ -19,7 +19,7 @@ PUT http://localhost:3000/api/tipovehiculo/2
 Content-Type: application/json
 
 {
-  "idTipoVehiculo":"2",
+  "idTipo":"2",
   "descripcionTipoVehiculo": "Camioneta de 5 puertas"
 }
 
@@ -28,7 +28,7 @@ PATCH http://localhost:3000/api/tipovehiculo/2
 Content-Type: application/json
 
 {
-  "idTipoVehiculo":"2",
+  "idT":"2",
   "descripcionTipoVehiculo": "Trafic"
 }
 

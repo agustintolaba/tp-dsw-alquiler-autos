@@ -1,6 +1,6 @@
 export class Usuario {
-    constructor(idUsuario, nombreUsuario, apellidoUsuario, fechaNacimientoUsuario, cuitCliente, razonSocialCliente, telefonoCliente, idEmpleado, fechaContratacion, idTipoUsuario) {
-        this.idUsuario = idUsuario;
+    constructor(id, nombreUsuario, apellidoUsuario, fechaNacimientoUsuario, cuitCliente, razonSocialCliente, telefonoCliente, idEmpleado, fechaContratacion, idTipoUsuario) {
+        this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
         this.fechaNacimientoUsuario = fechaNacimientoUsuario;

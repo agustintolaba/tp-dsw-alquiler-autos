@@ -10,7 +10,7 @@ POST http://localhost:3000/api/usuario
 Content-Type: application/json
 
 {
-   "idUsuario": "2", 
+   "id": "2", 
     "nombreUsuario": "Marcos",
     "apellidoUsuario": "Del Potro",
     "fechaNacimientoUsuario": "19600202",
@@ -27,7 +27,7 @@ PUT http://localhost:3000/api/usuario/2
 Content-Type: application/json
 
 {
-   "idUsuario": "2", 
+   "id": "2", 
     "nombreUsuario": "Jorge Osvaldo",
     "apellidoUsuario": "Del Potro",
     "fechaNacimientoUsuario": "19600202",
@@ -44,7 +44,7 @@ PATCH http://localhost:3000/api/usuario/2
 Content-Type: application/json
 
 {
-    "idUsuario": "2", 
+    "id": "2", 
     "nombreUsuario": "Marcos Jorge Osbaldo",
     "apellidoUsuario": "Del Potro Gimenez",
     "fechaNacimientoUsuario": "20230202"

@@ -1,1 +1,1 @@
-{"version":3,"file":"provincias.entity.js","sourceRoot":"","sources":["../../src/provincia/provincias.entity.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,SAAS;IACpB,YACS,WAAmB,EACnB,oBAA4B;QAD5B,gBAAW,GAAX,WAAW,CAAQ;QACnB,yBAAoB,GAApB,oBAAoB,CAAQ;IAChC,CAAC;CACP"}
+{"version":3,"file":"provincias.entity.js","sourceRoot":"","sources":["../../src/provincia/provincias.entity.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,SAAS;IACpB,YACS,EAAU,EACV,oBAA4B;QAD5B,OAAE,GAAF,EAAE,CAAQ;QACV,yBAAoB,GAApB,oBAAoB,CAAQ;IAChC,CAAC;CACP"}

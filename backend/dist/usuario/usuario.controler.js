@@ -3,7 +3,7 @@ import { Usuario } from "./usuario.entity.js";
 const repository = new UsuarioRepository();
 function sanitizeProvinciaInput(req, res, next) {
     req.body.sanitizedInput = {
-        idUsuario: req.body.idUsuario,
+        id: req.body.id,
         nombreUsuario: req.body.nombreUsuario,
         apellidoUsuario: req.body.apellidoUsuario,
         fechaNacimientoUsuario: req.body.fechaNacimientoUsuario,
@@ -25,8 +25,8 @@ function findAll(req, res) {
     res.json({ data: repository.findAll() });
 }
 function findOne(req, res) {
-    const idUsuario = req.params.idUsuario;
-    const usuarioBuscado = repository.findOne({ idUsuario });
+    const id = req.params.id;
+    const usuarioBuscado = repository.findOne({ id });
     if (!usuarioBuscado) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
     }
@@ -34,12 +34,12 @@ function findOne(req, res) {
 }
 function add(req, res) {
     const input = req.body.sanitizedInput;
-    const usuarioNuevo = new Usuario(input.idUsuario, input.nombreUsuario, input.apellidoUsuario, input.fechaNacimientoUsuario, input.cuitCliente, input.razonSocialCliente, input.telefonoCliente, input.idEmpleado, input.fechaContratacion, input.idTipoUsuario);
+    const usuarioNuevo = new Usuario(input.id, input.nombreUsuario, input.apellidoUsuario, input.fechaNacimientoUsuario, input.cuitCliente, input.razonSocialCliente, input.telefonoCliente, input.idEmpleado, input.fechaContratacion, input.idTipoUsuario);
     const usuarioCreado = repository.add(usuarioNuevo);
     return res.status(201).send({ message: 'Se cargo nuevo usuario', data: usuarioCreado });
 }
 function update(req, res) {
-    req.body.sanitizedInput.idusuario = req.params.idUsuario;
+    req.body.sanitizedInput.id = req.params.id;
     const UsuarioModificado = repository.update(req.body.sanitizedInput);
     if (!UsuarioModificado) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
@@ -47,8 +47,8 @@ function update(req, res) {
     return res.status(200).send({ message: 'Usuario actualizado correctamente', data: UsuarioModificado });
 }
 function remove(req, res) {
-    const idUsuario = req.params.idUsuario;
-    const UsuarioBorrar = repository.delete({ idUsuario });
+    const id = req.params.id;
+    const UsuarioBorrar = repository.delete({ id });
     if (!UsuarioBorrar) {
         res.status(404).send({ message: 'Usuario no encontrado' });
     }

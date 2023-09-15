@@ -10,7 +10,7 @@ POST http://localhost:3000/api/provincia
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
+  "id":"7",
   "descripcionProvincia": "Buenos Aires"
 }
 
@@ -19,7 +19,7 @@ PUT http://localhost:3000/api/provincia/7
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
+  "id":"7",
   "descripcionProvincia": "Entre Rios"
 }
 
@@ -28,7 +28,7 @@ PATCH http://localhost:3000/api/provincia/7
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
+  "id":"7",
   "descripcionProvincia": "Misiones"
 }
 

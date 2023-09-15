@@ -7,7 +7,7 @@ const repository = new ProvinciaRepository()
 
 function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
-    idProvincia: req.body.idProvincia,
+    id: req.body.id,
     descripcionProvincia: req.body.descripcionProvincia
   }
   //MAS VALIDACIONES ACA
@@ -26,8 +26,8 @@ function findAll(req: Request,res: Response){
 
 function findOne(req: Request,res: Response){
     /*const provincia= prov.find((prov)=> prov.idProvincia=== req.params.idProvincia)*/
-    const idProvincia=req.params.idProvincia
-    const provincia= repository.findOne({idProvincia})
+    const id=req.params.id
+    const provincia= repository.findOne({id})
     if(!provincia){
     return res.status(404).send({message: 'Provincia no encontrada'})
     }
@@ -38,7 +38,7 @@ function add(req: Request,res: Response){
 const input = req.body.sanitizedInput
 const provinciaNueva= 
   new Provincia(
-    input.idProvincia, 
+    input.id, 
     input.descripcionProvincia
   )
 const ProvNueva= repository.add(provinciaNueva)
@@ -47,7 +47,7 @@ return res.status(201).send({message: 'Se cargo nueva provincia', data: ProvNuev
 
 function update(req: Request,res: Response){
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
-    req.body.sanitizedInput.idProvincia=req.params.idProvincia  /*PARA MODIFICAR TAMBIEN EL ID*/
+    req.body.sanitizedInput.id=req.params.id  /*PARA MODIFICAR TAMBIEN EL ID*/
     const ProvMod= repository.update(req.body.sanitizedInput)
 
     if(!ProvMod){
@@ -62,8 +62,8 @@ function update(req: Request,res: Response){
 function remove(req: Request,res: Response){
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
 
-    const idProvincia=req.params.idProvincia
-    const ProvBorrar= repository.delete({idProvincia})
+    const id=req.params.id
+    const ProvBorrar= repository.delete({id})
 
     if(!ProvBorrar){
       res.status(404).send({message: 'Provincia no encontrada'})

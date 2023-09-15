@@ -7,21 +7,21 @@ export class ProvinciaRepository {
         return MisProvincias;
     }
     findOne(item) {
-        return MisProvincias.find((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
+        return MisProvincias.find((MisProvincias) => MisProvincias.id === item.id);
     }
     add(item) {
         MisProvincias.push(item);
         return item;
     }
     update(item) {
-        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
+        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.id === item.id);
         if (provinciaInx !== -1) {
             MisProvincias[provinciaInx] = { ...MisProvincias[provinciaInx], ...item };
         }
         return MisProvincias[provinciaInx];
     }
     delete(item) {
-        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.idProvincia === item.idProvincia);
+        const provinciaInx = MisProvincias.findIndex((MisProvincias) => MisProvincias.id === item.id);
         if (provinciaInx !== -1) {
             const deleteProvincia = MisProvincias[provinciaInx];
             MisProvincias.splice(provinciaInx, 1);

@@ -7,21 +7,21 @@ export class SegurosRepository {
         return MisSeguros;
     }
     findOne(item) {
-        return MisSeguros.find((MisSeguros) => MisSeguros.idSeguro === item.idSeguro);
+        return MisSeguros.find((MisSeguros) => MisSeguros.id === item.id);
     }
     add(item) {
         MisSeguros.push(item);
         return item;
     }
     update(item) {
-        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.idSeguro === item.idSeguro);
+        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.id === item.id);
         if (seguroInx !== -1) {
             MisSeguros[seguroInx] = { ...MisSeguros[seguroInx], ...item };
         }
         return MisSeguros[seguroInx];
     }
     delete(item) {
-        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.idSeguro === item.idSeguro);
+        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.id === item.id);
         if (seguroInx !== -1) {
             const deleteSeguro = MisSeguros[seguroInx];
             MisSeguros.splice(seguroInx, 1);

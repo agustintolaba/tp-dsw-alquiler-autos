@@ -1,4 +1,4 @@
-import { RepositoryTipoVehiculo } from "../shared/repository.js";
+import { Repository } from "../shared/repository.js";
 import { Tipo_Vehiculo } from "./tipovehiculo.entity.js";
 
 const MisTiposVehiculos= [
@@ -7,13 +7,13 @@ const MisTiposVehiculos= [
   ),
 ]
 
-export class TipoVehiculoRepository implements RepositoryTipoVehiculo<Tipo_Vehiculo>{
+export class TipoVehiculoRepository implements Repository<Tipo_Vehiculo>{
   public findAll(): Tipo_Vehiculo[] | undefined {
     return MisTiposVehiculos
   }
 
-  public findOne(item: {idTipoVehiculo: string}): Tipo_Vehiculo | undefined {
-    return MisTiposVehiculos.find((MisTiposVehiculos)=> MisTiposVehiculos.idTipoVehiculo=== item.idTipoVehiculo)
+  public findOne(item: {id: string}): Tipo_Vehiculo | undefined {
+    return MisTiposVehiculos.find((MisTiposVehiculos)=> MisTiposVehiculos.id=== item.id)
   }
 
   public add(item: Tipo_Vehiculo): Tipo_Vehiculo | undefined {
@@ -22,15 +22,15 @@ export class TipoVehiculoRepository implements RepositoryTipoVehiculo<Tipo_Vehic
   }
 
   public update(item: Tipo_Vehiculo): Tipo_Vehiculo | undefined {
-    const tipoInx= MisTiposVehiculos.findIndex((MisTiposVehiculos)=> MisTiposVehiculos.idTipoVehiculo=== item.idTipoVehiculo)
+    const tipoInx= MisTiposVehiculos.findIndex((MisTiposVehiculos)=> MisTiposVehiculos.id=== item.id)
     if(tipoInx!==-1){
      MisTiposVehiculos[tipoInx]={...MisTiposVehiculos[tipoInx], ...item}
     } 
     return MisTiposVehiculos[tipoInx]
   }
 
-  public delete(item: { idTipoVehiculo: string; }): Tipo_Vehiculo | undefined {
-    const tipoInx= MisTiposVehiculos.findIndex((MisTiposVehiculos)=> MisTiposVehiculos.idTipoVehiculo=== item.idTipoVehiculo)
+  public delete(item: { id: string; }): Tipo_Vehiculo | undefined {
+    const tipoInx= MisTiposVehiculos.findIndex((MisTiposVehiculos)=> MisTiposVehiculos.id=== item.id)
     if(tipoInx!==-1){
       const deleteTipoVehiculo= MisTiposVehiculos[tipoInx]
       MisTiposVehiculos.splice(tipoInx,1)

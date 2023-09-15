@@ -10,7 +10,7 @@ POST http://localhost:3000/api/seguro
 Content-Type: application/json
 
 {
-  "idSeguro":"2",
+  "id":"2",
   "nombreSeguro": "Plan Platinium ",
   "companiaSeguro": "La Segunda Seguros"
 }
@@ -20,7 +20,7 @@ PUT http://localhost:3000/api/seguro/2
 Content-Type: application/json
 
 {
-  "idSeguro":"2",
+  "id":"2",
   "nombreSeguro": "Plan Millenials ",
   "companiaSeguro": "La Segunda Seguros"
 }
@@ -30,7 +30,7 @@ PATCH http://localhost:3000/api/seguro/2
 Content-Type: application/json
 
 {
-  "idSeguro":"2",
+  "id":"2",
   "nombreSeguro": "Plan Esmeralda"
 }
 

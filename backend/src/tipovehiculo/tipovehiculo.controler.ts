@@ -7,7 +7,7 @@ const repository = new TipoVehiculoRepository()
 
 function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
-    idTipoVehiculo: req.body.idTipoVehiculo,
+    id: req.body.id,
     descripcionTipoVehiculo: req.body.descripcionTipoVehiculo
   }
   Object.keys(req.body.sanitizedInput).forEach((key)=>{
@@ -23,8 +23,8 @@ function findAll(req: Request,res: Response){
 }
 
 function findOne(req: Request,res: Response){
-    const idTipoVehiculo=req.params.idTipoVehiculo
-    const tipoVehiculo= repository.findOne({idTipoVehiculo})
+    const id=req.params.id
+    const tipoVehiculo= repository.findOne({id})
     if(!tipoVehiculo){
     return res.status(404).send({message: 'Tipo de vehiculo no encontrado'})
     }
@@ -35,7 +35,7 @@ function add(req: Request,res: Response){
 const input = req.body.sanitizedInput
 const tipoVehiculoNuevo= 
   new Tipo_Vehiculo(
-    input.idTipoVehiculo, 
+    input.id, 
     input.descripcionTipoVehiculo
   )
 const tipoNuevo= repository.add(tipoVehiculoNuevo)
@@ -43,7 +43,7 @@ return res.status(201).send({message: 'Se cargo un nuevo tipo de vehiculo', data
 }
 
 function update(req: Request,res: Response){
-    req.body.sanitizedInput.idTipoVehiculo=req.params.idTipoVehiculo 
+    req.body.sanitizedInput.id=req.params.id
     const tipoVehiculoMod= repository.update(req.body.sanitizedInput)
     if(!tipoVehiculoMod){
      return res.status(404).send({message: 'Tipo de vehiculo no encontrado'})
@@ -53,8 +53,8 @@ function update(req: Request,res: Response){
 
 
 function remove(req: Request,res: Response){
-    const idTipoVehiculo=req.params.idTipoVehiculo
-    const tipoVehiculoBorrar= repository.delete({idTipoVehiculo})
+    const id=req.params.id
+    const tipoVehiculoBorrar= repository.delete({id})
     if(!tipoVehiculoBorrar){
       res.status(404).send({message: 'Tipo de vehiculo no encontrado'})
     }else{

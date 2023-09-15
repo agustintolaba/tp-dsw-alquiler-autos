@@ -1,6 +1,6 @@
 export class Provincia {
-    constructor(idProvincia, descripcionProvincia) {
-        this.idProvincia = idProvincia;
+    constructor(id, descripcionProvincia) {
+        this.id = id;
         this.descripcionProvincia = descripcionProvincia;
     }
 }
