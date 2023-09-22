@@ -1,3 +1,1 @@
-/*PRUEBA DE CONEXION */
-/*Segunda prueba*/
-/*Tercera prueba */
+/*PRUEBA DE CONEXION A LA BD*/
