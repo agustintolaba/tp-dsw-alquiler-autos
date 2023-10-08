@@ -1,6 +1,6 @@
 export class Seguro {
   constructor(
-    public id: string, 
+    public id: number, 
     public nombreSeguro: string,
     public companiaSeguro: string
     ) {}

@@ -1,31 +1,38 @@
-import { Tipo_Vehiculo } from "./tipovehiculo.entity.js";
-const MisTiposVehiculos = [
-    new Tipo_Vehiculo('1', 'Camioneta'),
-];
+import { pooldb } from "../shared/db/conn.mysql.js";
 export class TipoVehiculoRepository {
-    findAll() {
-        return MisTiposVehiculos;
+    async findAll() {
+        const [results] = await pooldb.query('SELECT * FROM tipo_vehiculo');
+        return results;
     }
-    findOne(item) {
-        return MisTiposVehiculos.find((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
-    }
-    add(item) {
-        MisTiposVehiculos.push(item);
-        return item;
-    }
-    update(item) {
-        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
-        if (tipoInx !== -1) {
-            MisTiposVehiculos[tipoInx] = { ...MisTiposVehiculos[tipoInx], ...item };
+    async findOne(item) {
+        const id = Number.parseInt(item.id);
+        const [tipo] = await pooldb.query('Select * from tipo_vehiculo where id=?', [id]);
+        if (tipo.length === 0) {
+            return undefined;
         }
-        return MisTiposVehiculos[tipoInx];
+        const miTipo = tipo[0];
+        return miTipo;
     }
-    delete(item) {
-        const tipoInx = MisTiposVehiculos.findIndex((MisTiposVehiculos) => MisTiposVehiculos.id === item.id);
-        if (tipoInx !== -1) {
-            const deleteTipoVehiculo = MisTiposVehiculos[tipoInx];
-            MisTiposVehiculos.splice(tipoInx, 1);
-            return deleteTipoVehiculo;
+    async add(tipoInput) {
+        const { id, ...tipoRow } = tipoInput;
+        const [result] = await pooldb.query('Insert into tipo_vehiculo set ?', [tipoRow]);
+        tipoInput.id = result.insertId;
+        return tipoInput;
+    }
+    async update(tipoInput) {
+        const { id, ...tipoRow } = tipoInput;
+        await pooldb.query('update tipo_vehiculo set ? where id=?', [tipoRow, id]);
+        return tipoInput;
+    }
+    async delete(item) {
+        try {
+            const tipoToBeDelete = this.findOne(item);
+            const tipoId = Number.parseInt(item.id);
+            await pooldb.query('delete from tipo_vehiculo where id=?', tipoId);
+            return tipoToBeDelete;
+        }
+        catch (error) {
+            throw new Error('No se pudo borrar');
         }
     }
 }

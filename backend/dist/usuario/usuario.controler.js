@@ -21,34 +21,34 @@ function sanitizeProvinciaInput(req, res, next) {
     });
     next();
 }
-function findAll(req, res) {
-    res.json({ data: repository.findAll() });
+async function findAll(req, res) {
+    res.json({ data: await repository.findAll() });
 }
-function findOne(req, res) {
+async function findOne(req, res) {
     const id = req.params.id;
-    const usuarioBuscado = repository.findOne({ id });
+    const usuarioBuscado = await repository.findOne({ id });
     if (!usuarioBuscado) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
     }
     res.json(usuarioBuscado);
 }
-function add(req, res) {
+async function add(req, res) {
     const input = req.body.sanitizedInput;
     const usuarioNuevo = new Usuario(input.id, input.nombreUsuario, input.apellidoUsuario, input.fechaNacimientoUsuario, input.cuitCliente, input.razonSocialCliente, input.telefonoCliente, input.idEmpleado, input.fechaContratacion, input.idTipoUsuario);
-    const usuarioCreado = repository.add(usuarioNuevo);
+    const usuarioCreado = await repository.add(usuarioNuevo);
     return res.status(201).send({ message: 'Se cargo nuevo usuario', data: usuarioCreado });
 }
-function update(req, res) {
+async function update(req, res) {
     req.body.sanitizedInput.id = req.params.id;
-    const UsuarioModificado = repository.update(req.body.sanitizedInput);
+    const UsuarioModificado = await repository.update(req.body.sanitizedInput);
     if (!UsuarioModificado) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
     }
     return res.status(200).send({ message: 'Usuario actualizado correctamente', data: UsuarioModificado });
 }
-function remove(req, res) {
+async function remove(req, res) {
     const id = req.params.id;
-    const UsuarioBorrar = repository.delete({ id });
+    const UsuarioBorrar = await repository.delete({ id });
     if (!UsuarioBorrar) {
         res.status(404).send({ message: 'Usuario no encontrado' });
     }

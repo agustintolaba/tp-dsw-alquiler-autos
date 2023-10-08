@@ -1,31 +1,38 @@
-import { Usuario } from "./usuario.entity.js";
-const MisUsuarios = [
-    new Usuario('1', 'Nicolas', 'Perez', '20000101', '2040000230', 'Sagrada Familia', '341565656', '', '', '1-Cliente'),
-];
+import { pooldb } from "../shared/db/conn.mysql.js";
 export class UsuarioRepository {
-    findAll() {
-        return MisUsuarios;
+    async findAll() {
+        const [results] = await pooldb.query('SELECT * FROM usuarios');
+        return results;
     }
-    findOne(item) {
-        return MisUsuarios.find((MisUsuarios) => MisUsuarios.id === item.id);
-    }
-    add(item) {
-        MisUsuarios.push(item);
-        return item;
-    }
-    update(item) {
-        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.id === item.id);
-        if (usuarioInx !== -1) {
-            MisUsuarios[usuarioInx] = { ...MisUsuarios[usuarioInx], ...item };
+    async findOne(item) {
+        const id = Number.parseInt(item.id);
+        const [usuario] = await pooldb.query('Select * from usuarios where id=?', [id]);
+        if (usuario.length === 0) {
+            return undefined;
         }
-        return MisUsuarios[usuarioInx];
+        const miUsuario = usuario[0];
+        return miUsuario;
     }
-    delete(item) {
-        const usuarioInx = MisUsuarios.findIndex((MisUsuarios) => MisUsuarios.id === item.id);
-        if (usuarioInx !== -1) {
-            const deleteUsuario = MisUsuarios[usuarioInx];
-            MisUsuarios.splice(usuarioInx, 1);
-            return deleteUsuario;
+    async add(usuarioInput) {
+        const { id, ...usuarioRow } = usuarioInput;
+        const [result] = await pooldb.query('Insert into usuarios set ?', [usuarioRow]);
+        usuarioInput.id = result.insertId;
+        return usuarioInput;
+    }
+    async update(usuarioInput) {
+        const { id, ...usuarioRow } = usuarioInput;
+        await pooldb.query('update usuarios set ? where id=?', [usuarioRow, id]);
+        return usuarioInput;
+    }
+    async delete(item) {
+        try {
+            const usuarioToBeDelete = this.findOne(item);
+            const usuarioId = Number.parseInt(item.id);
+            await pooldb.query('delete from usuarios where id=?', usuarioId);
+            return usuarioToBeDelete;
+        }
+        catch (error) {
+            throw new Error('No se pudo borrar');
         }
     }
 }

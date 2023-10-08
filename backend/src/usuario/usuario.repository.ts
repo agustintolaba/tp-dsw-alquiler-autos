@@ -1,40 +1,45 @@
 import { Repository } from "../shared/repository.js";
 import { Usuario} from "./usuario.entity.js";
-
-const MisUsuarios= [
-  new Usuario(
-    '1', 'Nicolas', 'Perez', '20000101', '2040000230', 'Sagrada Familia', '341565656', '','','1-Cliente'
-  ),
-]
+import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { pooldb } from "../shared/db/conn.mysql.js";
 
 export class UsuarioRepository implements Repository<Usuario>{
-  public findAll(): Usuario[] | undefined {
-    return MisUsuarios
+  
+  public async findAll(): Promise<Usuario[] | undefined> {
+      const [results] = await pooldb.query('SELECT * FROM usuarios')
+      return results as Usuario[] 
+    }
+
+  public async findOne(item: {id: string}): Promise<Usuario | undefined> {
+    const id= Number.parseInt(item.id)
+    const [usuario]= await pooldb.query<RowDataPacket[]>('Select * from usuarios where id=?', [id])
+    if (usuario.length ===0){
+      return undefined
+    }
+    const miUsuario= usuario[0] as Usuario
+    return miUsuario
   }
 
-  public findOne(item: {id: string}): Usuario | undefined {
-    return MisUsuarios.find((MisUsuarios)=> MisUsuarios.id=== item.id)
+  public async add(usuarioInput: Usuario): Promise<Usuario | undefined> {
+    const{id, ...usuarioRow}= usuarioInput
+    const [result] = await pooldb.query<ResultSetHeader>('Insert into usuarios set ?', [usuarioRow]) 
+    usuarioInput.id=result.insertId 
+    return usuarioInput
   }
 
-  public add(item: Usuario): Usuario | undefined {
-    MisUsuarios.push(item)
-    return item
+  public async update(usuarioInput: Usuario): Promise<Usuario | undefined> {
+    const{id, ...usuarioRow}= usuarioInput
+    await pooldb.query('update usuarios set ? where id=?', [usuarioRow, id])
+    return usuarioInput
   }
 
-  public update(item: Usuario): Usuario | undefined {
-    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.id=== item.id)
-    if(usuarioInx!==-1){
-     MisUsuarios[usuarioInx]={...MisUsuarios[usuarioInx], ...item}
-    } 
-    return MisUsuarios[usuarioInx]
-  }
-
-  public delete(item: { id: string; }): Usuario | undefined {
-    const usuarioInx= MisUsuarios.findIndex((MisUsuarios)=> MisUsuarios.id=== item.id)
-    if(usuarioInx!==-1){
-      const deleteUsuario= MisUsuarios[usuarioInx]
-      MisUsuarios.splice(usuarioInx,1)
-      return deleteUsuario
+  public async delete(item: { id: string; }): Promise<Usuario | undefined> {
+    try{const usuarioToBeDelete= this.findOne(item) 
+    const usuarioId= Number.parseInt(item.id)
+    await pooldb.query('delete from usuarios where id=?', usuarioId)
+    return usuarioToBeDelete
+    } catch(error: any) {
+        throw new Error('No se pudo borrar')
     }
   }
 }

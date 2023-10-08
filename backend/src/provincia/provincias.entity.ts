@@ -1,6 +1,6 @@
 export class Provincia {
   constructor(
-    public id: string, 
+    public id: number, 
     public descripcionProvincia: string
     ) {}
 }

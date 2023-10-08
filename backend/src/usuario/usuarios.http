@@ -3,7 +3,7 @@ GET http://localhost:3000/api/usuario
 
 
 ### Obtener un usuario 
-GET http://localhost:3000/api/usuario/1
+GET http://localhost:3000/api/usuario/3
 
 ### Crear un nuevo usuario
 POST http://localhost:3000/api/usuario
@@ -16,10 +16,10 @@ Content-Type: application/json
     "fechaNacimientoUsuario": "19600202",
     "cuitCliente": "20-4034567456-0",
     "razonSocialCliente": "Hipoglos",
-    "telefonoCliente": "341-5432245",
-    "idEmpleado": "",
-    "fechaContratacion": "", 
-    "idTipoUsuario": "1-Cliente"
+    "telefonoCliente": "3415432245",
+    "idEmpleado": 3,
+    "fechaContratacion": null, 
+    "idTipoUsuario": "3.Usuario"
 }
 
 ### Modificar un nuevo usuario (recurso completo e idempotente)
@@ -33,14 +33,14 @@ Content-Type: application/json
     "fechaNacimientoUsuario": "19600202",
     "cuitCliente": "20-4034567456-0",
     "razonSocialCliente": "Hipoglos",
-    "telefonoCliente": "341-5432245",
-    "idEmpleado": "",
-    "fechaContratacion": "", 
+    "telefonoCliente": "3415432245",
+    "idEmpleado": 3,
+    "fechaContratacion": null, 
     "idTipoUsuario": "1-Cliente"
 }
 
 ### Modificar un nuevo usuario (recurso parcial)
-PATCH http://localhost:3000/api/usuario/2
+PATCH http://localhost:3000/api/usuario/3
 Content-Type: application/json
 
 {
@@ -52,4 +52,4 @@ Content-Type: application/json
 }
 
 ###Borar un usuario
-DELETE http://localhost:3000/api/usuario/2
+DELETE http://localhost:3000/api/usuario/5

@@ -1,6 +1,6 @@
 export class Tipo_Vehiculo {
   constructor(
-    public id: string, 
+    public id: number, 
     public descripcionTipoVehiculo: string
     ) {}
 }

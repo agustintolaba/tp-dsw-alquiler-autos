@@ -15,28 +15,28 @@ function sanitizeProvinciaInput(req, res, next) {
     });
     next();
 }
-function findAll(req, res) {
-    res.json({ data: repository.findAll() });
+async function findAll(req, res) {
+    res.json({ data: await repository.findAll() });
 }
-function findOne(req, res) {
+async function findOne(req, res) {
     /*const provincia= prov.find((prov)=> prov.idProvincia=== req.params.idProvincia)*/
     const id = req.params.id;
-    const provincia = repository.findOne({ id });
+    const provincia = await repository.findOne({ id });
     if (!provincia) {
         return res.status(404).send({ message: 'Provincia no encontrada' });
     }
     res.json(provincia);
 }
-function add(req, res) {
+async function add(req, res) {
     const input = req.body.sanitizedInput;
     const provinciaNueva = new Provincia(input.id, input.descripcionProvincia);
-    const ProvNueva = repository.add(provinciaNueva);
+    const ProvNueva = await repository.add(provinciaNueva);
     return res.status(201).send({ message: 'Se cargo nueva provincia', data: ProvNueva });
 }
-function update(req, res) {
+async function update(req, res) {
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
     req.body.sanitizedInput.id = req.params.id; /*PARA MODIFICAR TAMBIEN EL ID*/
-    const ProvMod = repository.update(req.body.sanitizedInput);
+    const ProvMod = await repository.update(req.body.sanitizedInput);
     if (!ProvMod) {
         return res.status(404).send({ message: 'Provincia no encontrada' });
     }
@@ -44,10 +44,10 @@ function update(req, res) {
     return res.status(200).send({ message: 'Provincia actualizada correctamente', data: ProvMod });
 }
 /*TAMBIEN SIRVE PARA EL PATCH */
-function remove(req, res) {
+async function remove(req, res) {
     /*const provinciaInx= prov.findIndex((prov)=> prov.idProvincia=== req.params.idProvincia)*/
     const id = req.params.id;
-    const ProvBorrar = repository.delete({ id });
+    const ProvBorrar = await repository.delete({ id });
     if (!ProvBorrar) {
         res.status(404).send({ message: 'Provincia no encontrada' });
     }

@@ -1,31 +1,38 @@
-import { Seguro } from "./seguro.entity.js";
-const MisSeguros = [
-    new Seguro('1', 'Plan Gold', 'Sancor Seguros'),
-];
+import { pooldb } from "../shared/db/conn.mysql.js";
 export class SegurosRepository {
-    findAll() {
-        return MisSeguros;
+    async findAll() {
+        const [results] = await pooldb.query('SELECT * FROM seguros');
+        return results;
     }
-    findOne(item) {
-        return MisSeguros.find((MisSeguros) => MisSeguros.id === item.id);
-    }
-    add(item) {
-        MisSeguros.push(item);
-        return item;
-    }
-    update(item) {
-        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.id === item.id);
-        if (seguroInx !== -1) {
-            MisSeguros[seguroInx] = { ...MisSeguros[seguroInx], ...item };
+    async findOne(item) {
+        const id = Number.parseInt(item.id);
+        const [seguro] = await pooldb.query('Select * from seguros where id=?', [id]);
+        if (seguro.length === 0) {
+            return undefined;
         }
-        return MisSeguros[seguroInx];
+        const miSeguro = seguro[0];
+        return miSeguro;
     }
-    delete(item) {
-        const seguroInx = MisSeguros.findIndex((MisSeguros) => MisSeguros.id === item.id);
-        if (seguroInx !== -1) {
-            const deleteSeguro = MisSeguros[seguroInx];
-            MisSeguros.splice(seguroInx, 1);
-            return deleteSeguro;
+    async add(seguroInput) {
+        const { id, ...seguroRow } = seguroInput;
+        const [result] = await pooldb.query('Insert into seguros set ?', [seguroRow]);
+        seguroInput.id = result.insertId;
+        return seguroInput;
+    }
+    async update(seguroInput) {
+        const { id, ...seguroRow } = seguroInput;
+        await pooldb.query('update seguros set ? where id=?', [seguroRow, id]);
+        return seguroInput;
+    }
+    async delete(item) {
+        try {
+            const seguroToBeDelete = this.findOne(item);
+            const seguroId = Number.parseInt(item.id);
+            await pooldb.query('delete from seguros where id=?', seguroId);
+            return seguroToBeDelete;
+        }
+        catch (error) {
+            throw new Error('No se pudo borrar');
         }
     }
 }

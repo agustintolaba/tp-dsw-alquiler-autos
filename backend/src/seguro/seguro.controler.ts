@@ -19,20 +19,20 @@ function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction
   next()
 }
 
-function findAll(req: Request,res: Response){
-    res.json({data: repository.findAll()})
+async function findAll(req: Request,res: Response){
+    res.json({data: await repository.findAll()})
 }
 
-function findOne(req: Request,res: Response){
+async function findOne(req: Request,res: Response){
     const id=req.params.id
-    const seguroBuscado= repository.findOne({id})
+    const seguroBuscado= await repository.findOne({id})
     if(!seguroBuscado){
     return res.status(404).send({message: 'Seguro no encontrado'})
     }
     res.json(seguroBuscado)
 }
 
-function add(req: Request,res: Response){
+async function add(req: Request,res: Response){
 const input = req.body.sanitizedInput
 const seguroNuevo= 
   new Seguro(
@@ -40,13 +40,13 @@ const seguroNuevo=
     input.nombreSeguro,
     input.companiaSeguro
   )
-const Nuevo= repository.add(seguroNuevo)
+const Nuevo= await repository.add(seguroNuevo)
 return res.status(201).send({message: 'Se cargo un nuevo Seguro', data: Nuevo})
 }
 
-function update(req: Request,res: Response){
+async function update(req: Request,res: Response){
     req.body.sanitizedInput.id=req.params.id
-    const seguroMod= repository.update(req.body.sanitizedInput)
+    const seguroMod= await repository.update(req.body.sanitizedInput)
     if(!seguroMod){
      return res.status(404).send({message: 'Seguro no encontrado'})
     }
@@ -54,9 +54,9 @@ function update(req: Request,res: Response){
 }
 
 
-function remove(req: Request,res: Response){
+async function remove(req: Request,res: Response){
     const id=req.params.id
-    const seguroBorrar= repository.delete({id})
+    const seguroBorrar= await repository.delete({id})
     if(!seguroBorrar){
       res.status(404).send({message: 'Seguro no encontrado'})
     }else{
