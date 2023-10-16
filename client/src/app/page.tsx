@@ -92,8 +92,8 @@ export default function Home() {
 
         <span className="text-center text-lg italic font-extralight">
           Nuestros proveedores ofrecen vehículos de transmisión automática y
-          manual en los EE. UU., sin embargo, la disponibilidad puede variar
-          según el proveedor y la ubicación donde alquile el vehículo.
+          manual en Argentina, sin embargo, la disponibilidad puede variar según
+          el proveedor y la ubicación donde alquile el vehículo.
         </span>
 
         <div className="flex flex-col gap-12 px-48">
