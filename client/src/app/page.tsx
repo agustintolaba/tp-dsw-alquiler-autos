@@ -28,7 +28,7 @@ const homeItems = [
 
 const homeDetailItems = [
   {
-    image: '',
+    image: '/assets/images/economyCar.png',
     title: 'Economía',
     seating: '4',
     suitcases: 2,
@@ -36,15 +36,15 @@ const homeDetailItems = [
       'Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina (generalmente para planes de viaje a corto plazo), los automóviles económicos entran en la categoría de soluciones de alquiler de bajo costo. Estos vehículos de alquiler no solo son económicos, sino que también ahorran combustible.',
   },
   {
-    image: '',
+    image: '/assets/images/luxuryCar.png',
     title: 'Lujo',
     seating: '5',
     suitcases: 2,
     description:
-      'Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina (generalmente para planes de viaje a corto plazo), los automóviles económicos entran en la categoría de soluciones de alquiler de bajo costo. Estos vehículos de alquiler no solo son económicos, sino que también ahorran combustible.',
+      'Los clientes que visitan Argentina alquilan autos de lujo para negocios, vacaciones y otras ocasiones especiales de la vida, como aniversarios. Se utilizan principalmente por la comodidad y el cociente de estilo que añaden al viaje.',
   },
   {
-    image: '',
+    image: '/assets/images/convertibleCar.png',
     title: 'Convertible',
     seating: '4',
     suitcases: 2,
@@ -52,20 +52,20 @@ const homeDetailItems = [
       'Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina (generalmente para planes de viaje a corto plazo), los automóviles económicos entran en la categoría de soluciones de alquiler de bajo costo. Estos vehículos de alquiler no solo son económicos, sino que también ahorran combustible.',
   },
   {
-    image: '',
+    image: '/assets/images/allRounderCar.png',
     title: 'Todoterreno',
     seating: '4',
     suitcases: 2,
     description:
-      'Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina (generalmente para planes de viaje a corto plazo), los automóviles económicos entran en la categoría de soluciones de alquiler de bajo costo. Estos vehículos de alquiler no solo son económicos, sino que también ahorran combustible.',
+      'Los viajes por carretera, llenos de actividades como acampar y deportes acuáticos, se planifican mejor con el alquiler de SUV. La mayoría de las familias que visitan Argentina alquilan vehículos todoterreno para viajes seguros pero lujosos a lugares como Puerto Madero y parques nacionales como el Glaciar Perito Moreno.',
   },
   {
-    image: '',
+    image: '/assets/images/minivanCar.png',
     title: 'Furgoneta/Minivan',
     seating: '7/8',
     suitcases: 2,
     description:
-      'Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina (generalmente para planes de viaje a corto plazo), los automóviles económicos entran en la categoría de soluciones de alquiler de bajo costo. Estos vehículos de alquiler no solo son económicos, sino que también ahorran combustible.',
+      'El alquiler de una camioneta o una minivan le brinda espacio para las piernas y el equipaje que otras categorías de automóviles no tienen. Sobre la base de la capacidad de asientos, se clasifican como alquileres de van y minivan para 7 pasajeros, 8 pasajeros, 9 pasajeros, 10 pasajeros, 12 pasajeros y 15 pasajeros.',
   },
 ];
 
@@ -84,7 +84,7 @@ export default function Home() {
           />
         ))}
       </div>
-      <div className="flex flex-col justify-start items-start gap-8">
+      <div className="flex flex-col justify-start items-center gap-8">
         <span className="text-center text-4xl font-extralight">
           Los mejores alquileres de coches y furgonetas de los mejores
           proveedores
@@ -96,16 +96,18 @@ export default function Home() {
           según el proveedor y la ubicación donde alquile el vehículo.
         </span>
 
-        {homeDetailItems.map((item: HomeDetailItemType) => (
-          <HomeDetailItem
-            key={item.title}
-            image={item.image}
-            title={item.title}
-            seating={item.seating}
-            suitcases={item.suitcases}
-            description={item.description}
-          />
-        ))}
+        <div className="flex flex-col gap-12 px-48">
+          {homeDetailItems.map((item: HomeDetailItemType) => (
+            <HomeDetailItem
+              key={item.title}
+              image={item.image}
+              title={item.title}
+              seating={item.seating}
+              suitcases={item.suitcases}
+              description={item.description}
+            />
+          ))}
+        </div>
       </div>
     </main>
   );
