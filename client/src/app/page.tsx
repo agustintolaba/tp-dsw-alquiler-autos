@@ -71,7 +71,7 @@ const homeDetailItems = [
 
 export default function Home() {
   return (
-    <main className="flex flex-col p-8 gap-8">
+    <main className="flex flex-col p-8 gap-12">
       <h1 className="text-4xl font-extralight">Rueda libre</h1>
       <div className="flex flex-row flex-wrap gap-12 justify-center">
         {homeItems.map((item: HomeGridItemType) => (
@@ -84,19 +84,22 @@ export default function Home() {
           />
         ))}
       </div>
-      <div className="flex flex-col justify-start items-center gap-8">
-        <span className="text-center text-4xl font-extralight">
-          Los mejores alquileres de coches y furgonetas de los mejores
-          proveedores
-        </span>
 
-        <span className="text-center text-lg italic font-extralight">
-          Nuestros proveedores ofrecen vehículos de transmisión automática y
-          manual en Argentina, sin embargo, la disponibilidad puede variar según
-          el proveedor y la ubicación donde alquile el vehículo.
-        </span>
+      <div className="flex flex-col justify-center items-center gap-16">
+        <div className='flex flex-col max-w-6xl gap-8'>
+          <span className="text-center text-4xl font-extralight">
+            Los mejores alquileres de coches y furgonetas de los mejores
+            proveedores
+          </span>
 
-        <div className="flex flex-col gap-12 px-48">
+          <span className="text-center text-lg italic font-extralight">
+            Nuestros proveedores ofrecen vehículos de transmisión automática y
+            manual en Argentina, sin embargo, la disponibilidad puede variar según
+            el proveedor y la ubicación donde alquile el vehículo.
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-12 max-w-4xl">
           {homeDetailItems.map((item: HomeDetailItemType) => (
             <HomeDetailItem
               key={item.title}

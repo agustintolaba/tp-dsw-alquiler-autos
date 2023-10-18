@@ -16,7 +16,7 @@ export default function HomeDetailItem({
   description,
 }: HomeDetailItemType) {
   return (
-    <div className="flex flex-row justify-center gap-6">
+    <div className="flex flex-row flex-wrap justify-center items-end gap-6 py-8 px-4 rounded-2xl bg-slate-900 lg:px-8">
       <Image
         src={image}
         alt={image}
@@ -48,7 +48,7 @@ export default function HomeDetailItem({
             <span>Maletas: {suitcases}</span>
           </div>
         </div>
-        <span className="text-light text-sm">{description}</span>
+        <span className="text-light text-sm text-justify max-w-lg">{description}</span>
       </div>
     </div>
   );
