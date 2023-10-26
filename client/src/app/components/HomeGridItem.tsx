@@ -1,13 +1,13 @@
 import Image from "next/image"
 
-export interface HomeGridItemType {
+export interface HomeGridItemProps {
   image: string,
   title: string,
   subtitle: string,
   bgColor: string
 }
 
-export default function HomeGridItem({image, title, subtitle, bgColor}: GridItemType) {
+const HomeGridItem: React.FC<HomeGridItemProps> = ({ image, title, subtitle, bgColor }) => {
   return (
     <div className={"rounded-xl flex flex-col w-72 aspect-square justify-between items-center py-8 px-4 text-white text-center " + bgColor}>
       <Image 
@@ -21,3 +21,5 @@ export default function HomeGridItem({image, title, subtitle, bgColor}: GridItem
     </div>
   )
 }
+
+export default HomeGridItem

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import Image from 'next/image';
 
-export interface HomeDetailItemType {
+export interface HomeDetailItemProps {
   image: string;
   title: string;
   seating: string;
@@ -9,13 +9,13 @@ export interface HomeDetailItemType {
   description: string;
 }
 
-export default function HomeDetailItem({
+const HomeDetailItem: React.FC<HomeDetailItemProps> = ({
   image,
   title,
   seating,
   suitcases,
   description,
-}: HomeDetailItemType) {
+}) => {
   return (
     <div className="flex flex-row flex-wrap justify-center items-center gap-6 pt-8 pb-4 px-4 rounded-2xl bg-slate-900 lg:px-8">
       <Image
@@ -60,3 +60,5 @@ export default function HomeDetailItem({
     </div>
   );
 }
+
+export default HomeDetailItem

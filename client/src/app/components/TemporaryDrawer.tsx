@@ -40,7 +40,7 @@ interface TemporaryDrawerProps {
   isAdmin: Boolean
 }
 
-export default function TemporaryDrawer({ isAdmin }: TemporaryDrawerProps) {
+const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer =
@@ -121,3 +121,5 @@ export default function TemporaryDrawer({ isAdmin }: TemporaryDrawerProps) {
     </div>
   );
 }
+
+export default TemporaryDrawer

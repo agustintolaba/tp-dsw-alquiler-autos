@@ -9,11 +9,7 @@ const darkTheme = createTheme({
   },
 });
 
-interface NextThemeProviderProps {
-  children: ReactNode;
-}
-
-const NextThemeProvider: React.FC<NextThemeProviderProps> = ({ children}) => (
+const NextThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => (
   <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
 )
 

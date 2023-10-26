@@ -14,7 +14,7 @@ interface MenuAppBarProps {
   isAdmin: boolean
 }
 
-export default function MenuAppBar({ isAdmin }: MenuAppBarProps) {
+const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -74,3 +74,5 @@ export default function MenuAppBar({ isAdmin }: MenuAppBarProps) {
     </AppBar>
   );
 }
+
+export default MenuAppBar
