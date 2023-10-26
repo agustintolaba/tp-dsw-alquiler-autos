@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import Image from 'next/image';
 
 export interface HomeDetailItemType {
@@ -51,9 +52,10 @@ export default function HomeDetailItem({
           </div>
           <span className="font-light text-sm text-justify max-w-lg">{description}</span>
         </div>
-        <div className='flex flex-row items-center justify-center max-w-fit bg-slate-800 px-6 py-2 rounded-full transition duration-200 hover:bg-slate-700 cursor-pointer'>
+        <Button variant='outlined' color='success'>Reservar ahora</Button>
+        {/* <div className='flex flex-row items-center justify-center max-w-fit bg-slate-800 px-6 py-2 rounded-full transition duration-200 hover:bg-slate-700 cursor-pointer'>
           <span className='text-white text-sm font-extralight'>Reservar ahora</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -71,8 +71,7 @@ const homeDetailItems = [
 
 export default function Home() {
   return (
-    <main className="flex flex-col p-8 gap-12">
-      <h1 className="text-4xl font-extralight">Rueda libre</h1>
+    <main className="flex flex-col p-8 gap-12">      
       <div className="flex flex-row flex-wrap gap-12 justify-center">
         {homeItems.map((item: HomeGridItemType) => (
           <HomeGridItem
