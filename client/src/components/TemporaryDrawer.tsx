@@ -13,27 +13,28 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import CarRentalIcon from '@mui/icons-material/CarRental';
+import Link from 'next/link';
 
 const sharedMenuItems = [{
   title: 'Home',
   icon: <HomeIcon />,
-  action: "/"
+  destination: "/"
 }]
 
 const userMenuItems = [{
   title: 'Mis reservas',
   icon: <ChecklistIcon />,
-  action: "/"
+  destination: "/bookings"
 }]
 
 const adminMenuItems = [{
   title: 'Administrar autos',
   icon: <CarRentalIcon />,
-  action: "/"
+  destination: "/"
 }, {
   title: 'Administrar reservas',
   icon: <ChecklistIcon />,
-  action: "/"
+  destination: "/bookings"
 }]
 
 interface TemporaryDrawerProps {
@@ -65,41 +66,47 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
     >
       <List>
         {sharedMenuItems.map((item, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
+          <Link href={item.destination}>
+            <ListItem key={index} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Divider />
       <List>
         {isAdmin && (
           adminMenuItems.map((item, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
+            <Link href={item.destination}>
+              <ListItem key={index} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           ))
         ) || (
-          userMenuItems.map((item, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
-          ))
-        )}
+            userMenuItems.map((item, index) => (
+              <Link href={item.destination}>
+                <ListItem key={index} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))
+          )}
       </List>
     </Box>
   );

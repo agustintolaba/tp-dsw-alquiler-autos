@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import HomeGridItem, { HomeGridItemType } from './components/HomeGridItem';
+import HomeGridItem, { HomeGridItemProps } from '@/components/HomeGridItem';
 import { homedir } from 'os';
-import HomeDetailItem, {
-  HomeDetailItemType,
-} from './components/HomeDetailItem';
+import HomeDetailItem, { HomeDetailItemProps } from '@/components/HomeDetailItem';
 
 const homeItems = [
   {
@@ -73,7 +71,7 @@ export default function Home() {
   return (
     <main className="flex flex-col p-8 gap-12">      
       <div className="flex flex-row flex-wrap gap-12 justify-center">
-        {homeItems.map((item: HomeGridItemType) => (
+        {homeItems.map((item: HomeGridItemProps) => (
           <HomeGridItem
             key={item.title}
             image={item.image}
@@ -99,7 +97,7 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-12 max-w-4xl">
-          {homeDetailItems.map((item: HomeDetailItemType) => (
+          {homeDetailItems.map((item: HomeDetailItemProps) => (
             <HomeDetailItem
               key={item.title}
               image={item.image}
