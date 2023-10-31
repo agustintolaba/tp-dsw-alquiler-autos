@@ -10,27 +10,27 @@ POST http://localhost:3000/api/provincia
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
-  "descripcionProvincia": "Buenos Aires"
+  "id":"",
+  "descripcionProvincia": "Chilecito2"
 }
 
 ### Modificar una nueva provincia (recurso completo e idempotente)
-PUT http://localhost:3000/api/provincia/7
+PUT http://localhost:3000/api/provincia/2
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
+  "id":"2",
   "descripcionProvincia": "Entre Rios"
 }
 
 ### Modificar una nueva provincia (recurso parcial)
-PATCH http://localhost:3000/api/provincia/7
+PATCH http://localhost:3000/api/provincia/10
 Content-Type: application/json
 
 {
-  "idProvincia":"7",
+  "id":"10",
   "descripcionProvincia": "Misiones"
 }
 
 ###Borar una provincia
-DELETE http://localhost:3000/api/provincia/7
+DELETE http://localhost:3000/api/provincia/10

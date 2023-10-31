@@ -56,7 +56,7 @@ Reglas de Negocio:
 
 ### Modelo entidad relacion
 
-![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/2b86f926c221bc7586316e5b6c11395205105cba/images/DER-corregido.png)
+![imagen del modelo](https://github.com/agustintolaba/tpalquilervehiculos/blob/2642f5b2f2dcbb3bd14464c7bbea62bddcde2fdc/docs/images/DER-nuevo.png)
 
 ## Alcance Funcional
 

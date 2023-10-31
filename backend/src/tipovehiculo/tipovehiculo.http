@@ -1,0 +1,36 @@
+### Obtener todas los tipos de vehiculos 
+GET http://localhost:3000/api/tipovehiculo
+
+
+### Obtener un tipo de vehiculo
+GET http://localhost:3000/api/tipovehiculo/1
+
+### Crear un nuevo tipo de vehiculo
+POST http://localhost:3000/api/tipovehiculo
+Content-Type: application/json
+
+{
+  "id":"2",
+  "descripcionTipoVehiculo": "Auto de 5 puertas"
+}
+
+### Modificar un tipo de vehiculo (recurso completo e idempotente)
+PUT http://localhost:3000/api/tipovehiculo/2
+Content-Type: application/json
+
+{
+  "idTipo":"2",
+  "descripcionTipoVehiculo": "Camioneta de 5 puertas"
+}
+
+### Modificar un tipo de vehiculo (recurso parcial)
+PATCH http://localhost:3000/api/tipovehiculo/2
+Content-Type: application/json
+
+{
+  "idT":"2",
+  "descripcionTipoVehiculo": "Trafic"
+}
+
+###Borar un tipo de vehiculo
+DELETE http://localhost:3000/api/tipovehiculo/2
