@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction, request, response } from "express"
-import { UsuarioRepository } from "./usuario.repository.js"
+import { Request, Response, NextFunction } from "express"
+import { orm } from "../shared/db/orm.js"
 import { Usuario } from "./usuario.entity.js"
 
+const em= orm.em
 
-const repository = new UsuarioRepository()
-
-function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction){
+function sanitizeUsuarioInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id, 
     nombreUsuario: req.body.nombreUsuario,
@@ -26,56 +25,59 @@ function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction
   next()
 }
 
-async function findAll(req: Request,res: Response){
-    res.json({data: await repository.findAll()})
+
+async function findAll(req: Request, res: Response) {
+  try {
+    const usuarios = await em.find(Usuario, {},  { populate: ['idTipoUsuario'] })
+    res.status(200).json({ message: 'Ususarios encontrados', data: usuarios })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
-async function findOne(req: Request,res: Response){
-    const id=req.params.id
-    const usuarioBuscado= await repository.findOne({id})
-    if(!usuarioBuscado){
-    return res.status(404).send({message: 'Usuario no encontrado'})
-    }
-    res.json(usuarioBuscado)
+async function findOne(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const usuarioBuscado = await em.findOneOrFail(Usuario, { id }, { populate: ['idTipoUsuario'] })
+    res.status(200).json({ message: 'Usuario encontrado', data: usuarioBuscado })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
-async function add(req: Request,res: Response){
-const input = req.body.sanitizedInput
-const usuarioNuevo= 
-  new Usuario(
-    input.id, 
-    input.nombreUsuario,
-    input.apellidoUsuario,
-    input.fechaNacimientoUsuario,
-    input.cuitCliente,
-    input.razonSocialCliente,
-    input.telefonoCliente,
-    input.idEmpleado,
-    input.fechaContratacion,
-    input.idTipoUsuario
-  )
-const usuarioCreado= await repository.add(usuarioNuevo)
-return res.status(201).send({message: 'Se cargo nuevo usuario', data: usuarioCreado})
+async function add(req: Request, res: Response) {
+  try {
+    const input = req.body.sanitizedInput
+    const usuarioNuevo = em.create(Usuario, input)
+    await em.flush()
+    res.status(201).json({ message: 'Se cargo nuevo usuario', data: usuarioNuevo })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
-async function update(req: Request,res: Response){
-    req.body.sanitizedInput.id=req.params.id  
-    const UsuarioModificado= await repository.update(req.body.sanitizedInput)
-    if(!UsuarioModificado){
-     return res.status(404).send({message: 'Usuario no encontrado'})
-    }
-    return res.status(200).send({message: 'Usuario actualizado correctamente', data: UsuarioModificado})
+async function update(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    req.body.sanitizedInput.id=req.params.id
+    const usuarioModificado = em.getReference(Usuario, id)
+    em.assign(usuarioModificado, req.body.sanitizedInput)
+    await em.flush()
+    res.status(200).json({ message: 'Usuario actualizado correctamente' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
-
-async function remove(req: Request,res: Response){
-    const id=req.params.id
-    const UsuarioBorrar= await repository.delete({id})
-    if(!UsuarioBorrar){
-      res.status(404).send({message: 'Usuario no encontrado'})
-    }else{
-    res.status(200).send({message: 'Usuario eliminado correctamente'})
-    }
+async function remove(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const usuarioBorrar = em.getReference(Usuario, id)
+    await em.removeAndFlush(usuarioBorrar)
+    res.status(200).send({ message: 'Usuario eliminado correctamente' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
-export{sanitizeProvinciaInput, findAll, findOne, add, update, remove}
+export{sanitizeUsuarioInput, findAll, findOne, add, update, remove}

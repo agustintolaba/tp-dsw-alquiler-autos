@@ -1,14 +1,18 @@
 import { Request, Response, NextFunction } from "express"
-import { TipoVehiculo } from "./tipovehiculo.entity.js"
 import { orm } from "../shared/db/orm.js"
+import { Sucursal } from "./sucursal.entity.js"
 
 const em= orm.em
 
-function sanitizeTipoVehiculoInput (req: Request, res: Response, next: NextFunction){
+function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    descripcionTipoVehiculo: req.body.descripcionTipoVehiculo
+    calleSucursal: req.body.calleSucursal,
+    numeroCalleSucursal: req.body.numeroCalleSucursal,
+    idLocalidad: req.body.idLocalidad
   }
+  //MAS VALIDACIONES ACA
+  //Sepuede detectar errores e informar desde aca
   Object.keys(req.body.sanitizedInput).forEach((key)=>{
     if(req.body.sanitizedInput[key]===undefined){
       delete req.body.sanitizedInput[key]
@@ -19,8 +23,8 @@ function sanitizeTipoVehiculoInput (req: Request, res: Response, next: NextFunct
 
 async function findAll(req: Request, res: Response) {
   try {
-    const tiposVehiculos = await em.find(TipoVehiculo, {})
-    res.status(200).json({ message: 'Tipos de Vehiculos encontrados', data: tiposVehiculos })
+    const sucursales = await em.find(Sucursal, {}, { populate: ['idLocalidad'] })
+    res.status(200).json({ message: 'Sucursales encontradas', data: sucursales })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -29,8 +33,8 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
-    res.status(200).json({ message: 'Tipo de vehiculo encontrado', data: tipoVehiculo })
+    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['idLocalidad'] })
+    res.status(200).json({ message: 'Sucursal encontrada', data: sucursal })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -39,9 +43,9 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
-    const tipoVehiculoNuevo = em.create(TipoVehiculo, input)
+    const sucursalNueva = em.create(Sucursal, input)
     await em.flush()
-    res.status(201).json({ message: 'Se cargo nuevo tipo de vehiculo', data: tipoVehiculoNuevo })
+    res.status(201).json({ message: 'Se cargo nueva sucursal', data: sucursalNueva })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -51,10 +55,10 @@ async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     req.body.sanitizedInput.id=req.params.id
-    const tipoVehiculoModificado = em.getReference(TipoVehiculo, id)
-    em.assign(tipoVehiculoModificado, req.body.sanitizedInput)
+    const sucursalModificada = em.getReference(Sucursal, id)
+    em.assign(sucursalModificada, req.body.sanitizedInput)
     await em.flush()
-    res.status(200).json({ message: 'Tipo de Vehiculo actualizado correctamente' })
+    res.status(200).json({ message: 'Sucursal actualizada correctamente' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -63,12 +67,12 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const tipoVehiculoBorrar = em.getReference(TipoVehiculo, id)
-    await em.removeAndFlush(tipoVehiculoBorrar)
-    res.status(200).send({ message: 'Tipo de vehiculo eliminado correctamente' })
+    const sucursalBorrar = em.getReference(Sucursal, id)
+    await em.removeAndFlush(sucursalBorrar)
+    res.status(200).send({ message: 'Sucursal eliminada correctamente' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
 }
 
-export{sanitizeTipoVehiculoInput, findAll, findOne, add, update, remove} 
+export{sanitizeSucursalInput, findAll, findOne, add, update, remove}  

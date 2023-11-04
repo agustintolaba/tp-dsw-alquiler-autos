@@ -10,8 +10,8 @@ POST http://localhost:3000/api/tipovehiculo
 Content-Type: application/json
 
 {
-  "id":"2",
-  "descripcionTipoVehiculo": "Auto de 5 puertas"
+  "id":"3",
+  "descripcionTipoVehiculo": "Camioneta de 2 puertas"
 }
 
 ### Modificar un tipo de vehiculo (recurso completo e idempotente)
@@ -19,8 +19,8 @@ PUT http://localhost:3000/api/tipovehiculo/2
 Content-Type: application/json
 
 {
-  "idTipo":"2",
-  "descripcionTipoVehiculo": "Camioneta de 5 puertas"
+  "id":"2",
+  "descripcionTipoVehiculo": "Camioneta de 6 puertas"
 }
 
 ### Modificar un tipo de vehiculo (recurso parcial)
@@ -33,4 +33,4 @@ Content-Type: application/json
 }
 
 ###Borar un tipo de vehiculo
-DELETE http://localhost:3000/api/tipovehiculo/2
+DELETE http://localhost:3000/api/tipovehiculo/3
