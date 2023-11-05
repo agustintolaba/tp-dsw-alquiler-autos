@@ -26,7 +26,7 @@ export class Alquiler extends BaseEntity{
   @Property({ nullable: true, unique: false, type: 'date' })
   fechaHoraRealDevolucion!: Date
 
-  @Property({ nullable: false, unique: false, type: 'string', length: 25 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   estadoAlquiler!: string
 
   @ManyToOne(() => Usuario, { nullable: false })

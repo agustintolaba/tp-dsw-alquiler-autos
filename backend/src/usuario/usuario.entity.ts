@@ -5,10 +5,10 @@ import { Alquiler } from "../alquiler/alquiler.entity.js";
 
 @Entity()
 export class Usuario extends BaseEntity{
-  @Property({ nullable: false, unique: false, type: 'string', length: 25 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   nombreUsuario!: string
   
-  @Property({ nullable: false, unique: false, type: 'string', length: 25 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   apellidoUsuario!: string
 
   @Property({ nullable: false, unique: false, type: 'Date', columnType: 'date'})
@@ -17,7 +17,7 @@ export class Usuario extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'string', length: 15 })
   cuitCliente!: string
 
-  @Property({ nullable: false, unique: false, type: 'string', length: 50 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   razonSocialCliente!: string
 
   @Property({ nullable: false, unique: false, type: 'string', length: 15 })

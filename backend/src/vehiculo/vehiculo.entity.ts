@@ -7,7 +7,7 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 
 @Entity()
 export class Vehiculo extends BaseEntity{
-  @Property({ nullable: false, unique: false, type: 'string', length: 50 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   trasmision!: string
 
   @Property({ nullable: false, unique: false })

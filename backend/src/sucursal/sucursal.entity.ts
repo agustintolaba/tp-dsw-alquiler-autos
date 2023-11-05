@@ -5,10 +5,10 @@ import { Vehiculo } from "../vehiculo/vehiculo.entity.js";
 
 @Entity()
 export class Sucursal extends BaseEntity{
-  @Property({ nullable: false, unique: true, type: 'string', length: 25})
+  @Property({ nullable: false, unique: false, type: 'string', length: 45})
   calleSucursal!: string
 
-  @Property({ nullable: false, unique: true, type: 'string', length: 8 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 10 })
   numeroCalleSucursal!: string
   
   @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.idSucursal, {cascade: [Cascade.ALL], })
