@@ -17,7 +17,7 @@ export class Alquiler extends BaseEntity{
   @Property({ nullable: true, unique: false, type: 'Date', columnType: 'date' })
   fechaCancelacion?: Date
 
-  @Property({ nullable: true, unique: false })
+  @Property({ nullable: true, unique: false, type: 'decimal', precision: 10, scale: 2 })
   precioTotal?: number
 
   @Property({ nullable: true, unique: false, type: 'date'})

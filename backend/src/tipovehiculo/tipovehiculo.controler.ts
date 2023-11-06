@@ -7,7 +7,8 @@ const em= orm.em
 function sanitizeTipoVehiculoInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    descripcionTipoVehiculo: req.body.descripcionTipoVehiculo
+    descripcionTipoVehiculo: req.body.descripcionTipoVehiculo,
+    precioDiaTipoVehiculo: req.body.precioDiaTipoVehiculo
   }
   Object.keys(req.body.sanitizedInput).forEach((key)=>{
     if(req.body.sanitizedInput[key]===undefined){

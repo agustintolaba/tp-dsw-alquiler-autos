@@ -6,6 +6,9 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 export class TipoVehiculo extends BaseEntity{
   @Property({ nullable: false, unique: true, type: 'string', length: 45 })
   descripcionTipoVehiculo!: string
+
+  @Property({ nullable: false, unique: false, type: 'decimal', precision: 10, scale: 2 })
+  precioDiaTipoVehiculo!: number
   
   @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.idTipoVehiculo, {cascade: [Cascade.ALL], })
   vehiculo!: Vehiculo
