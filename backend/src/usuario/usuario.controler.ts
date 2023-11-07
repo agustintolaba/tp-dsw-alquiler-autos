@@ -15,7 +15,7 @@ function sanitizeUsuarioInput (req: Request, res: Response, next: NextFunction){
     telefonoCliente: req.body.telefonoCliente,
     idEmpleado: req.body.idEmpleado,
     fechaContratacion: req.body.fechaContratacion, 
-    idTipoUsuario: req.body.idTipoUsuario
+    TipoUsuario: req.body.TipoUsuario
   }
     Object.keys(req.body.sanitizedInput).forEach((key)=>{
     if(req.body.sanitizedInput[key]===undefined){
@@ -28,7 +28,7 @@ function sanitizeUsuarioInput (req: Request, res: Response, next: NextFunction){
 
 async function findAll(req: Request, res: Response) {
   try {
-    const usuarios = await em.find(Usuario, {},  { populate: ['idTipoUsuario'] })
+    const usuarios = await em.find(Usuario, {},  { populate: ['TipoUsuario'] })
     res.status(200).json({ message: 'Ususarios encontrados', data: usuarios })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -38,7 +38,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const usuarioBuscado = await em.findOneOrFail(Usuario, { id }, { populate: ['idTipoUsuario'] })
+    const usuarioBuscado = await em.findOneOrFail(Usuario, { id }, { populate: ['TipoUsuario'] })
     res.status(200).json({ message: 'Usuario encontrado', data: usuarioBuscado })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

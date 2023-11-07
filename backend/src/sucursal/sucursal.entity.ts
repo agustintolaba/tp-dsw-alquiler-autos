@@ -12,12 +12,12 @@ export class Sucursal extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'string', length: 10 })
   numeroCalleSucursal!: string
   
-  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.idSucursal, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.Sucursal, {cascade: [Cascade.ALL], })
   vehiculo!: Rel<Vehiculo>
 
   @ManyToOne(() => Localidad, { nullable: false })
-  idLocalidad!: Rel<Localidad>
+  Localidad!: Rel<Localidad>
 
   @ManyToOne(() => Usuario, { nullable: true })
-  idGerente?: Rel<Usuario>
+  Gerente?: Rel<Usuario>
 }

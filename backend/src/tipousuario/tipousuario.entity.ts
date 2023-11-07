@@ -7,6 +7,6 @@ export class TipoUsuario extends BaseEntity{
   @Property({ nullable: false, unique: true, type: 'string', length: 45 })
   descripcionTipoUsuario!: string
   
-  @OneToMany(() => Usuario, (usuario) => usuario.idTipoUsuario, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Usuario, (usuario) => usuario.TipoUsuario, {cascade: [Cascade.ALL], })
   usuario!: Rel<Usuario>
 }

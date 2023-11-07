@@ -17,14 +17,14 @@ export class Vehiculo extends BaseEntity{
   disponible!: boolean
   
   @ManyToOne(() => TipoVehiculo, { nullable: false })
-  idTipoVehiculo!: Rel<TipoVehiculo>
+  TipoVehiculo!: Rel<TipoVehiculo>
 
   @ManyToOne(() => Seguro, { nullable: false })
-  idSeguro!: Rel<Seguro>
+  Seguro!: Rel<Seguro>
 
   @ManyToOne(() => Sucursal, { nullable: false })
-  idSucursal!: Rel<Sucursal>
+  Sucursal!: Rel<Sucursal>
 
-  @OneToMany(() => Alquiler, (alquiler) => alquiler.idVehiculo, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Alquiler, (alquiler) => alquiler.Vehiculo, {cascade: [Cascade.ALL], })
   alquiler!: Rel<Alquiler>
 }

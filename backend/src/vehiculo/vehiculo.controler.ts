@@ -10,9 +10,9 @@ function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction)
     trasmision: req.body.trasmision,
     capacidad: req.body.capacidad,
     disponible: req.body.disponible,
-    idTipoVehiculo: req.body.idTipoVehiculo,
-    idSeguro: req.body.idSeguro,
-    idSucursal: req.body.idSucursal
+    TipoVehiculo: req.body.TipoVehiculo,
+    Seguro: req.body.Seguro,
+    Sucursal: req.body.Sucursal
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -26,7 +26,7 @@ function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction)
 
 async function findAll(req: Request, res: Response) {
   try {
-    const vehiculos = await em.find(Vehiculo, {}, { populate: ['idTipoVehiculo', 'idSeguro', 'idSucursal'] })
+    const vehiculos = await em.find(Vehiculo, {}, { populate: ['TipoVehiculo', 'Seguro', 'Sucursal'] })
     res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -36,7 +36,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const vehiculo = await em.findOneOrFail(Vehiculo, {}, { populate: ['idTipoVehiculo', 'idSeguro', 'idSucursal'] })
+    const vehiculo = await em.findOneOrFail(Vehiculo, {}, { populate: ['TipoVehiculo', 'Seguro', 'Sucursal'] })
     res.status(200).json({ message: 'Vehiculo encontrado', data: vehiculo })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

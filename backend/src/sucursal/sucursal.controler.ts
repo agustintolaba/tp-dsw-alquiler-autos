@@ -9,7 +9,7 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
     id: req.body.id,
     calleSucursal: req.body.calleSucursal,
     numeroCalleSucursal: req.body.numeroCalleSucursal,
-    idLocalidad: req.body.idLocalidad
+    Localidad: req.body.Localidad
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -23,7 +23,7 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
 
 async function findAll(req: Request, res: Response) {
   try {
-    const sucursales = await em.find(Sucursal, {}, { populate: ['idLocalidad'] })
+    const sucursales = await em.find(Sucursal, {}, { populate: ['Localidad'] })
     res.status(200).json({ message: 'Sucursales encontradas', data: sucursales })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -33,7 +33,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['idLocalidad'] })
+    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['Localidad'] })
     res.status(200).json({ message: 'Sucursal encontrada', data: sucursal })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

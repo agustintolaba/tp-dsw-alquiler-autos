@@ -15,8 +15,8 @@ function sanitizeAlquilerInput (req: Request, res: Response, next: NextFunction)
     fechaHoraRealEntrega: req.body.fechaHoraRealEntrega,
     fechaHoraRealDevolucion: req.body.fechaHoraRealEntrega,
     estadoAlquiler: req.body.estadoAlquiler,
-    idUsuario: req.body.idUsuario,
-    idVehiculo: req.body.idVehiculo
+    Usuario: req.body.Usuario,
+    Vehiculo: req.body.Vehiculo
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -30,7 +30,7 @@ function sanitizeAlquilerInput (req: Request, res: Response, next: NextFunction)
 
 async function findAll(req: Request, res: Response) {
   try {
-    const alquileres = await em.find(Alquiler, {},  { populate: ['idUsuario', 'idVehiculo'] })
+    const alquileres = await em.find(Alquiler, {},  { populate: ['Usuario', 'Vehiculo'] })
     res.status(200).json({ message: 'Alquileres encontrados', data: alquileres })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -40,7 +40,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const alquilerBuscado = await em.findOneOrFail(Alquiler, { id }, { populate: ['idUsuario', 'idVehiculo'] })
+    const alquilerBuscado = await em.findOneOrFail(Alquiler, { id }, { populate: ['Usuario', 'Vehiculo'] })
     res.status(200).json({ message: 'Alquiler encontrado', data: alquilerBuscado })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

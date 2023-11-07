@@ -8,7 +8,7 @@ function sanitizeLocalidadInput (req: Request, res: Response, next: NextFunction
   req.body.sanitizedInput={
     id: req.body.id,
     nombreLocalidad: req.body.nombreLocalidad,
-    idProvincia: req.body.idProvincia
+    Provincia: req.body.Provincia
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -22,7 +22,7 @@ function sanitizeLocalidadInput (req: Request, res: Response, next: NextFunction
 
 async function findAll(req: Request, res: Response) {
   try {
-    const localidades = await em.find(Localidad, {},  { populate: ['idProvincia'] })
+    const localidades = await em.find(Localidad, {},  { populate: ['Provincia'] })
     res.status(200).json({ message: 'Localidades encontradas', data: localidades })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -32,7 +32,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const localidadBuscada = await em.findOneOrFail(Localidad, { id }, { populate: ['idProvincia'] })
+    const localidadBuscada = await em.findOneOrFail(Localidad, { id }, { populate: ['Provincia'] })
     res.status(200).json({ message: 'Localidad encontrada', data: localidadBuscada })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
