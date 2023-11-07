@@ -1,0 +1,36 @@
+### Obtener todas los tipos de usuarios 
+GET http://localhost:3000/api/tipousuario
+
+
+### Obtener un tipo de usuario
+GET http://localhost:3000/api/tipousuario/1
+
+### Crear un nuevo tipo de usuario
+POST http://localhost:3000/api/tipousuario
+Content-Type: application/json
+
+{
+  "id":"3",
+  "descripcionTipoUsuario": "Gerente"
+}
+
+### Modificar un tipo de usuario (recurso completo e idempotente)
+PUT http://localhost:3000/api/tipousuario/1
+Content-Type: application/json
+
+{
+  "id":"1",
+  "descripcionTipoUsuario": "Cliente modificado"
+}
+
+### Modificar un tipo de usuario (recurso parcial)
+PATCH http://localhost:3000/api/tipousuario/1
+Content-Type: application/json
+
+{
+  "idT":"1",
+  "descripcionTipoUsuario": "Cliente"
+}
+
+###Borar un tipo de usuario
+DELETE http://localhost:3000/api/tipousuario/3

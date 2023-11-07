@@ -1,0 +1,54 @@
+### Obtener todas los alquileres 
+GET http://localhost:3000/api/alquiler
+
+
+### Obtener un alquiler 
+GET http://localhost:3000/api/alquiler/1
+
+### Crear un nuevo alquiler
+POST http://localhost:3000/api/alquiler
+Content-Type: application/json
+
+{
+   "id": "1", 
+    "fechaRealizacionReserva": "20231103",
+    "fechaHoraPactadaEntrega": "20231104 12:00:00",
+    "fechaHoraPactadaDevolucion": "20231104 12:00:00",
+    "fechaCancelacion": null,
+    "precioTotal": null,
+    "fechaHoraRealEntrega": null,
+    "fechaHoraRealDevolucion": null,
+    "estadoAlquiler": "pendiente", 
+    "idUsuario": 2,
+    "idVehiculo": 1 
+}
+
+### Modificar un nuevo alquiler (recurso completo e idempotente)
+PUT http://localhost:3000/api/alquiler/1
+Content-Type: application/json
+
+{
+   "id": "1", 
+    "fechaRealizacionReserva": "20231103",
+    "fechaHoraPactadaEntrega": "20231104 12:00:00",
+    "fechaHoraPactadaDevolucion": "20231104 12:00:00",
+    "fechaCancelacion": "20231103",
+    "precioTotal": null,
+    "fechaHoraRealEntrega": null,
+    "fechaHoraRealDevolucion": null,
+    "estadoAlquiler": "pendiente", 
+    "idUsuario": 2,
+    "idVehiculo": 1 
+}
+
+### Modificar un nuevo alquiler (recurso parcial)
+PATCH http://localhost:3000/api/alquiler/1
+Content-Type: application/json
+
+{
+    "id": "1", 
+    "precioTotal": 5000       
+}
+
+###Borar un alquiler
+DELETE http://localhost:3000/api/alquiler/1

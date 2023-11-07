@@ -11,16 +11,16 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "nombreSeguro": "Plan Platinium ",
-  "companiaSeguro": "La Segunda Seguros"
+  "nombreSeguro": "Plan Gold ",
+  "companiaSeguro": "La Segunda"
 }
 
 ### Modificar un seguro existente (recurso completo e idempotente)
-PUT http://localhost:3000/api/seguro/2
+PUT http://localhost:3000/api/seguro/1
 Content-Type: application/json
 
 {
-  "id":"2",
+  "id":"1",
   "nombreSeguro": "Plan Millenials ",
   "companiaSeguro": "La Segunda Seguros"
 }

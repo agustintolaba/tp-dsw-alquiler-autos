@@ -1,0 +1,38 @@
+### Obtener todas las localidades 
+GET http://localhost:3000/api/localidad
+
+
+### Obtener una localidad 
+GET http://localhost:3000/api/localidad/1
+
+### Crear una nueva provincia
+POST http://localhost:3000/api/localidad
+Content-Type: application/json
+
+{
+  "id":"3",
+  "nombreLocalidad": "Mar del Plata",
+  "idProvincia": "3"
+}
+
+### Modificar una nueva localidad (recurso completo e idempotente)
+PUT http://localhost:3000/api/localidad/2
+Content-Type: application/json
+
+{
+  "id":"2",
+  "nombreLocalidad": "San Martin",
+  "idProvincia":"2"
+}
+
+### Modificar una nueva localidad (recurso parcial)
+PATCH http://localhost:3000/api/localidad/2
+Content-Type: application/json
+
+{
+  "id":"2",
+  "nombreLocalidad": "Gualeyguay"
+}
+
+###Borar una localidad
+DELETE http://localhost:3000/api/localidad/2

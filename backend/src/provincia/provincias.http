@@ -3,15 +3,15 @@ GET http://localhost:3000/api/provincia
 
 
 ### Obtener una provincia 
-GET http://localhost:3000/api/provincia/1
+GET http://localhost:3000/api/provincia/2
 
 ### Crear una nueva provincia
 POST http://localhost:3000/api/provincia
 Content-Type: application/json
 
 {
-  "id":"",
-  "descripcionProvincia": "Chilecito2"
+  "id":"3",
+  "descripcionProvincia": "Cordoba"
 }
 
 ### Modificar una nueva provincia (recurso completo e idempotente)
@@ -24,13 +24,13 @@ Content-Type: application/json
 }
 
 ### Modificar una nueva provincia (recurso parcial)
-PATCH http://localhost:3000/api/provincia/10
+PATCH http://localhost:3000/api/provincia/1
 Content-Type: application/json
 
 {
-  "id":"10",
+  "id":"1",
   "descripcionProvincia": "Misiones"
 }
 
 ###Borar una provincia
-DELETE http://localhost:3000/api/provincia/10
+DELETE http://localhost:3000/api/provincia/1

@@ -1,0 +1,51 @@
+### Obtener todas los vehiculos 
+GET http://localhost:3000/api/vehiculo
+
+
+### Obtener un vehiculo
+GET http://localhost:3000/api/vehiculo/1
+
+### Crear un nuevo vehiculo
+POST http://localhost:3000/api/vehiculo
+Content-Type: application/json
+
+{
+  "id":"2",
+  "trasmision": "Automatica",
+  "capacidad": 4,
+  "disponible": 0,
+  "idTipoVehiculo": 1,
+  "idSeguro": 1,
+  "idSucursal": 1
+}
+
+### Modificar un vehiculo (recurso completo e idempotente)
+PUT http://localhost:3000/api/vehiculo/2
+Content-Type: application/json
+
+{
+  "id":"2",
+  "trasmision": "Semi-automatica",
+  "capacidad": 4,
+  "disponible": 0,
+  "idTipoVehiculo": 1,
+  "idSeguro": 1,
+  "idSucursal": 1
+}
+
+### Modificar un vehiculo (recurso parcial)
+PATCH http://localhost:3000/api/vehiculo/2
+Content-Type: application/json
+
+{
+  "id":"2",
+  "trasmision": "Automatica",
+  "capacidad": 4,
+  "disponible": 0,
+  "idTipoVehiculo": 1,
+  "idSeguro": 1,
+  "idSucursal": 1
+}
+
+###Borar un vehiculo
+DELETE http://localhost:3000/api/vehiculo/2

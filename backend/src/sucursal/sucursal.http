@@ -1,0 +1,40 @@
+### Obtener todas las sucursales
+GET http://localhost:3000/api/sucursal
+
+
+### Obtener una sucursal 
+GET http://localhost:3000/api/sucursal/1
+
+### Crear una nueva sucursal
+POST http://localhost:3000/api/sucursal
+Content-Type: application/json
+
+{
+  "id":"2",
+  "calleSucursal": "Presidente Anchorena",
+  "numeroCalleSucursal": "1222",
+  "idLocalidad": "1"
+}
+
+### Modificar una nueva sucursal (recurso completo e idempotente)
+PUT http://localhost:3000/api/sucursal/3
+Content-Type: application/json
+
+{
+  "id":"3",
+  "calleSucursal": "Maipu",
+  "numeroCalleSucursal": "4055",
+  "idLocalidad": "3"
+}
+
+### Modificar una nueva sucursal (recurso parcial)
+PATCH http://localhost:3000/api/sucursal/2
+Content-Type: application/json
+
+{
+  "id":"2",
+  "calleSucursal": "Laprida"
+}
+
+###Borar una sucursal
+DELETE http://localhost:3000/api/sucursal/2

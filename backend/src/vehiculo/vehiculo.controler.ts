@@ -1,14 +1,18 @@
 import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
-import { Seguro } from "./seguro.entity.js"
+import { Vehiculo } from "./vehiculo.entity.js"
 
 const em= orm.em
 
-function sanitizeSeguroInput (req: Request, res: Response, next: NextFunction){
+function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    nombreSeguro: req.body.nombreSeguro,
-    companiaSeguro: req.body.companiaSeguro
+    trasmision: req.body.trasmision,
+    capacidad: req.body.capacidad,
+    disponible: req.body.disponible,
+    idTipoVehiculo: req.body.idTipoVehiculo,
+    idSeguro: req.body.idSeguro,
+    idSucursal: req.body.idSucursal
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -22,8 +26,8 @@ function sanitizeSeguroInput (req: Request, res: Response, next: NextFunction){
 
 async function findAll(req: Request, res: Response) {
   try {
-    const seguros = await em.find(Seguro, {})
-    res.status(200).json({ message: 'Seguros encontradas', data: seguros })
+    const vehiculos = await em.find(Vehiculo, {}, { populate: ['idTipoVehiculo', 'idSeguro', 'idSucursal'] })
+    res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -32,8 +36,8 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const seguroBuscado = await em.findOneOrFail(Seguro, { id })
-    res.status(200).json({ message: 'Seguro encontrado', data: seguroBuscado })
+    const vehiculo = await em.findOneOrFail(Vehiculo, {}, { populate: ['idTipoVehiculo', 'idSeguro', 'idSucursal'] })
+    res.status(200).json({ message: 'Vehiculo encontrado', data: vehiculo })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -42,9 +46,9 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
-    const seguroNuevo = em.create(Seguro, input)
+    const vehiculoNuevo = em.create(Vehiculo, input)
     await em.flush()
-    res.status(201).json({ message: 'Se cargo nuevo seguro', data: seguroNuevo })
+    res.status(201).json({ message: 'Se cargo nuevo vehiculo', data: vehiculoNuevo })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -54,10 +58,10 @@ async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     req.body.sanitizedInput.id=req.params.id
-    const seguroModificado = em.getReference(Seguro, id)
-    em.assign(seguroModificado, req.body.sanitizedInput)
+    const vehiculoModificado= em.getReference(Vehiculo, id)
+    em.assign(vehiculoModificado, req.body.sanitizedInput)
     await em.flush()
-    res.status(200).json({ message: 'Seguro actualizado correctamente' })
+    res.status(200).json({ message: 'Vehiculo actualizado correctamente' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -66,13 +70,12 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const seguroBorrar = em.getReference(Seguro, id)
-    await em.removeAndFlush(seguroBorrar)
-    res.status(200).send({ message: 'Seguro eliminado correctamente' })
+    const vehiculoBorrar = em.getReference(Vehiculo, id)
+    await em.removeAndFlush(vehiculoBorrar)
+    res.status(200).send({ message: 'Vehiculo eliminado correctamente' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
 }
 
-export{sanitizeSeguroInput, findAll, findOne, add, update, remove}  
-
+export{sanitizeVehiculoInput, findAll, findOne, add, update, remove}  
