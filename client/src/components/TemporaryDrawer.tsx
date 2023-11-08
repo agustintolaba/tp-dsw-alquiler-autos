@@ -66,7 +66,7 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
     >
       <List>
         {sharedMenuItems.map((item, index) => (
-          <Link href={item.destination}>
+          <Link key={index} href={item.destination}>
             <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -82,7 +82,7 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
       <List>
         {isAdmin && (
           adminMenuItems.map((item, index) => (
-            <Link href={item.destination}>
+            <Link key={index} href={item.destination}>
               <ListItem key={index} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -95,8 +95,8 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
           ))
         ) || (
             userMenuItems.map((item, index) => (
-              <Link href={item.destination}>
-                <ListItem key={index} disablePadding>
+              <Link key={index} href={item.destination}>
+                <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
                       {item.icon}
