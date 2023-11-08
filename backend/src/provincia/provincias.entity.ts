@@ -7,6 +7,6 @@ export class Provincia extends BaseEntity{
   @Property({ nullable: false, unique: true, type: 'string', length: 45 })
   descripcionProvincia!: string
   
-  @OneToMany(() => Localidad, (localidad) => localidad.Provincia, {cascade: [Cascade.ALL], })
-  Localidad!: Localidad
+  @OneToMany(() => Localidad, (localidad) => localidad.provincia, {cascade: [Cascade.ALL], })
+  localidad!: Localidad
 }

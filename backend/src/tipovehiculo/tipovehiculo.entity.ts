@@ -10,6 +10,6 @@ export class TipoVehiculo extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'decimal', precision: 10, scale: 2 })
   precioDiaTipoVehiculo!: number
   
-  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.TipoVehiculo, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.tipoVehiculo, {cascade: [Cascade.ALL], })
   vehiculo!: Vehiculo
 }

@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Modificar una nueva localidad (recurso completo e idempotente)
-PUT http://localhost:3000/api/localidad/2
+PUT http://localhost:3000/api/localidad/1
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### Modificar una nueva localidad (recurso parcial)
-PATCH http://localhost:3000/api/localidad/2
+PATCH http://localhost:3000/api/localidad/1
 Content-Type: application/json
 
 {
@@ -35,4 +35,4 @@ Content-Type: application/json
 }
 
 ###Borar una localidad
-DELETE http://localhost:3000/api/localidad/2
+DELETE http://localhost:3000/api/localidad/1

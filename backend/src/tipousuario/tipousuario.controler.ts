@@ -24,7 +24,7 @@ async function findAll(req: Request, res: Response) {
     const tipoUsuarios = await em.find(TipoUsuario, {})
     res.status(200).json({ message: 'Tipo de Usuarios encontradss', data: tipoUsuarios })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se encontraron tipos de usuarios', dato: error })
   }
 }
 
@@ -34,7 +34,7 @@ async function findOne(req: Request, res: Response) {
     const tipoUsuario = await em.findOneOrFail(TipoUsuario, { id })
     res.status(200).json({ message: 'Tipo de usuario encontrado', data: tipoUsuario })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se encontro tipo de usuario', data: error })
   }
 }
 
@@ -45,31 +45,39 @@ async function add(req: Request, res: Response) {
     await em.flush()
     res.status(201).json({ message: 'Se cargo nuevo tipo de usuario', data: tipoUsuarioNuevo })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo cargar el nuevo tipo de usuario', data: error })
   }
 }
 
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
+    const tipoUsuarioExistente = await em.findOne(TipoUsuario, { id })
+    if (!tipoUsuarioExistente) {
+      return res.status(404).json({ message: 'El tipo de usuario no existe' })
+    }
     req.body.sanitizedInput.id=req.params.id
     const tipoUsuarioModificado = em.getReference(TipoUsuario, id)
     em.assign(tipoUsuarioModificado, req.body.sanitizedInput)
     await em.flush()
     res.status(200).json({ message: 'Tipo de Usuario actualizado correctamente' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo actualizar el tipo de usuario', data: error })
   }
 }
 
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
+    const tipoUsuarioExistente = await em.findOne(TipoUsuario, { id })
+    if (!tipoUsuarioExistente) {
+      return res.status(404).json({ message: 'El tipo de usuario no existe' })
+    }
     const tipoUsuarioBorrar = em.getReference(TipoUsuario, id)
     await em.removeAndFlush(tipoUsuarioBorrar)
     res.status(200).send({ message: 'Tipo de Usuario eliminado correctamente' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo eliminar el tipo de ususario', data: error })
   }
 }
 

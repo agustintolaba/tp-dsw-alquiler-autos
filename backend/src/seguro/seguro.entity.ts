@@ -10,6 +10,6 @@ export class Seguro extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   companiaSeguro!: string
   
-  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.Seguro, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.seguro, {cascade: [Cascade.ALL], })
   vehiculo!: Rel<Vehiculo>
 }
