@@ -31,11 +31,11 @@ export class Usuario extends BaseEntity{
   fechaContratacion!: Date
 
   @ManyToOne(() => TipoUsuario, { nullable: false })
-  idTipoUsuario!: Rel<TipoUsuario>
+  tipoUsuario!: Rel<TipoUsuario>
 
-  @OneToMany(() => Alquiler, (alquiler) => alquiler.idUsuario, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Alquiler, (alquiler) => alquiler.usuario, {cascade: [Cascade.ALL], })
   alquiler!: Rel<Alquiler>
 
-  @OneToMany(() => Sucursal, (sucursal) => sucursal.idGerente, {cascade: [Cascade.ALL], })
+  @OneToMany(() => Sucursal, (sucursal) => sucursal.gerente, {cascade: [Cascade.ALL], })
   sucursal?: Rel<Sucursal>
 }

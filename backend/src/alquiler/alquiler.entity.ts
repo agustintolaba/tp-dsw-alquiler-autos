@@ -30,8 +30,8 @@ export class Alquiler extends BaseEntity{
   estadoAlquiler!: string
 
   @ManyToOne(() => Usuario, { nullable: false })
-  idUsuario!: Rel<Usuario>
+  usuario!: Rel<Usuario>
 
   @ManyToOne(() => Vehiculo, { nullable: false })
-  idVehiculo!: Rel<Vehiculo>
+  vehiculo!: Rel<Vehiculo>
 }

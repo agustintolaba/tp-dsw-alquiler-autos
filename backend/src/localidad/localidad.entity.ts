@@ -8,5 +8,5 @@ export class Localidad extends BaseEntity{
   nombreLocalidad!: string
   
   @ManyToOne(() => Provincia, { nullable: false })
-  idProvincia!: Rel<Provincia>
+  provincia!: Rel<Provincia>
 }

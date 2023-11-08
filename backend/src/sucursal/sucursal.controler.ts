@@ -9,7 +9,7 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
     id: req.body.id,
     calleSucursal: req.body.calleSucursal,
     numeroCalleSucursal: req.body.numeroCalleSucursal,
-    idLocalidad: req.body.idLocalidad
+    localidad: req.body.localidad
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
@@ -23,20 +23,20 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
 
 async function findAll(req: Request, res: Response) {
   try {
-    const sucursales = await em.find(Sucursal, {}, { populate: ['idLocalidad'] })
+    const sucursales = await em.find(Sucursal, {}, { populate: ['localidad'] })
     res.status(200).json({ message: 'Sucursales encontradas', data: sucursales })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se encontraron sucursales', data: error })
   }
 }
 
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['idLocalidad'] })
+    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['localidad'] })
     res.status(200).json({ message: 'Sucursal encontrada', data: sucursal })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se encontro sucursal', data: error })
   }
 }
 
@@ -47,31 +47,39 @@ async function add(req: Request, res: Response) {
     await em.flush()
     res.status(201).json({ message: 'Se cargo nueva sucursal', data: sucursalNueva })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo cargar la nueva sucursal', data: error })
   }
 }
 
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
+    const sucursalExistente = await em.findOne(Sucursal, { id })
+    if (!sucursalExistente) {
+      return res.status(404).json({ message: 'La sucursal no existe' })
+    }
     req.body.sanitizedInput.id=req.params.id
     const sucursalModificada = em.getReference(Sucursal, id)
     em.assign(sucursalModificada, req.body.sanitizedInput)
     await em.flush()
     res.status(200).json({ message: 'Sucursal actualizada correctamente' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo actualizar la sucursal', data: error })
   }
 }
 
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
+    const sucursalExistente = await em.findOne(Sucursal, { id })
+    if (!sucursalExistente) {
+      return res.status(404).json({ message: 'La sucursal no existe' })
+    }
     const sucursalBorrar = em.getReference(Sucursal, id)
     await em.removeAndFlush(sucursalBorrar)
     res.status(200).send({ message: 'Sucursal eliminada correctamente' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: 'No se pudo eliminar la sucursal', data:error })
   }
 }
 
