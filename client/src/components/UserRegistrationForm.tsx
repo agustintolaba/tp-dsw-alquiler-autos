@@ -1,7 +1,6 @@
 'use client'
 import { Container, Grid, MenuItem, TextField } from "@mui/material";
 import { useState } from "react";
-import ServerDataSelect from "./ServerDataSelect";
 
 const options = [{
     id: 1,
@@ -10,10 +9,6 @@ const options = [{
     id: 2,
     description: "Empleado"
 }]
-
-interface UserRegistrationProps {
-
-}
 
 interface UserFormData {
     name: string;
@@ -24,16 +19,7 @@ interface UserFormData {
     type: number;
 }
 
-interface UserFormValidation {
-    name: boolean;
-    surname: boolean;
-    bornDate: boolean;
-    cuit: boolean;
-    phoneNumber: boolean;
-    type: boolean;
-}
-
-const UserRegistrationForm: React.FC<UserRegistrationProps> = ({ }) => {
+const UserRegistrationForm: React.FC = ({ }) => {
     const [formData, setFormData] = useState<UserFormData>({
         name: "",
         surname: "",
@@ -48,7 +34,7 @@ const UserRegistrationForm: React.FC<UserRegistrationProps> = ({ }) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -74,7 +60,7 @@ const UserRegistrationForm: React.FC<UserRegistrationProps> = ({ }) => {
                         />
 
                     </Grid>
-                        <Grid item xs={6}>
+                    <Grid item xs={6}>
                         <TextField
                             name="surname"
                             label="Apellido"
@@ -97,7 +83,7 @@ const UserRegistrationForm: React.FC<UserRegistrationProps> = ({ }) => {
                         />
 
                     </Grid>
-                        <Grid item xs={6}>
+                    <Grid item xs={6}>
                         <TextField
                             name="cuit"
                             label="C.U.I.T."
@@ -121,27 +107,20 @@ const UserRegistrationForm: React.FC<UserRegistrationProps> = ({ }) => {
                         />
 
                     </Grid>
-                        <Grid item xs={6}>
-                        <TextField
-                            name="userType"
-                            label="Tipo de usuario"
+                    <Grid item xs={6}>
+                        {/* <TextField
+                            fullWidth
                             variant="outlined"
                             select
-                            fullWidth
-                            value={formData.type}
-                            onChange={handleInputChange}
+                            label="Tipo de usuario"
+                            // defaultValue="1"
                         >
-                            {options.map(option => (
+                            {options.map((option) => (
                                 <MenuItem key={option.id} value={option.id}>
                                     {option.description}
                                 </MenuItem>
                             ))}
-                        </TextField>
-                        {/* <ServerDataSelect
-                        url="http://localhost:3000/api/tipoUsuario"
-                        onChange={(e) => { }}
-                        value={formData.type}
-                    /> */}
+                        </TextField> */}
                     </Grid>
                 </Grid>
             </form>

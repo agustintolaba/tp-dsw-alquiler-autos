@@ -8,18 +8,15 @@ import { ReactNode } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({
-  children,
+export default function HomeLayout({
+    children,
 }: {
-  children: ReactNode
+    children: ReactNode
 }) {
-  return (
-    <html lang="es">
-      <body className={inter.className + " bg-zinc-950 text-white"}>
-        <NextThemeProvider>
-          { children }
-        </NextThemeProvider>
-        </body>
-    </html>
-  )
+    return (
+        <>
+            <MenuAppBar isAdmin={false} />
+            {children}
+        </>
+    )
 }
