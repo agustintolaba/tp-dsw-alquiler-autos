@@ -7,9 +7,11 @@ const em= orm.em
 function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
+    nombre: req.body.nombre,
     trasmision: req.body.trasmision,
     capacidad: req.body.capacidad,
     disponible: req.body.disponible,
+    image: req.body.image,
     tipoVehiculo: req.body.tipoVehiculo,
     seguro: req.body.seguro,
     sucursal: req.body.sucursal
