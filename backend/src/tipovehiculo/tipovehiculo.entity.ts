@@ -4,11 +4,17 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 
 @Entity()
 export class TipoVehiculo extends BaseEntity{
-  @Property({ nullable: false, unique: true, type: 'string', length: 45 })
-  descripcionTipoVehiculo!: string
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
+  nombre!: string
+
+  @Property({ nullable: false, unique: false, type: 'string', length: 255 })
+  descripcion!: string
 
   @Property({ nullable: false, unique: false, type: 'decimal', precision: 10, scale: 2 })
-  precioDiaTipoVehiculo!: number
+  precio!: number
+
+  @Property({ nullable: false, unique: false, type: 'string', length: 150 })
+  image!: string
   
   @OneToMany(() => Vehiculo, (vehiculo) => vehiculo.tipoVehiculo, {cascade: [Cascade.ALL], })
   vehiculo!: Vehiculo
