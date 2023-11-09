@@ -8,11 +8,6 @@ import { ReactNode } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'Rueda libre',
-  description: 'Rental car company',
-}
-
 export default function RootLayout({
   children,
 }: {
@@ -23,7 +18,7 @@ export default function RootLayout({
       <body className={inter.className + " bg-zinc-950 text-white"}>
         <NextThemeProvider>
           <MenuAppBar isAdmin={false}/>
-          {children}
+          { children }
         </NextThemeProvider>
         </body>
     </html>
