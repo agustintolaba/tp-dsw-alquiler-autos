@@ -13,8 +13,9 @@ function sanitizeUsuarioInput (req: Request, res: Response, next: NextFunction){
     cuitCliente: req.body.cuitCliente,
     razonSocialCliente: req.body.razonSocialCliente,
     telefonoCliente: req.body.telefonoCliente,
-    idEmpleado: req.body.idEmpleado,
-    fechaContratacion: req.body.fechaContratacion, 
+    fechaContratacion: req.body.fechaContratacion,
+    mailCliente: req.body.mailCliente,
+    passwordCliente: req.body.passwordCliente, 
     tipoUsuario: req.body.tipoUsuario
   }
     Object.keys(req.body.sanitizedInput).forEach((key)=>{
