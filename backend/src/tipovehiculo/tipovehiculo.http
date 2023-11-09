@@ -10,8 +10,11 @@ POST http://localhost:3000/api/tipovehiculo
 Content-Type: application/json
 
 {
-  "id":"3",
-  "descripcionTipoVehiculo": "Camioneta de 2 puertas"
+  "id":"6",
+  "nombre":"Furgoneta",
+  "descripcion": "El alquiler de una camioneta o una minivan le brinda espacio para las piernas y el equipaje que otras categorías de automóviles no tienen. Para 7-15 pasajeros.",
+  "precio": 50000.00,
+  "image": "/assets/images/minivanCar.png"
 }
 
 ### Modificar un tipo de vehiculo (recurso completo e idempotente)

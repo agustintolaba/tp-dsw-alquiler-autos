@@ -24,11 +24,14 @@ export class Usuario extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'string', length: 15 })
   telefonoCliente!: string
   
-  @Property({ nullable: true, unique: false })
-  idEmpleado!: number
-
-  @Property({ nullable: true, unique: false, type: 'Date', columnType: 'date'})
+   @Property({ nullable: true, unique: false, type: 'Date', columnType: 'date'})
   fechaContratacion!: Date
+
+  @Property({ nullable: false, unique: true, type: 'string', length: 45 })
+  mailCliente!: string
+
+  @Property({ nullable: false, unique: false, type: 'string', length: 8 })
+  passwordCliente!: string
 
   @ManyToOne(() => TipoUsuario, { nullable: false })
   tipoUsuario!: Rel<TipoUsuario>
