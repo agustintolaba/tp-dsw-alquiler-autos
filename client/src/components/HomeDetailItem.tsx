@@ -52,7 +52,7 @@ const HomeDetailItem: React.FC<HomeDetailItemProps> = ({
           </div>
           <span className="font-light text-sm text-justify max-w-lg">{description}</span>
         </div>
-        <Button variant='outlined' color='success'>Reservar ahora</Button>
+        <Button variant='outlined' color='success'>Ver vehiculos disponibles</Button>
       </div>
     </div>
   );
