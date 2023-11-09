@@ -24,6 +24,14 @@ app.use((req,res, next)=>{
 })
 //antes de las rutas y  diddleware del negocio
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  next()
+})
+
 app.use('/api/provincia', provinciaRouter ) 
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/tipovehiculo', tipoVehiculoRouter)

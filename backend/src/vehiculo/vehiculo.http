@@ -10,13 +10,15 @@ POST http://localhost:3000/api/vehiculo
 Content-Type: application/json
 
 {
-  "id":"2",
-  "trasmision": "Automatica",
+  "id":"11",
+  "nombre":"Chevrolet Corsa",
+  "trasmision": "Manual",
   "capacidad": 4,
-  "disponible": 0,
-  "idTipoVehiculo": 1,
-  "idSeguro": 1,
-  "idSucursal": 1
+  "disponible": 1,
+  "image":"/assets/images/chevroletCorsa.png",
+  "tipoVehiculo": 1,
+  "seguro": 1,
+  "sucursal": 1
 }
 
 ### Modificar un vehiculo (recurso completo e idempotente)

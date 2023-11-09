@@ -8,6 +8,9 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 @Entity()
 export class Vehiculo extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
+  nombre!: string
+
+  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   trasmision!: string
 
   @Property({ nullable: false, unique: false })
@@ -15,6 +18,9 @@ export class Vehiculo extends BaseEntity{
 
   @Property({ nullable: false, unique: false })
   disponible!: boolean
+
+  @Property({ nullable: true, unique: false, type: 'string', length: 150 })
+  image!: string
   
   @ManyToOne(() => TipoVehiculo, { nullable: false })
   tipoVehiculo!: Rel<TipoVehiculo>
