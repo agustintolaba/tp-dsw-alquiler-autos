@@ -46,7 +46,7 @@ const UserRegistrationForm: React.FC = ({ }) => {
 
 
     return (
-        <Container maxWidth="md">
+        <div>
             <form onSubmit={handleSubmit} className="max-w-4xl space-y-4">
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -124,7 +124,7 @@ const UserRegistrationForm: React.FC = ({ }) => {
                     </Grid>
                 </Grid>
             </form>
-        </Container>
+        </div>
     )
 }
 

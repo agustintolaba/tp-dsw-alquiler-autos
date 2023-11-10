@@ -1,21 +1,25 @@
+'use client';
 import { Button } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
+import VehiculoList from '@/components//VehiculoList';
 
 export interface HomeDetailItemProps {
+  id: string; 
+  nombre: string;
+  descripcion: string;
+  precio: string; 
   image: string;
-  title: string;
-  seating: string;
-  suitcases: number;
-  description: string;
-}
+ }
 
-const HomeDetailItem: React.FC<HomeDetailItemProps> = ({
-  image,
-  title,
-  seating,
-  suitcases,
-  description,
-}) => {
+
+const HomeDetailItem: React.FC<HomeDetailItemProps> = ({  id, nombre, descripcion, precio, image}) => {
+  const [showVehiculos, setShowVehiculos] = useState(false);
+
+  const handleVerVehiculosClick = () => {
+    setShowVehiculos(!showVehiculos);
+  };
+
   return (
     <div className="flex flex-row flex-wrap justify-center items-center gap-6 pt-8 pb-4 px-4 rounded-2xl bg-slate-900 lg:px-8">
       <Image
@@ -27,35 +31,24 @@ const HomeDetailItem: React.FC<HomeDetailItemProps> = ({
       />
       <div className='flex flex-col justify-end items-center gap-6 sm:items-end'>
         <div className="flex flex-col items-start gap-2 text-white">
-          <span className="font-bold text-2xl tracking-wider">{title}</span>
+          <span className="font-bold text-2xl tracking-wider">{nombre}</span>
           <div className="flex flex-row gap-4 text-white">
             <div className="flex flex-row gap-1 justify-center items-center">
-              <Image
-                src="/assets/images/seatingIcon.png"
-                alt="seating-icon"
-                width={16}
-                height={8}
-                className="object-contain invert"
-              />
-              <span>Asientos: {seating}</span>
+              <span>Precio por dia: $ {precio}</span>
             </div>
-            <div className="flex flex-row gap-1 justify-center items-center">
-              <Image
-                src="/assets/images/bagageIcon.png"
-                alt="seating-icon"
-                width={16}
-                height={8}
-                className="object-contain invert"
-              />
-              <span>Maletas: {suitcases}</span>
             </div>
-          </div>
-          <span className="font-light text-sm text-justify max-w-lg">{description}</span>
+          <span className="font-light text-sm text-justify max-w-lg">{descripcion}</span>
         </div>
-        <Button variant='outlined' color='success'>Reservar ahora</Button>
+        <Button 
+        variant='outlined' 
+        color='success'
+        onClick={handleVerVehiculosClick}
+        >
+         {!showVehiculos? 'Ver vehiculos disponibles': 'Ver menos'}</Button>
       </div>
+      {showVehiculos && <VehiculoList idTipoVehiculo={id} />}
     </div>
   );
 }
 
-export default HomeDetailItem
+export default HomeDetailItem;
