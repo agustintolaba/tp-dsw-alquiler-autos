@@ -15,11 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className + " bg-zinc-950 text-white"}>
+      <body className={inter.className + " bg-slate-800 text-white max-h-screen"}>
         <NextThemeProvider>
-          { children }
+          {children}
         </NextThemeProvider>
-        </body>
+      </body>
     </html>
   )
 }

@@ -5,6 +5,9 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserRegistrationForm from '@/components/UserRegistrationForm';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import LoginForm from '@/components/LoginForm';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,18 +54,24 @@ const Application = () => {
       <h1 className='text-4xl font-bold'>Bienvenido!</h1>
       <div className='flex justify-center max-w-screen'>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered={true} value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Log in" {...a11yProps(0)} />
-              <Tab label="Sign up" {...a11yProps(1)} />
+              <Tab label="Registro" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            Login
+            <LoginForm />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <UserRegistrationForm />
           </CustomTabPanel>
+
+          <Link href={"/home"}>
+            <Button
+              variant='outlined'
+              color='success'>{value == 0 ? "Login" : "Registrarse"}</Button>
+          </Link>
         </Box>
       </div>
     </div>

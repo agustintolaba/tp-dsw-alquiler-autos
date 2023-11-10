@@ -33,7 +33,6 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
   return (
     <AppBar
       position="static"
-      // style={{ backgroundColor: 'rgb(30 41 59)' }}
     >
       <Toolbar>
         <TemporaryDrawer isAdmin={isAdmin} />

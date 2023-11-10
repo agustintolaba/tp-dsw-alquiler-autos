@@ -18,19 +18,19 @@ import Link from 'next/link';
 const sharedMenuItems = [{
   title: 'Home',
   icon: <HomeIcon />,
-  destination: "/"
+  destination: "/home"
 }]
 
 const userMenuItems = [{
   title: 'Mis reservas',
   icon: <ChecklistIcon />,
-  destination: "/bookings"
+  destination: "/home/bookings"
 }]
 
 const adminMenuItems = [{
   title: 'Administrar autos',
   icon: <CarRentalIcon />,
-  destination: "/"
+  destination: "/home"
 }, {
   title: 'Administrar reservas',
   icon: <ChecklistIcon />,
