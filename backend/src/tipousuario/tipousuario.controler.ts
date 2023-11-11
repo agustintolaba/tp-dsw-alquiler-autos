@@ -1,18 +1,19 @@
 import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
 import { TipoUsuario } from "./tipousuario.entity.js"
+import { SQLError, getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
 
-const em= orm.em
+const em = orm.em
 
-function sanitizeTipoUsuarioInput (req: Request, res: Response, next: NextFunction){
-  req.body.sanitizedInput={
+function sanitizeTipoUsuarioInput(req: Request, res: Response, next: NextFunction) {
+  req.body.sanitizedInput = {
     id: req.body.id,
-    descripcionTipoUsuario: req.body.descripcionTipoUsuario
+    descripcion: req.body.descripcion
   }
   //MAS VALIDACIONES ACA
-  //Sepuede detectar errores e informar desde aca
-  Object.keys(req.body.sanitizedInput).forEach((key)=>{
-    if(req.body.sanitizedInput[key]===undefined){
+  //Sepuede detectar errores e informar desde aca  
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
       delete req.body.sanitizedInput[key]
     }
   })
@@ -22,7 +23,7 @@ function sanitizeTipoUsuarioInput (req: Request, res: Response, next: NextFuncti
 async function findAll(req: Request, res: Response) {
   try {
     const tipoUsuarios = await em.find(TipoUsuario, {})
-    res.status(200).json({ message: 'Tipo de Usuarios encontradss', data: tipoUsuarios })
+    res.status(200).json({ message: 'Tipos de usuario encontrados', data: tipoUsuarios })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron tipos de usuarios', dato: error })
   }
@@ -39,13 +40,17 @@ async function findOne(req: Request, res: Response) {
 }
 
 async function add(req: Request, res: Response) {
-  try {
+  try {    
     const input = req.body.sanitizedInput
     const tipoUsuarioNuevo = em.create(TipoUsuario, input)
     await em.flush()
     res.status(201).json({ message: 'Se cargo nuevo tipo de usuario', data: tipoUsuarioNuevo })
   } catch (error: any) {
-    res.status(500).json({ message: 'No se pudo cargar el nuevo tipo de usuario', data: error })
+    if (isSQLError(error)) {
+      res.status(500).json({ message: getSQLErrorMessage(error, "Tipo de usuario")})
+    } else {
+      res.status(500).json({ message: 'No se pudo cargar el nuevo tipo de usuario', data: error })
+    }    
   }
 }
 
@@ -56,7 +61,7 @@ async function update(req: Request, res: Response) {
     if (!tipoUsuarioExistente) {
       return res.status(404).json({ message: 'El tipo de usuario no existe' })
     }
-    req.body.sanitizedInput.id=req.params.id
+    req.body.sanitizedInput.id = req.params.id
     const tipoUsuarioModificado = em.getReference(TipoUsuario, id)
     em.assign(tipoUsuarioModificado, req.body.sanitizedInput)
     await em.flush()
@@ -81,4 +86,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export{sanitizeTipoUsuarioInput, findAll, findOne, add, update, remove}  
+export { sanitizeTipoUsuarioInput, findAll, findOne, add, update, remove }  

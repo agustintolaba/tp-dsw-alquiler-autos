@@ -10,7 +10,6 @@ POST http://localhost:3000/api/sucursal
 Content-Type: application/json
 
 {
-  "id":"2",
   "calleSucursal": "Presidente Anchorena",
   "numeroCalleSucursal": "1222",
   "idLocalidad": "1"

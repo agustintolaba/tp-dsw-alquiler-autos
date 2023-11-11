@@ -6,13 +6,13 @@ export type Descriptible = {
     description: string
 }
 
-type UserType = Identifiable & Descriptible 
+type TipoUsuario = Identifiable & Descriptible 
 
-export type User = Identifiable &  {    
+export type Usuario = Identifiable &  {    
     name: string,
     surname: string,
     bornDate: string,
-    cuit: string,
+    numeroDocumento: string,
     phoneNumber: string,
-    type: UserType
+    type: TipoUsuario
 }

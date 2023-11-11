@@ -10,8 +10,7 @@ POST http://localhost:3000/api/tipousuario
 Content-Type: application/json
 
 {
-  "id":"3",
-  "descripcionTipoUsuario": "Gerente"
+  "descripcion": "Gerente"
 }
 
 ### Modificar un tipo de usuario (recurso completo e idempotente)
@@ -20,7 +19,7 @@ Content-Type: application/json
 
 {
   "id":"1",
-  "descripcionTipoUsuario": "Cliente modificado"
+  "descripcion": "Cliente modificado"
 }
 
 ### Modificar un tipo de usuario (recurso parcial)
@@ -29,7 +28,7 @@ Content-Type: application/json
 
 {
   "idT":"1",
-  "descripcionTipoUsuario": "Cliente"
+  "descripcion": "Cliente"
 }
 
 ###Borar un tipo de usuario

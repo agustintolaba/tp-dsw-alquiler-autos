@@ -43,7 +43,7 @@ Reglas de Negocio:
 9. Las tarifas varían según la temporada de realización del alquiler. En caso de un alquiler que abarque dos tarifas diferentes, solo se cobra los precios correspondientes al día de inicio del alquiler. <br>
 10. Un vehículo en una fecha determinada está disponible cuando no está reservado ni alquilado. <br>
 11. La cancelación de la reserva de un vehículo implica que el vehículo vuelve a estar disponible. <br>
-12. Los datos del cliente son: cuit, razón social, apellido, nombre, teléfono, provincia, localidad.<br>
+12. Los datos del cliente son: número de documento, razón social, apellido, nombre, teléfono, provincia, localidad.<br>
 13. Una reserva está identificada con un número único generado por el sistema. El periodo de la reserva se extiende desde la fecha de inicio del alquiler hasta la fecha de finalización del alquiler (no importa el horario). <br>
 14. Para la confirmación de la reserva es necesario el pago de un depósito, que depende solo del tipo de vehículo.<br>
 15. La cancelación se puede realizar hasta con 7 días de anticipación, para la devolución del 70% del depósito realizado por la misma. <br>

@@ -11,22 +11,26 @@ const options = [{
 }]
 
 interface UserFormData {
-    name: string;
-    surname: string;
-    bornDate: string;
-    cuit: string;
-    phoneNumber: string;
-    type: number;
+    nombre: string;
+    apellido: string;
+    mail: string;
+    contraseña: string;
+    fechaNacimiento: string;
+    numeroDocumento: string;
+    numeroTelefono: string;
+    tipo: number;
 }
 
 const UserRegistrationForm: React.FC = ({ }) => {
     const [formData, setFormData] = useState<UserFormData>({
-        name: "",
-        surname: "",
-        bornDate: "",
-        cuit: "",
-        phoneNumber: "",
-        type: 1
+        nombre: "",
+        apellido: "",
+        mail: "",
+        contraseña: "",
+        fechaNacimiento: "",
+        numeroDocumento: "",
+        numeroTelefono: "",
+        tipo: 1
     })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,58 +55,58 @@ const UserRegistrationForm: React.FC = ({ }) => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField
-                            name="name"
+                            name="nombre"
                             label="Nombre"
                             variant="outlined"
                             fullWidth
-                            value={formData.name}
+                            value={formData.nombre}
                             onChange={handleInputChange}
                         />
 
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            name="surname"
+                            name="apellido"
                             label="Apellido"
                             variant="outlined"
                             fullWidth
-                            value={formData.surname}
+                            value={formData.apellido}
                             onChange={handleInputChange}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            name="bornDate"
+                            name="fechaNacimiento"
                             label="Fecha de nacimiento"
                             variant="outlined"
                             type="date"
                             InputLabelProps={{ shrink: true }}
                             fullWidth
-                            value={formData.bornDate}
+                            value={formData.fechaNacimiento}
                             onChange={handleInputChange}
                         />
 
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            name="cuit"
-                            label="C.U.I.T."
+                            name="numeroDocumento"
+                            label="Número de documento"
                             variant="outlined"
                             type="number"
                             fullWidth
-                            value={formData.cuit}
+                            value={formData.numeroDocumento}
                             onChange={handleInputChange}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
                         <TextField
-                            name="phoneNumber"
+                            name="numeroTelefono"
                             label="Número de teléfono"
                             variant="outlined"
                             type="number"
                             fullWidth
-                            value={formData.phoneNumber}
+                            value={formData.numeroTelefono}
                             onChange={handleInputChange}
                         />
 
