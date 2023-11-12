@@ -46,13 +46,30 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+async function login(req: Request, res: Response) {
+  try {
+    const mail = req.body.mail
+    const password = req.body.password
+    const usuario = await em.findOne(Usuario, { mail, password })
+    if (usuario) {
+      usuario.password = ""
+      res.status(200).json({ message: 'Logueado correctamente', data: usuario })
+    } else {
+      res.status(500).json({ message: 'Los datos ingresados son incorrectos'})
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: 'Ocurrió un error inesperado', data: error })
+  }
+}
+
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
     const usuarioNuevo = em.create(Usuario, input)
-    usuarioNuevo.password = ""
-    await em.flush()
-    res.status(200).json({ message: 'Se cargo nuevo usuario', data: usuarioNuevo })
+    await em.flush().then( () => {
+      usuarioNuevo.password = ""
+      res.status(200).json({ message: 'Se cargo nuevo usuario', data: usuarioNuevo })
+    })        
   } catch (error: any) {
     if (isSQLError(error)) {
       res.status(500).json({ message: getSQLErrorMessage(error, "Usuario"), data: error })
@@ -95,4 +112,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeUsuarioInput, findAll, findOne, add, update, remove }
+export { sanitizeUsuarioInput, findAll, findOne, login, add, update, remove }
