@@ -28,7 +28,7 @@ function CustomTabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -65,13 +65,7 @@ const Application = () => {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <UserRegistrationForm />
-          </CustomTabPanel>
-
-          <Link href={"/home"}>
-            <Button
-              variant='outlined'
-              color='success'>{value == 0 ? "Login" : "Registrarse"}</Button>
-          </Link>
+          </CustomTabPanel>          
         </Box>
       </div>
     </div>
