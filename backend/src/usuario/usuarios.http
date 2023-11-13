@@ -10,7 +10,7 @@ POST http://localhost:3000/api/usuario/login
 Content-Type: application/json
 
 {
-    "mail": "nino@gmail.com",
+    "email": "nino@gmail.com",
     "password": "ntell"
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 {
     "nombre": "Nino",
     "apellido": "Tell",
-    "mail": "nino@gmail.com",
+    "email": "nino@gmail.com",
     "password": "ntell",
     "fechaNacimiento": "1960-02-02",
     "numeroDocumento": "40345674",

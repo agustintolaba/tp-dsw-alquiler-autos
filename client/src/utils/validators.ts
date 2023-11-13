@@ -1,7 +1,10 @@
-import { PASSWORD_LENGHT_ERROR, PASSWORDS_NOT_MATCH_ERROR } from "./constants";
+import { PASSWORD_LENGTH_ERROR, PASSWORD_MIN_LENGTH, PASSWORDS_NOT_MATCH_ERROR } from "./constants";
 
 export const emailValidator = (email: string) => {
-    console.log(`email: ${email}`)
+    if (email.length == 0) {
+        return ""
+    }
+
     if (!new RegExp(/\S+@\S+\.\S+/).test(email)) {
         return "Formato de email incorrecto";
     }
@@ -9,21 +12,18 @@ export const emailValidator = (email: string) => {
 };
 
 export const passwordValidator = (password: string) => {
-    console.log(`password: ${password}`)
-    if (password.length > 0 && password.length < 8) {
-        return PASSWORD_LENGHT_ERROR
+    if (password.length > 0 && password.length < PASSWORD_MIN_LENGTH) {
+        return PASSWORD_LENGTH_ERROR
     } else {
         return ""
     }
 };
 
 export const confirmPasswordValidator = (password: string, confirmPassword: string) => {
-    console.log(`password: ${password}`)
-    console.log(`confirmPassword: ${confirmPassword}`)
     if (confirmPassword.length == 0) {
         return ""
-    } else if (confirmPassword.length < 8) {
-        return PASSWORD_LENGHT_ERROR
+    } else if (confirmPassword.length < PASSWORD_MIN_LENGTH) {
+        return PASSWORD_LENGTH_ERROR
     } else if (password !== confirmPassword) {
         return PASSWORDS_NOT_MATCH_ERROR
     }

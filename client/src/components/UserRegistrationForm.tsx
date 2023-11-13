@@ -13,7 +13,7 @@ const options = [{
 interface UserFormData {
     nombre: string;
     apellido: string;
-    mail: string;
+    email: string;
     contraseña: string;
     fechaNacimiento: string;
     numeroDocumento: string;
@@ -25,7 +25,7 @@ const UserRegistrationForm: React.FC = ({ }) => {
     const [formData, setFormData] = useState<UserFormData>({
         nombre: "",
         apellido: "",
-        mail: "",
+        email: "",
         contraseña: "",
         fechaNacimiento: "",
         numeroDocumento: "",

@@ -25,7 +25,7 @@ export class Usuario extends BaseEntity {
   fechaContratacion!: Date
 
   @Property({ nullable: false, unique: true, type: 'string', length: 45 })
-  mail!: string
+  email!: string
 
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   password!: string

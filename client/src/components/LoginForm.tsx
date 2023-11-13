@@ -1,7 +1,7 @@
 'use client'
-import { API_BASE_URL } from "@/utils/constants";
+import apiClient from "@/utils/client";
 import { emailValidator, passwordValidator } from "@/utils/validators";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 
@@ -10,45 +10,53 @@ export interface LoginFormData {
     password: string;
 }
 
-function fetchLogin(data: LoginFormData) {
-    return axios.post(
-        `${API_BASE_URL}/login`,
-        data,
-    )
-}
-
 const LoginForm: React.FC = ({ }) => {
     // const router = useRouter()
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
-    const [emailError, setEmailError] = useState<string>("")
-    const [passwordError, setPasswordError] = useState<string>("")
     const [formData, setFormData] = useState<LoginFormData>({
+        email: "",
+        password: ""
+    })
+    const [formErrors, setFormErrors] = useState<LoginFormData>({
         email: "",
         password: ""
     })
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-        switch (name) {
-            case "email":
-                setEmailError(emailValidator(value))
-            case "password":
-                setPasswordError(passwordValidator(value))
-            default:
-                break
-        }        
-        enableButton()
+        setFormData((prevFormData) => {
+            const newFormData = { ...prevFormData, [name]: value }
+            let emailError = emailValidator(newFormData.email)
+            let passwordError = passwordValidator(newFormData.password)
+            setFormErrors({
+                email: emailError,
+                password: passwordError
+            })
+            enableButton(newFormData, emailError, passwordError)
+            return newFormData
+        });
     };
 
-    const enableButton = () => {
-
+    const enableButton = (newFormData: LoginFormData, emailError: string, passwordError: string) => {
+        const enabled = newFormData.email.length > 0 && newFormData.password.length > 0 && emailError.length == 0 && passwordError.length == 0
+        setButtonEnabled(enabled)
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('submit')
+        fetchLogin(formData)
     };
+
+    const fetchLogin = (data: LoginFormData) => {
+        const res = apiClient.post("usuario/login", JSON.stringify(data))
+        res
+            .then((response) => {
+                console.log(response.data.data)
+            })
+            .catch((axiosError) => {
+                console.log(axiosError.response.data.message)
+            })
+    }
 
 
     return (
@@ -61,8 +69,8 @@ const LoginForm: React.FC = ({ }) => {
                 fullWidth
                 value={formData.email}
                 onChange={handleInputChange}
-                error={emailError.length > 0}
-                helperText={emailError}
+                error={formErrors.email.length > 0}
+                helperText={formErrors.email}
             />
             <TextField
                 name="password"
@@ -72,8 +80,8 @@ const LoginForm: React.FC = ({ }) => {
                 fullWidth
                 value={formData.password}
                 onChange={handleInputChange}
-                error={passwordError.length > 0}
-                helperText={passwordError}
+                error={formErrors.password.length > 0}
+                helperText={formErrors.password}
             />
             <Button
                 variant='outlined'

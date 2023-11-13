@@ -14,7 +14,7 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     numeroDocumento: req.body.numeroDocumento,
     telefono: req.body.telefono,
     fechaContratacion: req.body.fechaContratacion,
-    mail: req.body.mail,
+    email: req.body.email,
     password: req.body.password,
     tipoUsuario: req.body.tipoUsuario
   }
@@ -48,14 +48,14 @@ async function findOne(req: Request, res: Response) {
 
 async function login(req: Request, res: Response) {
   try {
-    const mail = req.body.mail
+    const email = req.body.email
     const password = req.body.password
-    const usuario = await em.findOne(Usuario, { mail, password })
+    const usuario = await em.findOne(Usuario, { email, password })
     if (usuario) {
       usuario.password = ""
       res.status(200).json({ message: 'Logueado correctamente', data: usuario })
     } else {
-      res.status(500).json({ message: 'Los datos ingresados son incorrectos'})
+      res.status(500).json({ message: 'Los datos ingresados son incorrectos' })
     }
   } catch (error: any) {
     res.status(500).json({ message: 'Ocurrió un error inesperado', data: error })
@@ -66,10 +66,10 @@ async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
     const usuarioNuevo = em.create(Usuario, input)
-    await em.flush().then( () => {
+    await em.flush().then(() => {
       usuarioNuevo.password = ""
       res.status(200).json({ message: 'Se cargo nuevo usuario', data: usuarioNuevo })
-    })        
+    })
   } catch (error: any) {
     if (isSQLError(error)) {
       res.status(500).json({ message: getSQLErrorMessage(error, "Usuario"), data: error })
