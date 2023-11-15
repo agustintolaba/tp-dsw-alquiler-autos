@@ -4,7 +4,7 @@ GET http://localhost:3000/api/usuario
 
 ### Obtener un usuario 
 GET http://localhost:3000/api/usuario/6
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJub21icmUiOiJOaW5vIiwiYXBlbGxpZG8iOiJUZWxsIiwiZmVjaGFOYWNpbWllbnRvIjoiMTk2MC0wMi0wMVQwMDowMDowMC4wMDBaIiwibnVtZXJvRG9jdW1lbnRvIjoiNDAzNDU2NzQiLCJ0ZWxlZm9ubyI6IjM0MTY1NDMyMSIsImZlY2hhQ29udHJhdGFjaW9uIjpudWxsLCJlbWFpbCI6Im5pbm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJ0aXBvVXN1YXJpbyI6MX0sImlhdCI6MTcwMDA4MDgwOH0.NzzX83LDVw7R8tcjFwkI0BrGodvqjP-cGAAPRNe5jrA
+Authorization: // probar con un token nuevo
 
 ### Login
 POST http://localhost:3000/api/usuario/login
@@ -18,7 +18,7 @@ Content-Type: application/json
 ### isAdmin
 POST http://localhost:3000/api/usuario/verifyAdmin
 Content-Type: application/json,
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJub21icmUiOiJOaW5vIiwiYXBlbGxpZG8iOiJUZWxsIiwiZmVjaGFOYWNpbWllbnRvIjoiMTk2MC0wMi0wMVQwMDowMDowMC4wMDBaIiwibnVtZXJvRG9jdW1lbnRvIjoiNDAzNDU2NzQiLCJ0ZWxlZm9ubyI6IjM0MTY1NDMyMSIsImZlY2hhQ29udHJhdGFjaW9uIjpudWxsLCJlbWFpbCI6Im5pbm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJ0aXBvVXN1YXJpbyI6MX0sImlhdCI6MTcwMDA3MzM0MywiZXhwIjoxNzAwMDczOTQzfQ.E6UiefJhzGd9lboTtjDclG8rxOcK1C9mcgiOxUce0v8
+Authorization: // probar con un token nuevo
 
 ### Crear un nuevo usuario
 POST http://localhost:3000/api/usuario/register
