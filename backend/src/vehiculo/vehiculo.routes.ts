@@ -9,3 +9,5 @@ vehiculoRouter.post('/', sanitizeVehiculoInput, add)
 vehiculoRouter.put('/:id', sanitizeVehiculoInput, update)
 vehiculoRouter.patch('/:id', sanitizeVehiculoInput, update)
 vehiculoRouter.delete('/:id', remove)
+
+/*vehiculoRouter.get('/', find)*/
