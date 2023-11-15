@@ -27,7 +27,7 @@ const homeItems = [
 
 
 
-export default function Home() {
+export default function ClientHomePage() {
   const [homeDetailItems, setHomeDetailItems] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import apiClient from '@/utils/client';
 import { useRouter } from 'next/navigation';
+import ClientHomePage from './ClientHomePage';
 
 
 
@@ -35,7 +36,7 @@ export default function Home() {
       {isAdmin && (
         <h1>Empleado</h1>
       ) || (
-          <h1>Cliente</h1>
+          <ClientHomePage />
         )}
     </>
   );
