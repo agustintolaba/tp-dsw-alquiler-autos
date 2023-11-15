@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { TipoVehiculo } from "./tipovehiculo.entity.js"
 import { orm } from "../shared/db/orm.js"
+import { Vehiculo } from "../vehiculo/vehiculo.entity.js"
 
 const em= orm.em
 
@@ -36,6 +37,26 @@ async function findOne(req: Request, res: Response) {
     res.status(200).json({ message: 'Tipo de vehiculo encontrado', data: tipoVehiculo })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontro el tipo de vehiculo', data: error })
+  }
+}
+
+
+async function findFilter(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
+    if (tipoVehiculo) {
+      const vehiculos = await em.find(Vehiculo, { tipoVehiculo, disponible:true }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+      if (vehiculos.length > 0) {
+        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+      } else {
+        res.status(200).json({ message: 'No se encontraron vehiculos de tipo de vehiculo especifico', data: vehiculos })
+      }
+    } else {
+      res.status(404).json({ message: 'Tipo de vehículo no encontrado' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error al buscar vehículos', data: error })
   }
 }
 
@@ -82,4 +103,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export{sanitizeTipoVehiculoInput, findAll, findOne, add, update, remove} 
+export{sanitizeTipoVehiculoInput, findAll, findOne, findFilter, add, update, remove} 

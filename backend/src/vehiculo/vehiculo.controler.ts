@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
 import { Vehiculo } from "./vehiculo.entity.js"
+import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js"
 
 const em= orm.em
 
@@ -38,12 +39,42 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const vehiculo = await em.findOneOrFail(Vehiculo, {}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+    const vehiculo = await em.findOneOrFail(Vehiculo, {id}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
     res.status(200).json({ message: 'Vehiculo encontrado', data: vehiculo })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontro vehiculo', data: error })
   }
 }
+
+/*async function find(req: Request, res: Response) {
+try {
+  const filterParam = req.query.filter
+
+  if (filterParam === undefined || filterParam === null)  {
+    try {
+        const vehiculos = await em.find(Vehiculo, {}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+      } catch (error: any) {
+        res.status(500).json({ message: 'No se encontraron vehiculos', data: error })
+      }}
+  else{
+    const id = Number.parseInt(filterParam as string)
+    
+    const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
+    if (tipoVehiculo) {
+      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+      if (vehiculos.length > 0) {
+        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+      } else {
+        res.status(200).json({ message: 'No se encontraron vehiculos de tipo de vehiculo especifico', data: vehiculos })
+      }
+    } else {
+      res.status(404).json({ message: 'Tipo de vehículo no encontrado' })
+    }
+  }} catch (error: any) {
+    res.status(500).json({ message: 'Error al buscar vehículos', data: error })
+  }
+}*/
 
 async function add(req: Request, res: Response) {
   try {

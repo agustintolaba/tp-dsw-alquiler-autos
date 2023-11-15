@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sanitizeTipoVehiculoInput, findAll, findOne, add, update, remove } from "./tipovehiculo.controler.js";
+import { sanitizeTipoVehiculoInput, findAll, findOne, findFilter, add, update, remove } from "./tipovehiculo.controler.js";
 
 export const tipoVehiculoRouter= Router()
 
@@ -9,3 +9,5 @@ tipoVehiculoRouter.post('/', sanitizeTipoVehiculoInput, add)
 tipoVehiculoRouter.put('/:id', sanitizeTipoVehiculoInput, update)
 tipoVehiculoRouter.patch('/:id', sanitizeTipoVehiculoInput, update)
 tipoVehiculoRouter.delete('/:id', remove)
+
+tipoVehiculoRouter.get('/:id/vehiculo', findFilter)

@@ -5,6 +5,9 @@ GET http://localhost:3000/api/vehiculo
 ### Obtener un vehiculo
 GET http://localhost:3000/api/vehiculo/1
 
+### Obtener vehiculo de un tipo especicifico
+GET http://localhost:3000/api/vehiculo?filter=4
+
 ### Crear un nuevo vehiculo
 POST http://localhost:3000/api/vehiculo
 Content-Type: application/json
