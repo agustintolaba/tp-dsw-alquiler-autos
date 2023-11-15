@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
 import { TipoUsuario } from "./tipousuario.entity.js"
 import { SQLError, getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
+import { Usuario } from "../usuario/usuario.entity.js"
 
 const em = orm.em
 
@@ -40,17 +41,17 @@ async function findOne(req: Request, res: Response) {
 }
 
 async function add(req: Request, res: Response) {
-  try {    
+  try {
     const input = req.body.sanitizedInput
     const tipoUsuarioNuevo = em.create(TipoUsuario, input)
     await em.flush()
     res.status(201).json({ message: 'Se cargo nuevo tipo de usuario', data: tipoUsuarioNuevo })
   } catch (error: any) {
     if (isSQLError(error)) {
-      res.status(500).json({ message: getSQLErrorMessage(error, "Tipo de usuario")})
+      res.status(500).json({ message: getSQLErrorMessage(error, "Tipo de usuario") })
     } else {
       res.status(500).json({ message: 'No se pudo cargar el nuevo tipo de usuario', data: error })
-    }    
+    }
   }
 }
 
@@ -86,4 +87,17 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeTipoUsuarioInput, findAll, findOne, add, update, remove }  
+async function isAdmin(req: Request, res: Response) {
+  try {
+    const id = req.userId
+    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['tipoUsuario'] })
+    console.log(usuario?.tipoUsuario)
+    const adminDescription = "Empleado"
+    const isAdmin = usuario?.tipoUsuario.descripcion == adminDescription
+    res.status(200).json({ message: isAdmin })
+  } catch (error: any) {
+    res.status(500).json({ message: 'Ocurrió un error al verificar tipo de usuario', data: error })
+  }
+}
+
+export { sanitizeTipoUsuarioInput, findAll, findOne, add, update, remove, isAdmin }  

@@ -5,13 +5,9 @@ GET http://localhost:3000/api/tipousuario
 ### Obtener un tipo de usuario
 GET http://localhost:3000/api/tipousuario/1
 
-### Crear un nuevo tipo de usuario
-POST http://localhost:3000/api/tipousuario
-Content-Type: application/json
-
-{
-  "descripcion": "Gerente"
-}
+### Verificar si es admin
+GET http://localhost:3000/api/tipousuario/verifyAdmin
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJub21icmUiOiJOaW5vIiwiYXBlbGxpZG8iOiJUZWxsIiwiZmVjaGFOYWNpbWllbnRvIjoiMTk2MC0wMi0wMVQwMDowMDowMC4wMDBaIiwibnVtZXJvRG9jdW1lbnRvIjoiNDAzNDU2NzQiLCJ0ZWxlZm9ubyI6IjM0MTY1NDMyMSIsImZlY2hhQ29udHJhdGFjaW9uIjpudWxsLCJlbWFpbCI6Im5pbm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJ0aXBvVXN1YXJpbyI6MX0sImlhdCI6MTcwMDA4MDgwOH0.NzzX83LDVw7R8tcjFwkI0BrGodvqjP-cGAAPRNe5jrA
 
 ### Modificar un tipo de usuario (recurso completo e idempotente)
 PUT http://localhost:3000/api/tipousuario/1
@@ -19,7 +15,7 @@ Content-Type: application/json
 
 {
   "id":"1",
-  "descripcion": "Cliente modificado"
+  "descripcion": "Empleado"
 }
 
 ### Modificar un tipo de usuario (recurso parcial)

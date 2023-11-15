@@ -3,7 +3,8 @@ GET http://localhost:3000/api/usuario
 
 
 ### Obtener un usuario 
-GET http://localhost:3000/api/usuario/1
+GET http://localhost:3000/api/usuario/6
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJub21icmUiOiJOaW5vIiwiYXBlbGxpZG8iOiJUZWxsIiwiZmVjaGFOYWNpbWllbnRvIjoiMTk2MC0wMi0wMVQwMDowMDowMC4wMDBaIiwibnVtZXJvRG9jdW1lbnRvIjoiNDAzNDU2NzQiLCJ0ZWxlZm9ubyI6IjM0MTY1NDMyMSIsImZlY2hhQ29udHJhdGFjaW9uIjpudWxsLCJlbWFpbCI6Im5pbm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJ0aXBvVXN1YXJpbyI6MX0sImlhdCI6MTcwMDA4MDgwOH0.NzzX83LDVw7R8tcjFwkI0BrGodvqjP-cGAAPRNe5jrA
 
 ### Login
 POST http://localhost:3000/api/usuario/login
@@ -13,6 +14,11 @@ Content-Type: application/json
     "email": "nino@gmail.com",
     "password": "ntell"
 }
+
+### isAdmin
+POST http://localhost:3000/api/usuario/verifyAdmin
+Content-Type: application/json,
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2LCJub21icmUiOiJOaW5vIiwiYXBlbGxpZG8iOiJUZWxsIiwiZmVjaGFOYWNpbWllbnRvIjoiMTk2MC0wMi0wMVQwMDowMDowMC4wMDBaIiwibnVtZXJvRG9jdW1lbnRvIjoiNDAzNDU2NzQiLCJ0ZWxlZm9ubyI6IjM0MTY1NDMyMSIsImZlY2hhQ29udHJhdGFjaW9uIjpudWxsLCJlbWFpbCI6Im5pbm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJ0aXBvVXN1YXJpbyI6MX0sImlhdCI6MTcwMDA3MzM0MywiZXhwIjoxNzAwMDczOTQzfQ.E6UiefJhzGd9lboTtjDclG8rxOcK1C9mcgiOxUce0v8
 
 ### Crear un nuevo usuario
 POST http://localhost:3000/api/usuario/register
@@ -30,31 +36,28 @@ Content-Type: application/json
 }
 
 ### Modificar un nuevo usuario (recurso completo e idempotente)
-PUT http://localhost:3000/api/usuario/2
+PUT http://localhost:3000/api/usuario/6
 Content-Type: application/json
 
 {
-    "id": "1",
-    "nombre": "Marcos",
-    "apellido": "Del Potro",
-    "fechaNacimiento": "19600202",
-    "numeroDocumento": "4034567456",
-    "telefono": "341123456",
-    "idEmpleado": 3,
-    "fechaContratacion": null, 
-    "idTipoUsuario": 1
+    "id": 6,
+    "nombre": "Nino",
+    "apellido": "Tell",
+    "fechaNacimiento": "1960-02-01T00:00:00.000Z",
+    "numeroDocumento": "40345674",
+    "telefono": "341654321",
+    "fechaContratacion": null,
+    "email": "nino@gmail.com",
+    "password": "",
+    "tipoUsuario": 1
 }
 
 ### Modificar un nuevo usuario (recurso parcial)
-PATCH http://localhost:3000/api/usuario/2
+PATCH http://localhost:3000/api/usuario/6
 Content-Type: application/json
 
-{
-    "id": "2", 
-    "nombreUsuario": "Marcos Jorge Osbaldo",
-    "apellidoUsuario": "Del Potro Gimenez",
-    "fechaNacimientoUsuario": "20230202"
-    
+{    
+    "idTipoUsuario": 2 
 }
 
 ###Borar un usuario

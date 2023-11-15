@@ -3,6 +3,7 @@ import apiClient from "@/utils/client";
 import { emailValidator, passwordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export interface LoginFormData {
@@ -11,7 +12,7 @@ export interface LoginFormData {
 }
 
 const LoginForm: React.FC = ({ }) => {
-    // const router = useRouter()
+    const router = useRouter()
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [formData, setFormData] = useState<LoginFormData>({
         email: "",
@@ -51,7 +52,9 @@ const LoginForm: React.FC = ({ }) => {
         const res = apiClient.post("usuario/login", JSON.stringify(data))
         res
             .then((response) => {
-                console.log(response.data.data)
+                const token = response.data.token
+                window.localStorage.setItem("token", token)
+                router.push('/home')
             })
             .catch((axiosError) => {
                 console.log(axiosError.response.data.message)

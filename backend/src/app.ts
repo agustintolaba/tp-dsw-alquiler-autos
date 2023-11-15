@@ -12,12 +12,12 @@ import { vehiculoRouter } from './vehiculo/vehiculo.routes.js'
 import { tipoUsuarioRouter } from './tipousuario/tipousuario.routes.js'
 import { alquilerRouter } from './alquiler/alquiler.routes.js'
 
-const app= express()
+const app = express()
 app.use(express.json())
 
 //luego de los middleware base de expres
-app.use((req,res, next)=>{
-  RequestContext.create(orm.em, next)  
+app.use((req, res, next) => {
+  RequestContext.create(orm.em, next)
   /*Es una abstraccion que permite manejar las entidades
    de forma uniforme desde un unico punto. 
    No usamos los repositories. Usamos UNIT WORK*/
@@ -27,28 +27,28 @@ app.use((req,res, next)=>{
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, authorization')
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   next()
 })
 
-app.use('/api/provincia', provinciaRouter ) 
+app.use('/api/provincia', provinciaRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/tipovehiculo', tipoVehiculoRouter)
 app.use('/api/seguro', seguroRouter)
-app.use('/api/localidad',localidadRouter)
-app.use('/api/sucursal',sucursalRouter)
+app.use('/api/localidad', localidadRouter)
+app.use('/api/sucursal', sucursalRouter)
 app.use('/api/vehiculo', vehiculoRouter)
 app.use('/api/tipousuario', tipoUsuarioRouter)
 app.use('/api/alquiler', alquilerRouter)
 
-app.use((_req, res)=>{
-  return res.status(404).send({message:'Recurso no encontrado'})
+app.use((_req, res) => {
+  return res.status(404).send({ message: 'Recurso no encontrado' })
 })
 
 await syncSchema()  /*VA A GENERAR LA BASE DE DATOS CON LA EXTRUCTURA INDICADA, en desarrollo */
 
-app.listen(3000, ()=> {
+app.listen(3000, () => {
   console.log('Server running...')
 })
- 
+
