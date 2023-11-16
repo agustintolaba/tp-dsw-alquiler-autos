@@ -8,6 +8,7 @@ import UserRegistrationForm from '@/components/UserRegisterForm';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import LoginForm from '@/components/LoginForm';
+import Image from 'next/image';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -51,9 +52,16 @@ const Application = () => {
 
   return (
     <div className='flex flex-col p-8'>
-      <h1 className='text-4xl font-bold'>Bienvenido!</h1>
+      <h1 className='text-4xl font-extralight'>Bienvenido!</h1>
       <div className='flex justify-center max-w-screen'>
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div className='w-full flex flex-col gap-6 items-center justify-center'>
+          <Image
+            className='invert opacity-85'
+            src="/assets/images/company-logo.png"
+            alt="company-logo"
+            width={180}
+            height={180}
+          />
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered={true} value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Log in" {...a11yProps(0)} />
@@ -65,8 +73,8 @@ const Application = () => {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <UserRegistrationForm />
-          </CustomTabPanel>          
-        </Box>
+          </CustomTabPanel>
+        </div>
       </div>
     </div>
   );

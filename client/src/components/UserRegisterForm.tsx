@@ -163,6 +163,7 @@ const UserRegisterForm: React.FC = ({ }) => {
                     error={formErrors.repeatPassword.length > 0}
                     helperText={formErrors.repeatPassword} />
                 <Button
+                    className='sm:col-span-2'
                     variant='outlined'
                     color='success'
                     disabled={!buttonEnabled}
