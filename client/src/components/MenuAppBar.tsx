@@ -44,15 +44,16 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) => {
       <Toolbar>
         <TemporaryDrawer isAdmin={isAdmin} />
         <div
-          className='flex flex-row items-center gap-4 justify-center grow invert'>
-          <span className='hidden sm:flex text-xl text-black'>RUEDA</span>
+          className='flex flex-row items-center gap-4 justify-center grow opacity-50'>
+          <span className='hidden sm:flex text-xl text-white'>RUEDA</span>
           <Image
+            className='invert'
             src={'/assets/images/company-logo.png'}
             alt='logo'
             width={80}
             height={80}
           />
-          <span className='hidden sm:flex text-xl text-black'>LIBRE</span>
+          <span className='hidden sm:flex text-xl text-white'>LIBRE</span>
         </div>
         <div>
           <IconButton
