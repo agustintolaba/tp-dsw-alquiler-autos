@@ -2,13 +2,10 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import UserRegistrationForm from '@/components/UserRegisterForm';
-import Link from 'next/link';
-import { Button } from '@mui/material';
-import LoginForm from '@/components/LoginForm';
+import Login from '@/components/Login';
 import Image from 'next/image';
+import SignUp from '@/components/SignUp';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -69,10 +66,10 @@ const Application = () => {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <LoginForm />
+            <Login />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <UserRegistrationForm />
+            <SignUp />
           </CustomTabPanel>
         </div>
       </div>

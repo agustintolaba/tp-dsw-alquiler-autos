@@ -66,19 +66,19 @@ async function login(req: Request, res: Response) {
   }
 }
 
-async function add(req: Request, res: Response) {
+async function signup(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
     const usuarioNuevo = em.create(Usuario, input)
     await em.flush().then(() => {
-      usuarioNuevo.password = ""
-      res.status(200).json({ message: 'Se cargo nuevo usuario', data: usuarioNuevo })
+      usuarioNuevo.password = ""      
+      res.status(200).json({ message: 'Usuario registrado correctamente' })
     })
   } catch (error: any) {
     if (isSQLError(error)) {
-      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario"), data: error })
+      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario") })
     } else {
-      res.status(500).json({ message: 'No se pudo completar el registro de usuario', data: error })
+      res.status(500).json({ message: 'No se pudo completar el registro de usuario' })
     }
   }
 }
@@ -116,4 +116,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeUsuarioInput, findAll, findOne, login, add, update, remove }
+export { sanitizeUsuarioInput, findAll, findOne, login, signup, update, remove }

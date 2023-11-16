@@ -15,13 +15,8 @@ Content-Type: application/json
     "password": "ntell"
 }
 
-### isAdmin
-POST http://localhost:3000/api/usuario/verifyAdmin
-Content-Type: application/json,
-Authorization: // probar con un token nuevo
-
 ### Crear un nuevo usuario
-POST http://localhost:3000/api/usuario/register
+POST http://localhost:3000/api/usuario/signup
 Content-Type: application/json
 
 {
@@ -31,8 +26,7 @@ Content-Type: application/json
     "password": "ntell",
     "fechaNacimiento": "1960-02-02",
     "numeroDocumento": "40345674",
-    "telefono": "341654321",
-    "fechaContratacion": null
+    "telefono": "341654321"
 }
 
 ### Modificar un nuevo usuario (recurso completo e idempotente)

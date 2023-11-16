@@ -30,7 +30,7 @@ export class Usuario extends BaseEntity {
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   password!: string
 
-  @ManyToOne(() => TipoUsuario, { nullable: false, default: 1 })
+  @ManyToOne(() => TipoUsuario, { nullable: false, default: 2 })
   tipoUsuario!: Rel<TipoUsuario>
 
   @OneToMany(() => Alquiler, (alquiler) => alquiler.usuario, { cascade: [Cascade.ALL], })

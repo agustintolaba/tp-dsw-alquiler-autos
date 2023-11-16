@@ -12,7 +12,7 @@ export interface LoginFormData {
     password: string;
 }
 
-const LoginForm: React.FC = ({ }) => {
+const Login: React.FC = ({ }) => {
     const router = useRouter()
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [formData, setFormData] = useState<LoginFormData>({
@@ -46,10 +46,10 @@ const LoginForm: React.FC = ({ }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        fetchLogin(formData)
+        login(formData)
     };
 
-    const fetchLogin = (data: LoginFormData) => {
+    const login = (data: LoginFormData) => {
         const res = apiClient.post("usuario/login", JSON.stringify(data))
         res
             .then((response) => {
@@ -70,7 +70,6 @@ const LoginForm: React.FC = ({ }) => {
                 }
             })
     }
-
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
@@ -106,4 +105,4 @@ const LoginForm: React.FC = ({ }) => {
     )
 }
 
-export default LoginForm
+export default Login

@@ -1,6 +1,9 @@
 'use client'
+import apiClient from "@/utils/client";
+import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import { emailValidator, passwordValidator, repeatPasswordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -12,7 +15,7 @@ interface IUserRegisterFormData {
     repeatPassword: string;
     fechaNacimiento: string;
     numeroDocumento: string;
-    numeroTelefono: string;
+    telefono: string;
 }
 interface IUserRegisterFormErrors {
     email: string;
@@ -20,7 +23,7 @@ interface IUserRegisterFormErrors {
     repeatPassword: string;
 }
 
-const UserRegisterForm: React.FC = ({ }) => {
+const SignUp: React.FC = ({ }) => {
     const router = useRouter()
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
 
@@ -32,7 +35,7 @@ const UserRegisterForm: React.FC = ({ }) => {
         repeatPassword: "",
         fechaNacimiento: "",
         numeroDocumento: "",
-        numeroTelefono: ""
+        telefono: ""
     })
     const [formErrors, setFormErrors] = useState<IUserRegisterFormErrors>({
         email: "",
@@ -44,7 +47,6 @@ const UserRegisterForm: React.FC = ({ }) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => {
             const newFormData = { ...prevFormData, [name]: value }
-            console.log(newFormData)
             let emailError = emailValidator(newFormData.email)
             let passwordError = passwordValidator(newFormData.password)
             let repeatPasswordError = repeatPasswordValidator(newFormData.password, newFormData.repeatPassword)
@@ -59,6 +61,27 @@ const UserRegisterForm: React.FC = ({ }) => {
         });
     };
 
+    const signUp = (data: IUserRegisterFormData) => {
+        const res = apiClient.post("usuario/signup", JSON.stringify(data))
+        res
+            .then((response) => {
+                alert("Bienvenido! Ya puede iniciar sesión")
+                location.reload()
+            })
+            .catch((error: Error | AxiosError) => {
+                if (axios.isAxiosError(error)) {
+                    alert(error.response?.data.message)
+                } else {
+                    console.log(error)
+                    if (error.message) {
+                        alert(error.message)
+                    } else {
+                        alert("Ha ocurrido un error")
+                    }
+                }
+            })
+    }
+
     const enableButton = (newFormData: IUserRegisterFormData, emailError: string, passwordError: string, repeatPasswordError: string) => {
         const someFieldIsEmpty = newFormData.nombre.length == 0
             || newFormData.apellido.length == 0
@@ -67,7 +90,7 @@ const UserRegisterForm: React.FC = ({ }) => {
             || newFormData.repeatPassword.length == 0
             || newFormData.fechaNacimiento.length == 0
             || newFormData.numeroDocumento.length == 0
-            || newFormData.numeroTelefono.length == 0
+            || newFormData.telefono.length == 0
 
         if (someFieldIsEmpty) {
             setButtonEnabled(false)
@@ -82,7 +105,7 @@ const UserRegisterForm: React.FC = ({ }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // onSubmit(formData);
+        signUp(formData)
     };
 
 
@@ -124,11 +147,11 @@ const UserRegisterForm: React.FC = ({ }) => {
                     onChange={handleInputChange}
                 />
                 <TextField
-                    name="numeroTelefono"
+                    name="telefono"
                     label="Número de teléfono"
                     variant="outlined"
                     fullWidth
-                    value={formData.numeroTelefono}
+                    value={formData.telefono}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -174,4 +197,4 @@ const UserRegisterForm: React.FC = ({ }) => {
     )
 }
 
-export default UserRegisterForm
+export default SignUp
