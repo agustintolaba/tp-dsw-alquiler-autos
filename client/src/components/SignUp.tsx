@@ -191,7 +191,7 @@ const SignUp: React.FC = ({ }) => {
                     color='success'
                     disabled={!buttonEnabled}
                     type="submit"
-                >Registrarse</Button>
+                >Crear cuenta</Button>
             </form>
         </div>
     )

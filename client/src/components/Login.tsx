@@ -100,7 +100,7 @@ const Login: React.FC = ({ }) => {
                 color='success'
                 disabled={!buttonEnabled}
                 type="submit"
-            >Login</Button>
+            >Iniciar sesión</Button>
         </form>
     )
 }

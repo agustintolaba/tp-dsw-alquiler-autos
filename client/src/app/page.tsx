@@ -61,8 +61,8 @@ const Application = () => {
           />
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs centered={true} value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Log in" {...a11yProps(0)} />
-              <Tab label="Registro" {...a11yProps(1)} />
+              <Tab label="iniciar sesión" {...a11yProps(0)} />
+              <Tab label="Crear cuenta" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
