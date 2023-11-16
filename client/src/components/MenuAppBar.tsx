@@ -11,12 +11,13 @@ import TemporaryDrawer from './TemporaryDrawer';
 import { color } from '@mui/system';
 import { useRouter } from 'next/navigation';
 import { TOKEN_STORAGE_KEY } from '@/utils/constants';
+import Image from 'next/image';
 
 interface MenuAppBarProps {
   isAdmin: boolean
 }
 
-const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
+const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -42,9 +43,17 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
     >
       <Toolbar>
         <TemporaryDrawer isAdmin={isAdmin} />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Rueda libre
-        </Typography>
+        <div
+          className='flex flex-row items-center gap-4 justify-center grow invert'>
+          <span className='hidden sm:flex text-xl text-black'>RUEDA</span>
+          <Image
+            src={'/assets/images/company-logo.png'}
+            alt='logo'
+            width={80}
+            height={80}
+          />
+          <span className='hidden sm:flex text-xl text-black'>LIBRE</span>
+        </div>
         <div>
           <IconButton
             size="large"
