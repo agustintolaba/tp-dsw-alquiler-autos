@@ -2,7 +2,7 @@
 import apiClient from "@/utils/client";
 import { emailValidator, passwordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -56,8 +56,17 @@ const LoginForm: React.FC = ({ }) => {
                 window.localStorage.setItem("token", token)
                 router.push('/home')
             })
-            .catch((axiosError) => {
-                console.log(axiosError.response.data.message)
+            .catch((error: Error | AxiosError) => {
+                if (axios.isAxiosError(error)) {
+                    alert(error.response?.data.message)
+                } else {
+                    console.log(error)
+                    if (error.message) {
+                        alert(error.message)
+                    } else {
+                        alert("Ha ocurrido un error")
+                    }
+                }
             })
     }
 

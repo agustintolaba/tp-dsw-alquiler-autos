@@ -9,18 +9,16 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import TemporaryDrawer from './TemporaryDrawer';
 import { color } from '@mui/system';
+import { useRouter } from 'next/navigation';
+import { TOKEN_STORAGE_KEY } from '@/utils/constants';
 
 interface MenuAppBarProps {
   isAdmin: boolean
 }
 
 const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
-  const [auth, setAuth] = React.useState(true);
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,6 +26,14 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logout = () => {
+    handleClose()
+    if (confirm("¿Desea cerrar sesión?")) {
+      window.localStorage.removeItem(TOKEN_STORAGE_KEY)
+      router.replace('/')
+    }
   };
 
   return (
@@ -65,8 +71,8 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) =>  {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Perfil</MenuItem>
+            <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
           </Menu>
         </div>
       </Toolbar>

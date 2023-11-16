@@ -91,7 +91,6 @@ async function isAdmin(req: Request, res: Response) {
   try {
     const id = req.userId
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['tipoUsuario'] })
-    console.log(usuario?.tipoUsuario)
     const adminDescription = "Empleado"
     const isAdmin = usuario?.tipoUsuario.descripcion == adminDescription
     res.status(200).json({ message: isAdmin })

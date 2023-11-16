@@ -15,7 +15,6 @@ interface IPayload {
 
 export const validateToken = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('Authorization')
-    console.log(token)
     if (!token) return res.status(401).json({ message: 'La sesión ha expirado' })
 
     try {
