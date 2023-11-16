@@ -1,0 +1,176 @@
+'use client'
+import { emailValidator, passwordValidator, repeatPasswordValidator } from "@/utils/validators";
+import { Button, TextField } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+interface IUserRegisterFormData {
+    nombre: string;
+    apellido: string;
+    email: string;
+    password: string;
+    repeatPassword: string;
+    fechaNacimiento: string;
+    numeroDocumento: string;
+    numeroTelefono: string;
+}
+interface IUserRegisterFormErrors {
+    email: string;
+    password: string;
+    repeatPassword: string;
+}
+
+const UserRegisterForm: React.FC = ({ }) => {
+    const router = useRouter()
+    const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
+
+    const [formData, setFormData] = useState<IUserRegisterFormData>({
+        nombre: "",
+        apellido: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+        fechaNacimiento: "",
+        numeroDocumento: "",
+        numeroTelefono: ""
+    })
+    const [formErrors, setFormErrors] = useState<IUserRegisterFormErrors>({
+        email: "",
+        password: "",
+        repeatPassword: ""
+    })
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => {
+            const newFormData = { ...prevFormData, [name]: value }
+            console.log(newFormData)
+            let emailError = emailValidator(newFormData.email)
+            let passwordError = passwordValidator(newFormData.password)
+            let repeatPasswordError = repeatPasswordValidator(newFormData.password, newFormData.repeatPassword)
+
+            setFormErrors({
+                email: emailError,
+                password: passwordError,
+                repeatPassword: repeatPasswordError
+            })
+            enableButton(newFormData, emailError, passwordError, repeatPasswordError)
+            return newFormData
+        });
+    };
+
+    const enableButton = (newFormData: IUserRegisterFormData, emailError: string, passwordError: string, repeatPasswordError: string) => {
+        const someFieldIsEmpty = newFormData.nombre.length == 0
+            || newFormData.apellido.length == 0
+            || newFormData.email.length == 0
+            || newFormData.password.length == 0
+            || newFormData.repeatPassword.length == 0
+            || newFormData.fechaNacimiento.length == 0
+            || newFormData.numeroDocumento.length == 0
+            || newFormData.numeroTelefono.length == 0
+
+        if (someFieldIsEmpty) {
+            setButtonEnabled(false)
+            return
+        }
+
+        const enabled = emailError.length == 0
+            && passwordError.length == 0
+            && repeatPasswordError.length == 0
+        setButtonEnabled(enabled)
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // onSubmit(formData);
+    };
+
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit} className="w-full gap-6 grid sm:grid-cols-2">
+                <TextField
+                    name="nombre"
+                    label="Nombre"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.nombre}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    name="apellido"
+                    label="Apellido"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.apellido}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    name="email"
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={formErrors.email.length > 0}
+                    helperText={formErrors.email}
+                />
+                <TextField
+                    name="numeroDocumento"
+                    label="Número de documento"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.numeroDocumento}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    name="numeroTelefono"
+                    label="Número de teléfono"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.numeroTelefono}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    name="fechaNacimiento"
+                    label="Fecha de nacimiento"
+                    variant="outlined"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    fullWidth
+                    value={formData.fechaNacimiento}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    name="password"
+                    label="Contraseña"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    error={formErrors.password.length > 0}
+                    helperText={formErrors.password} />
+
+                <TextField
+                    name="repeatPassword"
+                    label="Repetir contraseña"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    value={formData.repeatPassword}
+                    onChange={handleInputChange}
+                    error={formErrors.repeatPassword.length > 0}
+                    helperText={formErrors.repeatPassword} />
+                <Button
+                    variant='outlined'
+                    color='success'
+                    disabled={!buttonEnabled}
+                    type="submit"
+                >Registrarse</Button>
+            </form>
+        </div>
+    )
+}
+
+export default UserRegisterForm

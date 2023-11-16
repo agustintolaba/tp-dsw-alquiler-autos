@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import ClientHomePage from './ClientHomePage';
 import LoadingScreen from '@/components/LoadingScreen';
 import axios, { AxiosError } from 'axios';
+import { TOKEN_STORAGE_KEY } from '@/utils/constants';
 
 
 
@@ -15,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     const verifyAdmin = async () => {
-      const token = window.localStorage.getItem('token')
+      const token = window.localStorage.getItem(TOKEN_STORAGE_KEY)
       apiClient.get("/tipousuario/verifyAdmin", {
         headers: {
           'Authorization': token

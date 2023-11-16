@@ -1,5 +1,6 @@
 'use client'
 import apiClient from "@/utils/client";
+import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import { emailValidator, passwordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
 import axios, { AxiosError } from "axios";
@@ -53,7 +54,7 @@ const LoginForm: React.FC = ({ }) => {
         res
             .then((response) => {
                 const token = response.data.token
-                window.localStorage.setItem("token", token)
+                window.localStorage.setItem(TOKEN_STORAGE_KEY, token)
                 router.push('/home')
             })
             .catch((error: Error | AxiosError) => {
@@ -72,7 +73,7 @@ const LoginForm: React.FC = ({ }) => {
 
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col w-96 space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
             <TextField
                 className=""
                 name="email"
