@@ -42,7 +42,6 @@ const CreateBooking = () => {
                             description: t.nombre
                         }
                     })
-                    console.log(types)
                     setVehicleTypes(types)
                     const firstItem = types.at(0)
                     if (firstItem) {
