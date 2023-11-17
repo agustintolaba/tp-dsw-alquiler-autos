@@ -1,5 +1,5 @@
 'use client'
-import apiClient from "@/utils/client";
+import apiClient from "@/services/api";
 import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import { emailValidator, passwordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";

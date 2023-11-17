@@ -6,7 +6,7 @@ import Image from 'next/image';
 export interface VehiculoItemProps {
   id: string;
   nombre: string;
-  trasmision: string;
+  transmision: string;
   capacidad: string;
   disponible: string;
   image: string;
@@ -24,7 +24,7 @@ export interface VehiculoItemProps {
             };
 }
 
-const VehiculoItem: React.FC<VehiculoItemProps> = ({ id, nombre, trasmision, capacidad,disponible, image, tipoVehiculo, seguro}) => {
+const VehiculoItem: React.FC<VehiculoItemProps> = ({ id, nombre, transmision, capacidad,disponible, image, tipoVehiculo, seguro}) => {
   return (
     <div className="flex flex-row flex-wrap justify-center items-center gap-6 pt-8 pb-4 px-4 rounded-2xl bg-warmGray-300 lg:px-8">
       <Image

@@ -11,7 +11,7 @@ interface ShowVehiculosProps {
         {
             id: '1',
             nombre: "Chevrolet Cruze",
-            trasmision: "Automatica",
+            transmision: "Automatica",
             capacidad: '4',
             disponible: 'true',
             image: "/assets/images/chevroletCruze.png",
@@ -31,7 +31,7 @@ interface ShowVehiculosProps {
         {
             id: '2',
             nombre: "Chevrolet Corsa",
-            trasmision: "Manual",
+            transmision: "Manual",
             capacidad: '4',
             disponible: 'true',
             image: "/assets/images/chevroletCorsa.png",
@@ -64,7 +64,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
         return {
           id: item.id.toString(),
           nombre: item.nombre,
-          trasmision: item.trasmision,
+          transmision: item.transmision,
           capacidad: item.capacidad,
           disponible: item.disponible,
           image: item.image,
@@ -92,7 +92,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
             return {
               id: item.id.toString(),
               nombre: item.nombre,
-              trasmision: item.trasmision,
+              transmision: item.transmision,
               capacidad: item.capacidad.toString(),
               disponible: item.disponible.toString(),
               image: item.image,
@@ -128,7 +128,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
               key={item.id}
               id={item.id}
               nombre={item.nombre}
-              trasmision={item.trasmision}
+              transmision={item.transmision}
               capacidad={item.capacidad}
               disponible={item.disponible}
               image={item.image} 
@@ -145,7 +145,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
               key={item.id}
               id={item.id}
               nombre={item.nombre}
-              trasmision={item.trasmision}
+              transmision={item.transmision}
               capacidad={item.capacidad}
               disponible={item.disponible}
               image={item.image}

@@ -9,7 +9,7 @@ function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction)
   req.body.sanitizedInput={
     id: req.body.id,
     nombre: req.body.nombre,
-    trasmision: req.body.trasmision,
+    transmision: req.body.transmision,
     capacidad: req.body.capacidad,
     disponible: req.body.disponible,
     image: req.body.image,

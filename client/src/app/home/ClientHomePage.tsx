@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import HomeGridItem, { HomeGridItemProps } from '@/components/HomeGridItem';
 import HomeDetailItem, { HomeDetailItemProps } from '@/components/HomeDetailItem';
-import apiClient from '@/utils/client';
+import apiClient from '@/services/api';
 
 const homeItems = [
   {

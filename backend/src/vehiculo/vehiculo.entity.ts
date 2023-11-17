@@ -11,7 +11,7 @@ export class Vehiculo extends BaseEntity{
   nombre!: string
 
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
-  trasmision!: string
+  transmision!: string
 
   @Property({ nullable: false, unique: false })
   capacidad!: number

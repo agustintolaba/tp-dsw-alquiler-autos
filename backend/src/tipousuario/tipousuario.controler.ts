@@ -93,7 +93,7 @@ async function isAdmin(req: Request, res: Response) {
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['tipoUsuario'] })
     const adminDescription = "Empleado"
     const isAdmin = usuario?.tipoUsuario.descripcion == adminDescription
-    res.status(200).json({ message: isAdmin })
+    res.status(200).json({ isAdmin: isAdmin })
   } catch (error: any) {
     res.status(500).json({ message: 'Ocurrió un error al verificar tipo de usuario', data: error })
   }

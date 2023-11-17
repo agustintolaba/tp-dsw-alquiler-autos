@@ -15,7 +15,7 @@ Content-Type: application/json
 {
   "id":"11",
   "nombre":"Chevrolet Corsa",
-  "trasmision": "Manual",
+  "transmision": "Manual",
   "capacidad": 4,
   "disponible": 1,
   "image":"/assets/images/chevroletCorsa.png",
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "trasmision": "Semi-automatica",
+  "transmision": "Semi-automatica",
   "capacidad": 4,
   "disponible": 0,
   "idTipoVehiculo": 1,
@@ -44,7 +44,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "trasmision": "Automatica",
+  "transmision": "Automatica",
   "capacidad": 4,
   "disponible": 0,
   "idTipoVehiculo": 1,

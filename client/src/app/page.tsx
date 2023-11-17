@@ -49,7 +49,7 @@ const Application = () => {
 
   return (
     <div className='flex flex-col p-8'>
-      <h1 className='text-4xl font-extralight'>Bienvenido!</h1>
+      <span className='text-4xl font-extralight'>Bienvenido!</span>
       <div className='flex justify-center max-w-screen'>
         <div className='w-full flex flex-col gap-6 items-center justify-center'>
           <Image

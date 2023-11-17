@@ -7,14 +7,14 @@ const em= orm.em
 function sanitizeAlquilerInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    fechaRealizacionReserva: req.body.fechaRealizacionReserva,
-    fechaHoraPactadaEntrega: req.body.fechaHoraPactadaEntrega,
-    fechaHoraPactadaDevolucion: req.body.fechaHoraPactadaDevolucion,
+    fechaRealizacion: req.body.fechaRealizacion,
+    fechaDesde: req.body.fechaDesde,
+    fechaHasta: req.body.fechaHasta,
     fechaCancelacion: req.body.fechaCancelacion,
     precioTotal: req.body.precioTotal,
-    fechaHoraRealEntrega: req.body.fechaHoraRealEntrega,
-    fechaHoraRealDevolucion: req.body.fechaHoraRealEntrega,
-    estadoAlquiler: req.body.estadoAlquiler,
+    fechaRealEntrega: req.body.fechaRealEntrega,
+    fechaRealDevolucion: req.body.fechaRealEntrega,
+    estado: req.body.estado,
     usuario: req.body.usuario,
     vehiculo: req.body.vehiculo
   }
