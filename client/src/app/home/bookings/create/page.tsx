@@ -2,7 +2,9 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import apiClient from "@/services/api";
 import { SelectMenuItem, TipoVehiculo } from "@/types";
+import { handleError } from "@/utils/errorHandling";
 import { Button, MenuItem, TextField } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IBookingFormData {
@@ -21,6 +23,7 @@ const transmisions: SelectMenuItem[] = [{
 }]
 
 const CreateBooking = () => {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
     const [buttonEnabled, setButtonEnabled] = useState(false)
     const [vehicleTypes, setVehicleTypes] = useState<SelectMenuItem[]>()
@@ -51,6 +54,10 @@ const CreateBooking = () => {
                         })
                     }
                     setIsLoading(false)
+                })
+                .catch((error: any) => {
+                    handleError(error)
+                    router.replace('/')
                 })
         }
         fetchData()
