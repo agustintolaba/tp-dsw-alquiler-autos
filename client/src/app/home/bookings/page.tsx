@@ -1,5 +1,8 @@
 'use client'
+import apiClient from "@/services/api";
+import { getBookings } from "@/services/booking";
 import { verifyAdmin } from "@/services/user";
+import { Reserva } from "@/types";
 import { handleError } from "@/utils/errorHandling";
 import { Button } from "@mui/material";
 import Link from "next/link";
@@ -9,35 +12,41 @@ import { Fragment, useEffect, useState } from "react"
 const Bookings = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [bookings, setBookings] = useState<Reserva[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const isAdmin = await verifyAdmin()
-                setIsAdmin(isAdmin)
+                const bookings = await getBookings()
+                console.log(bookings)
+                setBookings(bookings)
                 setIsLoading(false)
             } catch (error: any) {
                 handleError(error)
-                router.replace("/")
             }
         }
         fetchData()
     }, []);
 
-    const handleNewBookingClick = () => {
-        router.push('/create')
-    }
-
     return (
-        <div>
-            <span>Mis reservas</span>
-            <Link href='/home/bookings/create'>
-                <Button
-                    variant='outlined'
-                    color='success'
-                >Hacer una reserva</Button>
-            </Link>
+        <div className="flex flex-col items-center p-8 gap-8" >
+            <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
+                <span className='text-4xl font-extralight'>Mis reservas</span>
+                <Link href='/home/bookings/create'>
+                    <Button
+                        variant='outlined'
+                        color='success'
+                    >Hacer una nueva reserva</Button>
+                </Link>
+            </div>
+            {bookings.length == 0 && (
+                <span className="text-lg text-red-300">No hay reservas para mostrar</span>
+            )}
+            <Button
+                variant='outlined'
+                color='error'
+                onClick={() => history.back()}
+            >Volver</Button>
         </div>
     )
 }

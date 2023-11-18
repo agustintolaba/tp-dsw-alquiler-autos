@@ -12,6 +12,7 @@ import { color } from '@mui/system';
 import { useRouter } from 'next/navigation';
 import { TOKEN_STORAGE_KEY } from '@/utils/constants';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface MenuAppBarProps {
   isAdmin: boolean
@@ -43,8 +44,7 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) => {
     >
       <Toolbar>
         <TemporaryDrawer isAdmin={isAdmin} />
-        <div
-          className='flex flex-row items-center gap-4 justify-center grow opacity-50'>
+        <Link href='/home' className='flex flex-row items-center gap-4 justify-center grow opacity-50'>
           <span className='hidden sm:flex text-xl text-white'>RUEDA</span>
           <Image
             className='invert'
@@ -54,7 +54,7 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) => {
             height={80}
           />
           <span className='hidden sm:flex text-xl text-white'>LIBRE</span>
-        </div>
+        </Link>
         <div>
           <IconButton
             size="large"

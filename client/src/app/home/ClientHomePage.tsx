@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import HomeGridItem, { HomeGridItemProps } from '@/components/HomeGridItem';
 import HomeDetailItem, { HomeDetailItemProps } from '@/components/HomeDetailItem';
 import apiClient from '@/services/api';
+import Link from 'next/link';
+import { Button } from '@mui/material';
 
 const homeItems = [
   {
@@ -34,17 +36,17 @@ export default function ClientHomePage() {
   useEffect(() => { // VER SI SE PUEDE CAMBIAR A SSR
     const fetchHomeDetailItems = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/tipovehiculo');
-        const data = await response.json();
+        const response = await apiClient.get('/tipovehiculo')
+        const data = response.data
         const list = data.data.map((item: any) => {
-        return {
-          id: item.id.toString(),
-          nombre: item.nombre,
-          descripcion: item.descripcion,
-          precio: item.precio,
-          image: item.image
-        };
-      });
+          return {
+            id: item.id.toString(),
+            nombre: item.nombre,
+            descripcion: item.descripcion,
+            precio: item.precio,
+            image: item.image
+          };
+        });
         console.log(list);
         setHomeDetailItems(list);
       } catch (error) {
@@ -56,6 +58,14 @@ export default function ClientHomePage() {
 
   return (
     <main className="flex flex-col p-8 gap-12">
+      <div className='w-full flex justify-end'>
+        <Link href='/home/bookings/create'>
+          <Button
+            variant='outlined'
+            color='success'
+          >Hacer una nueva reserva</Button>
+        </Link>
+      </div>
       <div className="flex flex-row flex-wrap gap-12 justify-center">
         {homeItems.map((item: HomeGridItemProps) => (
           <HomeGridItem

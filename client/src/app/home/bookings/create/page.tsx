@@ -98,7 +98,7 @@ const CreateBooking = () => {
 
     return (
         <div className="flex flex-col items-center p-8 gap-8" >
-            <span className='w-full text-4xl font-extralight'>Haga su reserva</span>
+            <span className='w-full text-4xl font-extralight'>Elija sus preferencias</span>
 
             <form onSubmit={handleSubmit} className="max-w-xl grid grid-cols-2 gap-4">
 
@@ -156,6 +156,13 @@ const CreateBooking = () => {
                     disabled={!buttonEnabled}
                     type="submit"
                 >Ver vehículos disponibles</Button>
+
+                <Button
+                    className="col-span-2"
+                    variant='outlined'
+                    color='error'
+                    onClick={() => history.back()}
+                >Volver</Button>
 
             </form>
         </div >

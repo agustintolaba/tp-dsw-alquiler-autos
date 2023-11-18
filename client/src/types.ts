@@ -31,6 +31,18 @@ export interface Vehiculo {
     seguro: Seguro
 }
 
+export interface Reserva {
+    id: number,
+    fechaRealizacion: string,
+    fechaDesde: string,
+    fechaHasta: string,
+    fechaRealEntrega: string,
+    fechaRealDevolucion: string,
+    estado: string,
+    vehiculo: Vehiculo,
+    usuario: Usuario
+}
+
 export interface TipoVehiculo {
     id: number,
     nombre: string,

@@ -4,7 +4,6 @@ import { Seguro } from "../seguro/seguro.entity.js";
 import { Sucursal } from "../sucursal/sucursal.entity.js";
 import { Alquiler } from "../alquiler/alquiler.entity.js";
 import { BaseEntity } from "../shared/db/baseEntity.entity.js";
-import { EntityManager } from "@mikro-orm/mysql";
 
 @Entity()
 export class Vehiculo extends BaseEntity {
