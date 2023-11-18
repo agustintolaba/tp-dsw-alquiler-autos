@@ -19,9 +19,28 @@ export interface Usuario extends Identifiable {
     type: TipoUsuario
 }
 
+export interface Vehiculo {
+    id: number,
+    marca: string,
+    modelo: string,
+    transmision: string,
+    capacidad: number,
+    año: string,
+    image: string
+    tipoVehiculo: TipoVehiculo
+    seguro: Seguro
+}
+
 export interface TipoVehiculo {
     id: number,
     nombre: string,
     descripcion: string,
+    precio: number,
     image: string
+}
+
+export interface Seguro {
+    id: number,
+    nombre: string,
+    compania: string
 }

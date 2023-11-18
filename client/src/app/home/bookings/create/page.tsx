@@ -150,7 +150,7 @@ const CreateBooking = () => {
                 </TextField>
 
                 <Button
-                    className="sm:col-span-2"
+                    className="col-span-2"
                     variant='outlined'
                     color='success'
                     disabled={!buttonEnabled}

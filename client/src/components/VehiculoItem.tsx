@@ -19,8 +19,8 @@ export interface VehiculoItemProps {
             };
   seguro: {
                 id: string;
-                nombreSeguro: string;
-                companiaSeguro: string;
+                nombre: string;
+                compania: string;
             };
 }
 

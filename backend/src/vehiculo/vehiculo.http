@@ -13,11 +13,10 @@ POST http://localhost:3000/api/vehiculo
 Content-Type: application/json
 
 {
-  "id":"11",
-  "nombre":"Chevrolet Corsa",
+  "marca": "Chevrolet",
+  "modelo": "Onix",
   "transmision": "Manual",
   "capacidad": 4,
-  "disponible": 1,
   "image":"/assets/images/chevroletCorsa.png",
   "tipoVehiculo": 1,
   "seguro": 1,

@@ -9,9 +9,6 @@ import { EntityManager } from "@mikro-orm/mysql";
 @Entity()
 export class Vehiculo extends BaseEntity {
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
-  nombre!: string
-
-  @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   marca!: string
 
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
@@ -26,7 +23,7 @@ export class Vehiculo extends BaseEntity {
   @Property({ nullable: false, unique: false })
   capacidad!: number
 
-  @Property({ nullable: true, unique: false, type: 'string', length: 150 })
+  @Property({ nullable: false, unique: false, type: 'string', length: 150 })
   image!: string
 
   @ManyToOne(() => TipoVehiculo, { nullable: false })

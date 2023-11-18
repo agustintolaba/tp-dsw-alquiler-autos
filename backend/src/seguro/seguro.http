@@ -11,8 +11,8 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "nombreSeguro": "Plan Gold ",
-  "companiaSeguro": "La Segunda"
+  "nombre": "Plan Gold ",
+  "compania": "La Segunda"
 }
 
 ### Modificar un seguro existente (recurso completo e idempotente)
@@ -21,8 +21,8 @@ Content-Type: application/json
 
 {
   "id":"1",
-  "nombreSeguro": "Plan Millenials ",
-  "companiaSeguro": "La Segunda Seguros"
+  "nombre": "Plan Millenials ",
+  "compania": "La Segunda Seguros"
 }
 
 ### Modificar un seguro existente (recurso parcial)
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "nombreSeguro": "Plan Esmeralda"
+  "nombre": "Plan Esmeralda"
 }
 
 ###Borar un seguro
