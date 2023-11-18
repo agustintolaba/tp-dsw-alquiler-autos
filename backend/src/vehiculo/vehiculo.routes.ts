@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { sanitizeVehiculoInput, findAll, findOne, add, update, remove } from "./vehiculo.controler.js";
+import { sanitizeVehiculoInput, findAll, findOne, add, update, remove, availables } from "./vehiculo.controler.js";
 
-export const vehiculoRouter= Router()
+export const vehiculoRouter = Router()
 
-vehiculoRouter.get('/', findAll)
-vehiculoRouter.get('/:id', findOne)
+vehiculoRouter.get('/find', findAll)
+vehiculoRouter.get('/find/:id', findOne)
+vehiculoRouter.get('/getAvailables', availables)
 vehiculoRouter.post('/', sanitizeVehiculoInput, add)
 vehiculoRouter.put('/:id', sanitizeVehiculoInput, update)
 vehiculoRouter.patch('/:id', sanitizeVehiculoInput, update)

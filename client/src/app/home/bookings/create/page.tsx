@@ -10,16 +10,16 @@ import { useEffect, useState } from "react";
 interface IBookingFormData {
     fechaDesde: string;
     fechaHasta: string;
-    transmision: number;
+    transmision: string;
     tipoVehiculo: number
 }
 
 const transmisions: SelectMenuItem[] = [{
     id: 1,
-    description: "Automática"
+    description: "AT"
 }, {
     id: 2,
-    description: "Manual"
+    description: "MT"
 }]
 
 const CreateBooking = () => {
@@ -30,7 +30,7 @@ const CreateBooking = () => {
     const [formData, setFormData] = useState<IBookingFormData>({
         fechaDesde: "",
         fechaHasta: "",
-        transmision: 1,
+        transmision: "AT",
         tipoVehiculo: 1
     })
 
@@ -81,7 +81,13 @@ const CreateBooking = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('submit')
+        apiClient.get(`/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde}'&fecha_hasta='${formData.fechaHasta}'&transmision='${formData.transmision}'&tipo_vehiculo='${formData.tipoVehiculo}'`)
+            .then((res) => {
+                console.log(res.data.vehicles)
+            })
+            .catch((error: any) => {
+                console.log(error)
+            })
     };
 
     if (isLoading) {
@@ -140,7 +146,7 @@ const CreateBooking = () => {
                     value={formData.transmision}
                     onChange={handleInputChange}
                 >
-                    {transmisions?.map(t => <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>)}
+                    {transmisions?.map(t => <MenuItem key={t.id} value={t.description}>{t.description == 'AT' ? 'Automático' : 'Manual'}</MenuItem>)}
                 </TextField>
 
                 <Button
