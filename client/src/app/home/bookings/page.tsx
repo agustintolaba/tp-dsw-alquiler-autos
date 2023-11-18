@@ -11,15 +11,18 @@ import { Fragment, useEffect, useState } from "react"
 
 const Bookings = () => {
     const router = useRouter()
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [bookings, setBookings] = useState<Reserva[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const isAdmin = await verifyAdmin()
                 const bookings = await getBookings()
                 console.log(bookings)
                 setBookings(bookings)
+                setIsAdmin(isAdmin)
                 setIsLoading(false)
             } catch (error: any) {
                 handleError(error)
@@ -31,7 +34,7 @@ const Bookings = () => {
     return (
         <div className="flex flex-col items-center p-8 gap-8" >
             <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
-                <span className='text-4xl font-extralight'>Mis reservas</span>
+                <span className='text-4xl font-extralight'>{isAdmin ? 'Reservas' : 'Mis reservas'}</span>
                 <Link href='/home/bookings/create'>
                     <Button
                         variant='outlined'
