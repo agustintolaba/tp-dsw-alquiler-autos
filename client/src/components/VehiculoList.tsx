@@ -1,168 +1,75 @@
 /*Para crear el componente de la lista de vehiculos*/
 'use client';
 import { useState, useEffect } from 'react';
-import VehiculoItem, { VehiculoItemProps } from '@/components/VehiculoItem';
-import apiClient from '@/services/api';
-import { Vehiculo } from '@/types';
+import VehiculoItem, {VehiculoItemProps} from '@/components/VehiculoItem';
 
 interface ShowVehiculosProps {
-  idTipoVehiculo: string;
+  id: string;
 }
 
-/*const list=  [
-        {
-            id: '1',
-            nombre: "Chevrolet Cruze",
-            transmision: "Automatica",
-            capacidad: '4',
-            disponible: 'true',
-            image: "/assets/images/chevroletCruze.png",
-            tipoVehiculo: {
-                id: '1',
-                nombre: "Economico",
-                descripcion: "Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina",
-                precio: "15000.00",
-                image: "/assets/images/economyCar.png"
-            },
-            seguro: {
-                id: '1',
-                nombre: "Plan Millenials ",
-                compania: "La Segunda Seguros"
-            }
-        },
-        {
-            id: '2',
-            nombre: "Chevrolet Corsa",
-            transmision: "Manual",
-            capacidad: '4',
-            disponible: 'true',
-            image: "/assets/images/chevroletCorsa.png",
-            tipoVehiculo: {
-                id: '1',
-                nombre: "Economico",
-                descripcion: "Bastante populares entre los viajeros de bajo presupuesto que visitan Argentina",
-                precio: "15000.00",
-                image: "/assets/images/economyCar.png"
-            },
-            seguro: {
-                id: '1',
-                nombre: "Plan Millenials ",
-                compania: "La Segunda Seguros"
-            }
-        }
-    ]*/
-
-const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
-  const [vehiculoItems, setVehiculoItems] = useState([]);
-
-  /*useEffect(() => {
-    const fetchVehiculoItems = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/vehiculo'); 
-        const data = await response.json();
-        const list = data.data
-        .filter((item: any) => item.tipoVehiculo.id === idTipoVehiculo && item.disponible === true)
-        .map((item: any) => {
-        return {
-          id: item.id.toString(),
-          nombre: item.nombre,
-          transmision: item.transmision,
-          capacidad: item.capacidad,
-          disponible: item.disponible,
-          image: item.image,
-          tipoVehiculo: item.tipoVehiculo,
-          seguro: item.seguro
-          };
-      });
-        console.log(list);
-        setVehiculoItems(list);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    fetchVehiculoItems();
-  }, [idTipoVehiculo]);*/
-
+const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) =>{
+  const [vehiculoItems, setVehiculoItems] = useState([])
+  
   useEffect(() => {
     const fetchVehiculoItems = async () => {
-      try {
-        const response = await apiClient.get('vehiculo/find')
-        const data = response.data
-        const list = data.data
-          .filter((item: Vehiculo) => item.tipoVehiculo.id.toString() == idTipoVehiculo)
-          .map((item: Vehiculo) => {
-            return {
-              id: item.id.toString(),
-              marca: item.marca,
-              modelo: item.modelo,
-              año: item.año,
-              transmision: item.transmision,
-              capacidad: item.capacidad.toString(),
-              image: item.image,
-              tipoVehiculo: {
-                id: item.tipoVehiculo.id.toString(),
-                nombre: item.tipoVehiculo.nombre,
-                descripcion: item.tipoVehiculo.descripcion,
-                precio: item.tipoVehiculo.precio,
-                image: item.tipoVehiculo.image
-              },
-              seguro: {
-                id: item.seguro.id.toString(),
-                nombre: item.seguro.nombre,
-                compania: item.seguro.compania
-              }
-            };
-          });
-        console.log(list);
-        setVehiculoItems(list);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    fetchVehiculoItems();
-  }, [idTipoVehiculo]);
+        try {
+            const response = await fetch(`http://localhost:3000/api/tipovehiculo/${id}/vehiculo`)
+            const data = await response.json()
+            const list = data.data
+                .map((item: any) => {
+                    return {
+                        id: item.id.toString(),
+                        nombre: item.nombre,
+                        trasmision: item.trasmision,
+                        capacidad: item.capacidad.toString(),
+                        disponible: item.disponible.toString(),
+                        image: item.image,
+                        tipoVehiculo: {
+                            id: item.tipoVehiculo.id.toString(),
+                            nombre: item.tipoVehiculo.nombre,
+                            descripcion: item.tipoVehiculo.descripcion,
+                            precio: item.tipoVehiculo.precio,
+                            image: item.tipoVehiculo.image
+                        },
+                        seguro: {
+                            id: item.seguro.id.toString(),
+                            nombreSeguro: item.seguro.nombreSeguro,
+                            companiaSeguro: item.seguro.companiaSeguro
+                        }
+                    }
+                })
+              
+            setVehiculoItems(list)
+        } catch (error) {
+            console.error('Error:', error)
+        }
+    }
+    fetchVehiculoItems()
+}, [id])
 
   return (
-    <main className="flex flex-col p-8 gap-12">
-
-      {/*<div className="flex flex-col gap-12 max-w-4xl">
-          {vehiculoItems.map((item: VehiculoItemProps) => (
-            <VehiculoItem
-              key={item.id}
-              id={item.id}
-              nombre={item.nombre}
-              transmision={item.transmision}
-              capacidad={item.capacidad}
-              disponible={item.disponible}
-              image={item.image} 
-              tipoVehiculo={item.tipoVehiculo}
-              seguro={item.seguro}         
-            />
-          ))}
-          </div>*/}
-
-      <div className="flex flex-col gap-12 max-w-4xl">
-        {vehiculoItems.length > 0 ? (
-          vehiculoItems.map((item: VehiculoItemProps) => (
-            <VehiculoItem
-              key={item.id}
-              id={item.id}
-              nombre={item.nombre}
-              transmision={item.transmision}
-              capacidad={item.capacidad}
-              disponible={item.disponible}
-              image={item.image}
-              tipoVehiculo={item.tipoVehiculo}
-              seguro={item.seguro}
-            />
-          ))
-        ) : (
-          <p>No hay vehículos disponibles</p>
-        )}
-      </div>
-
+    <main className="flex flex-col p-8 gap-12">      
+       <div className="flex flex-col gap-12 max-w-4xl">
+          {vehiculoItems.length > 0 ? (
+                vehiculoItems.map((item: VehiculoItemProps) => (
+                      <VehiculoItem
+                        key={item.id}
+                        id={item.id}
+                        nombre={item.nombre}
+                        trasmision={item.trasmision}
+                        capacidad={item.capacidad}
+                        disponible={item.disponible}
+                        image={item.image} 
+                        tipoVehiculo={item.tipoVehiculo}
+                        seguro={item.seguro}         
+                      />
+                ))
+                ) : (
+                    <p>No hay vehículos disponibles por el momento!</p>
+                )}
+        </div> 
     </main>
   );
 }
 
-export default VehiculoList;
+export default VehiculoList
