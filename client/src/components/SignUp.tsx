@@ -3,7 +3,10 @@ import apiClient from "@/services/api";
 import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import { emailValidator, passwordValidator, repeatPasswordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
+import { DatePicker, DateTimePicker, DateTimePickerTabs, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios, { AxiosError } from "axios";
+import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -33,7 +36,7 @@ const SignUp: React.FC = ({ }) => {
         email: "",
         password: "",
         repeatPassword: "",
-        fechaNacimiento: "",
+        fechaNacimiento: dayjs().subtract(18, 'years').toISOString(),
         numeroDocumento: "",
         telefono: ""
     })
@@ -64,7 +67,7 @@ const SignUp: React.FC = ({ }) => {
     const signUp = (data: IUserRegisterFormData) => {
         const res = apiClient.post("usuario/signup", JSON.stringify(data))
         res
-            .then((response) => {
+            .then(() => {
                 alert("Bienvenido! Ya puede iniciar sesión")
                 location.reload()
             })
@@ -82,13 +85,25 @@ const SignUp: React.FC = ({ }) => {
             })
     }
 
+    const onDateChange = (value: Dayjs | null) => {
+        if (!value || value.toString().length == 0) {
+            setFormErrors((prevFormData) => {
+                const newFormData = { ...prevFormData, fechaNacimiento: "La fecha no puede estar vacía" }
+                return newFormData
+            })
+            return
+        }
+
+        setFormData((prevFormData) => ({ ...prevFormData, fechaNacimiento: value.toISOString() }))
+    }
+
     const enableButton = (newFormData: IUserRegisterFormData, emailError: string, passwordError: string, repeatPasswordError: string) => {
         const someFieldIsEmpty = newFormData.nombre.length == 0
             || newFormData.apellido.length == 0
             || newFormData.email.length == 0
             || newFormData.password.length == 0
             || newFormData.repeatPassword.length == 0
-            || newFormData.fechaNacimiento.length == 0
+            || newFormData.fechaNacimiento.toString().length == 0
             || newFormData.numeroDocumento.length == 0
             || newFormData.telefono.length == 0
 
@@ -154,16 +169,14 @@ const SignUp: React.FC = ({ }) => {
                     value={formData.telefono}
                     onChange={handleInputChange}
                 />
-                <TextField
-                    name="fechaNacimiento"
-                    label="Fecha de nacimiento"
-                    variant="outlined"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    value={formData.fechaNacimiento}
-                    onChange={handleInputChange}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Fecha de nacimiento"
+                        minDate={dayjs().subtract(80, 'years')}
+                        maxDate={dayjs().subtract(18, 'years')}
+                        onChange={onDateChange}
+                    />
+                </LocalizationProvider>
                 <TextField
                     name="password"
                     label="Contraseña"

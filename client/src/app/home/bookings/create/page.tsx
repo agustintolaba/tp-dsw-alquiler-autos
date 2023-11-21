@@ -1,15 +1,21 @@
 'use client'
-import LoadingScreen from "@/components/LoadingScreen";
+import LoadableScreen from "@/components/LoadableScreen";
 import apiClient from "@/services/api";
 import { SelectMenuItem, TipoVehiculo } from "@/types";
+import { MAX_WORKING_HOUR } from "@/utils/constants";
 import { handleError } from "@/utils/errorHandling";
+import { disableNotWorkingTime, getDateError } from "@/utils/validators";
 import { Button, MenuItem, TextField } from "@mui/material";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import 'dayjs/locale/en-gb';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IBookingFormData {
-    fechaDesde: string;
-    fechaHasta: string;
+    fechaDesde: Dayjs;
+    fechaHasta: Dayjs;
     transmision: string;
     tipoVehiculo: number
 }
@@ -22,14 +28,19 @@ const transmisions: SelectMenuItem[] = [{
     description: "MT"
 }]
 
+const sixPM = dayjs().set('hour', 18).startOf('hour');
+const nineAM = dayjs().set('hour', 9).startOf('hour');
+
 const CreateBooking = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
     const [buttonEnabled, setButtonEnabled] = useState(false)
     const [vehicleTypes, setVehicleTypes] = useState<SelectMenuItem[]>()
+    const [dateFromError, setDateFromError] = useState<string | null>()
+    const [dateToError, setDateToError] = useState<string>("")
     const [formData, setFormData] = useState<IBookingFormData>({
-        fechaDesde: "",
-        fechaHasta: "",
+        fechaDesde: dayjs().hour() > MAX_WORKING_HOUR ? nineAM.add(1, 'day') : dayjs(),
+        fechaHasta: dayjs().hour() > MAX_WORKING_HOUR ? nineAM.add(2, 'day') : dayjs().add(1, 'day'),
         transmision: "AT",
         tipoVehiculo: 1
     })
@@ -68,20 +79,20 @@ const CreateBooking = () => {
         setFormData((prevFormData) => {
             const newFormData = { ...prevFormData, [name]: value }
 
-            enableButton(newFormData)
+            enableButton()
             return newFormData
         });
     };
 
-    const enableButton = (newFormData: IBookingFormData) => {
-        const enabled = newFormData.fechaDesde.length > 0
-            && newFormData.fechaHasta.length > 0
+    const enableButton = () => {
+        const enabled = (dateFromError == null || dateFromError?.length == 0)
+            && dateToError == null || dateToError?.length == 0
         setButtonEnabled(enabled)
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        apiClient.get(`/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde}'&fecha_hasta='${formData.fechaHasta}'&transmision='${formData.transmision}'&tipo_vehiculo='${formData.tipoVehiculo}'`)
+        apiClient.get(`/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde.toISOString()}'&fecha_hasta='${formData.fechaHasta.toISOString()}'&transmision='${formData.transmision}'&tipo_vehiculo='${formData.tipoVehiculo}'`)
             .then((res) => {
                 console.log(res.data.vehicles)
             })
@@ -90,82 +101,114 @@ const CreateBooking = () => {
             })
     };
 
-    if (isLoading) {
-        return (
-            <LoadingScreen />
-        )
+    const onDateChange = (value: Dayjs | null, isDateFrom: boolean) => {
+        let error = ""
+        if (!value) {
+            error = 'La fecha no puede estar vacía'
+            return
+        }
+
+        if (isDateFrom) {
+            console.log('DESDE')
+            setFormData((prevFormData) => {
+                const fechaHasta = value.diff(prevFormData.fechaHasta) > 0 ? value.add(1, 'day') : prevFormData.fechaHasta                
+                return {
+                    ...prevFormData,
+                    fechaDesde: value,
+                    fechaHasta: fechaHasta
+                }
+            })
+            setDateFromError(error)
+        } else {
+            console.log('HASTA')
+            setFormData((prevFormData) => ({ ...prevFormData, fechaHasta: value }))
+            setDateToError(error)
+        }
     }
 
     return (
-        <div className="flex flex-col items-center p-8 gap-8" >
-            <span className='w-full text-4xl font-extralight'>Elija sus preferencias</span>
+        <LoadableScreen isLoading={isLoading}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                <div className="flex flex-col items-center p-8 gap-8" >
+                    <span className='w-full text-4xl font-extralight'>Elija sus preferencias</span>
+                    <form onSubmit={handleSubmit} className="grid gap-6">
+                        <DateTimePicker
+                            label="Fecha de retiro"
+                            onError={(error) => setDateFromError(error ? error : "")}
+                            slotProps={{
+                                textField: {
+                                    helperText: getDateError(dateFromError),
+                                },
+                            }}
+                            ampm={false}
+                            disablePast
+                            minutesStep={30}
+                            value={formData.fechaDesde}
+                            shouldDisableTime={disableNotWorkingTime}
+                            onChange={(value) => onDateChange(value, true)}
+                        />
+                        <DateTimePicker
+                            label="Fecha de devolución"
+                            onError={(error) => setDateToError(error ? error : "")}
+                            slotProps={{
+                                textField: {
+                                    helperText: getDateError(dateToError),
+                                },
+                            }}
+                            ampm={false}
+                            value={formData.fechaHasta}
+                            disablePast
+                            minutesStep={30}
+                            minDateTime={formData.fechaDesde.add(1, 'day')}
+                            shouldDisableTime={disableNotWorkingTime}
+                            onChange={(value) => onDateChange(value, false)}
+                        />
+                        <span className="text-md font-light col-span-2">Total de días: {formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span>
+                        <TextField
+                            name="tipoVehiculo"
+                            label="Tipo de vehículo"
+                            variant="outlined"
+                            select
+                            InputLabelProps={{ shrink: true }}
+                            fullWidth
+                            value={formData.tipoVehiculo}
+                            onChange={handleInputChange}
+                        >
+                            {vehicleTypes?.map(t => <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>)}
+                        </TextField>
 
-            <form onSubmit={handleSubmit} className="max-w-xl grid grid-cols-2 gap-4">
+                        <TextField
+                            name="transmision"
+                            label="Transmisión"
+                            variant="outlined"
+                            select
+                            InputLabelProps={{ shrink: true }}
+                            fullWidth
+                            value={formData.transmision}
+                            onChange={handleInputChange}
+                        >
+                            {transmisions?.map(t => <MenuItem key={t.id} value={t.description}>{t.description == 'AT' ? 'Automático' : 'Manual'}</MenuItem>)}
+                        </TextField>
 
-                <TextField
-                    name="fechaDesde"
-                    label="Fecha de retiro"
-                    variant="outlined"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    value={formData.fechaDesde}
-                    onChange={handleInputChange}
-                />
-                <TextField
-                    name="fechaHasta"
-                    label="Fecha de devolución"
-                    variant="outlined"
-                    type="date"
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    value={formData.fechaHasta}
-                    onChange={handleInputChange}
-                />
+                        <Button
+                            className="sm:col-span-2"
+                            variant='outlined'
+                            color='success'
+                            disabled={!buttonEnabled}
+                            type="submit"
+                        >Ver vehículos disponibles</Button>
 
-                <TextField
-                    name="tipoVehiculo"
-                    label="Tipo de vehículo"
-                    variant="outlined"
-                    select
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    value={formData.tipoVehiculo}
-                    onChange={handleInputChange}
-                >
-                    {vehicleTypes?.map(t => <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>)}
-                </TextField>
+                        <Button
+                            className="sm:col-span-2"
+                            variant='outlined'
+                            color='error'
+                            onClick={() => history.back()}
+                        >Volver</Button>
 
-                <TextField
-                    name="transmision"
-                    label="Transmisión"
-                    variant="outlined"
-                    select
-                    InputLabelProps={{ shrink: true }}
-                    fullWidth
-                    value={formData.transmision}
-                    onChange={handleInputChange}
-                >
-                    {transmisions?.map(t => <MenuItem key={t.id} value={t.description}>{t.description == 'AT' ? 'Automático' : 'Manual'}</MenuItem>)}
-                </TextField>
-
-                <Button
-                    className="col-span-2"
-                    variant='outlined'
-                    color='success'
-                    disabled={!buttonEnabled}
-                    type="submit"
-                >Ver vehículos disponibles</Button>
-
-                <Button
-                    className="col-span-2"
-                    variant='outlined'
-                    color='error'
-                    onClick={() => history.back()}
-                >Volver</Button>
-
-            </form>
-        </div >
+                    </form>
+                </div >
+            </LocalizationProvider>
+        </LoadableScreen>
     )
 }
 

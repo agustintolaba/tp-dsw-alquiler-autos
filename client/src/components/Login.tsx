@@ -6,14 +6,16 @@ import { Button, TextField } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import LoadableScreen from "./LoadableScreen";
 
 export interface LoginFormData {
     email: string;
     password: string;
 }
 
-const Login: React.FC = ({ }) => {
+const Login: React.FC = () => {
     const router = useRouter()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [formData, setFormData] = useState<LoginFormData>({
         email: "",
@@ -46,6 +48,7 @@ const Login: React.FC = ({ }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true)
         login(formData)
     };
 
@@ -69,39 +72,42 @@ const Login: React.FC = ({ }) => {
                     }
                 }
             })
+            .finally(() => setIsLoading(false))
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
-            <TextField
-                className=""
-                name="email"
-                label="E-mail"
-                variant="outlined"
-                fullWidth
-                value={formData.email}
-                onChange={handleInputChange}
-                error={formErrors.email.length > 0}
-                helperText={formErrors.email}
-            />
-            <TextField
-                name="password"
-                label="Contraseña"
-                variant="outlined"
-                type="password"
-                fullWidth
-                value={formData.password}
-                onChange={handleInputChange}
-                error={formErrors.password.length > 0}
-                helperText={formErrors.password}
-            />
-            <Button
-                variant='outlined'
-                color='success'
-                disabled={!buttonEnabled}
-                type="submit"
-            >Iniciar sesión</Button>
-        </form>
+        <LoadableScreen isLoading={isLoading}>
+            <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
+                <TextField
+                    className=""
+                    name="email"
+                    label="E-mail"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={formErrors.email.length > 0}
+                    helperText={formErrors.email}
+                />
+                <TextField
+                    name="password"
+                    label="Contraseña"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    error={formErrors.password.length > 0}
+                    helperText={formErrors.password}
+                />
+                <Button
+                    variant='outlined'
+                    color='success'
+                    disabled={!buttonEnabled}
+                    type="submit"
+                >Iniciar sesión</Button>
+            </form>
+        </LoadableScreen>
     )
 }
 

@@ -8,6 +8,7 @@ import axios, { AxiosError } from 'axios';
 import { TOKEN_STORAGE_KEY } from '@/utils/constants';
 import { verifyAdmin } from '@/services/user';
 import { handleError } from '@/utils/errorHandling';
+import LoadableScreen from '@/components/LoadableScreen';
 
 
 
@@ -31,12 +32,12 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-      {isLoading && <LoadingScreen /> || (isAdmin && (
+    <LoadableScreen isLoading={isLoading}>
+      {(isAdmin && (
         <h1>Empleado</h1>
       ) || (
           <ClientHomePage />
         ))}
-    </>
+    </LoadableScreen>
   );
 }

@@ -4,3 +4,5 @@ export const EMAIL_FORMAT = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 export const PASSWORD_MIN_LENGTH = 5
 export const PASSWORD_LENGTH_ERROR = `Tamaño mínimo: ${PASSWORD_MIN_LENGTH} caracteres`
 export const PASSWORDS_NOT_MATCH_ERROR = "Las contraseñas no coinciden"
+export const MIN_WORKING_HOUR = 9
+export const MAX_WORKING_HOUR = 18
