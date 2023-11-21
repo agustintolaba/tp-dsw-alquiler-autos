@@ -41,12 +41,12 @@ async function findAll(req: Request, res: Response) {
 async function availables(req: Request, res: Response) {
   try {
     const { fecha_desde, fecha_hasta, transmision, tipo_vehiculo } = req.query
-    const availableVehicules = em
+    const availableVehicules = await em
       .getConnection()
-      .execute(`select v.id, v.marca, v.modelo, v.año, v.capacidad
-      from vehiculo v inner join tipo_vehiculo tp
-      on v.tipo_vehiculo_id = tp.id
-      where tp.id = ${tipo_vehiculo} and v.transmision = ${transmision}
+      .execute(`select v.*
+      from vehiculo v inner join tipo_vehiculo tv
+      on v.tipo_vehiculo_id = tv.id
+      where tv.id = ${tipo_vehiculo} and v.transmision = ${transmision}
       and v.id not in (select vehiculo_id from alquiler a
       where a.fecha_hasta > ${fecha_desde} and a.fecha_desde < ${fecha_hasta} and a.estado != 'Cancelada')`)
     res.status(200).json({ vehicles: availableVehicules })

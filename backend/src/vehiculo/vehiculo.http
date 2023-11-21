@@ -8,6 +8,9 @@ GET http://localhost:3000/api/vehiculo/1
 ### Obtener vehiculo de un tipo especicifico
 GET http://localhost:3000/api/vehiculo?filter=4
 
+### Obtener vehiculos disponibles
+GET http://localhost:3000/api/vehiculo/getAvailables?fecha_desde='2023-12-07T19:56:38.000Z'&fecha_hasta='2023-12-30T19:56:38.000Z'&transmision='MT'&tipo_vehiculo='1'
+
 ### Crear un nuevo vehiculo
 POST http://localhost:3000/api/vehiculo
 Content-Type: application/json
