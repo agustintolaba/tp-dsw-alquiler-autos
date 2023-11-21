@@ -28,6 +28,13 @@ const transmisions: SelectMenuItem[] = [{
     description: "MT"
 }]
 
+const getBookingDateDefaultValue = (isDateFrom: boolean): Dayjs => {
+    const isLateForToday = dayjs().hour() > MAX_WORKING_HOUR 
+    if (isLateForToday) return isDateFrom ? NINE_AM.add(1, 'day') : NINE_AM.add(2, 'day')
+    
+    return isDateFrom ? dayjs().add(1, 'day') : dayjs().add(2, 'day')     
+}
+
 const CreateBooking = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
@@ -36,8 +43,8 @@ const CreateBooking = () => {
     const [dateFromError, setDateFromError] = useState<string | null>()
     const [dateToError, setDateToError] = useState<string>("")
     const [formData, setFormData] = useState<IBookingFormData>({
-        fechaDesde: dayjs().hour() > MAX_WORKING_HOUR ? NINE_AM.add(1, 'day') : dayjs(),
-        fechaHasta: dayjs().hour() > MAX_WORKING_HOUR ? NINE_AM.add(2, 'day') : dayjs().add(1, 'day'),
+        fechaDesde: getBookingDateDefaultValue(true),
+        fechaHasta: getBookingDateDefaultValue(false),
         transmision: "AT",
         tipoVehiculo: 1
     })
@@ -104,7 +111,6 @@ const CreateBooking = () => {
         }
 
         if (isDateFrom) {
-            console.log('DESDE')
             setFormData((prevFormData) => {
                 const fechaHasta = value.diff(prevFormData.fechaHasta) > 0 ? value.add(1, 'day') : prevFormData.fechaHasta
                 return {
@@ -115,7 +121,6 @@ const CreateBooking = () => {
             })
             setDateFromError(error)
         } else {
-            console.log('HASTA')
             setFormData((prevFormData) => {
                 const newFormData = { ...prevFormData, fechaHasta: value }
                 enableButton(newFormData)
@@ -141,7 +146,6 @@ const CreateBooking = () => {
                             }}
                             ampm={false}
                             disablePast
-                            minutesStep={30}
                             value={formData.fechaDesde}
                             shouldDisableTime={disableNotWorkingTime}
                             onChange={(value) => onDateChange(value, true)}
@@ -157,7 +161,6 @@ const CreateBooking = () => {
                             ampm={false}
                             value={formData.fechaHasta}
                             disablePast
-                            minutesStep={30}
                             minDateTime={formData.fechaDesde.add(1, 'day')}
                             shouldDisableTime={disableNotWorkingTime}
                             onChange={(value) => onDateChange(value, false)}
