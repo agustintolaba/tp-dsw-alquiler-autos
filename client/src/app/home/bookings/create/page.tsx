@@ -75,15 +75,13 @@ const CreateBooking = () => {
         const { name, value } = e.target;
         setFormData((prevFormData) => {
             const newFormData = { ...prevFormData, [name]: value }
-
-            enableButton()
+            enableButton(newFormData)
             return newFormData
         });
     };
 
-    const enableButton = () => {
-        const enabled = (dateFromError == null || dateFromError?.length == 0)
-            && dateToError == null || dateToError?.length == 0
+    const enableButton = (formData: IBookingFormData) => {
+        const enabled = formData.fechaDesde.isValid() && formData.fechaHasta.isValid()
         setButtonEnabled(enabled)
     }
 
@@ -108,7 +106,7 @@ const CreateBooking = () => {
         if (isDateFrom) {
             console.log('DESDE')
             setFormData((prevFormData) => {
-                const fechaHasta = value.diff(prevFormData.fechaHasta) > 0 ? value.add(1, 'day') : prevFormData.fechaHasta                
+                const fechaHasta = value.diff(prevFormData.fechaHasta) > 0 ? value.add(1, 'day') : prevFormData.fechaHasta
                 return {
                     ...prevFormData,
                     fechaDesde: value,
@@ -118,7 +116,11 @@ const CreateBooking = () => {
             setDateFromError(error)
         } else {
             console.log('HASTA')
-            setFormData((prevFormData) => ({ ...prevFormData, fechaHasta: value }))
+            setFormData((prevFormData) => {
+                const newFormData = { ...prevFormData, fechaHasta: value }
+                enableButton(newFormData)
+                return newFormData
+            })
             setDateToError(error)
         }
     }
@@ -160,7 +162,7 @@ const CreateBooking = () => {
                             shouldDisableTime={disableNotWorkingTime}
                             onChange={(value) => onDateChange(value, false)}
                         />
-                        <span className="text-md font-light col-span-2">Total de días: {formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span>
+                        <span className="text-md font-light col-span-2">Total de días: <span className="font-bold">{formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span></span>
                         <TextField
                             name="tipoVehiculo"
                             label="Tipo de vehículo"
