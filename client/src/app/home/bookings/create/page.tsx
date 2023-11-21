@@ -2,7 +2,7 @@
 import LoadableScreen from "@/components/LoadableScreen";
 import apiClient from "@/services/api";
 import { SelectMenuItem, TipoVehiculo } from "@/types";
-import { MAX_WORKING_HOUR } from "@/utils/constants";
+import { MAX_WORKING_HOUR, NINE_AM } from "@/utils/constants";
 import { handleError } from "@/utils/errorHandling";
 import { disableNotWorkingTime, getDateError } from "@/utils/validators";
 import { Button, MenuItem, TextField } from "@mui/material";
@@ -28,9 +28,6 @@ const transmisions: SelectMenuItem[] = [{
     description: "MT"
 }]
 
-const sixPM = dayjs().set('hour', 18).startOf('hour');
-const nineAM = dayjs().set('hour', 9).startOf('hour');
-
 const CreateBooking = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
@@ -39,8 +36,8 @@ const CreateBooking = () => {
     const [dateFromError, setDateFromError] = useState<string | null>()
     const [dateToError, setDateToError] = useState<string>("")
     const [formData, setFormData] = useState<IBookingFormData>({
-        fechaDesde: dayjs().hour() > MAX_WORKING_HOUR ? nineAM.add(1, 'day') : dayjs(),
-        fechaHasta: dayjs().hour() > MAX_WORKING_HOUR ? nineAM.add(2, 'day') : dayjs().add(1, 'day'),
+        fechaDesde: dayjs().hour() > MAX_WORKING_HOUR ? NINE_AM.add(1, 'day') : dayjs(),
+        fechaHasta: dayjs().hour() > MAX_WORKING_HOUR ? NINE_AM.add(2, 'day') : dayjs().add(1, 'day'),
         transmision: "AT",
         tipoVehiculo: 1
     })
