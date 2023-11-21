@@ -6,15 +6,17 @@ import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js" //Para el 
 import cloudinary from "../shared/cloudinaryConfig.js"
 
 
-const em= orm.em.fork() //Es fork porque sino tira error
+const em = orm.em.fork() //Es fork porque sino tira error
 
-function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction){
-  req.body.sanitizedInput={
+function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) {
+  req.body.sanitizedInput = {
     id: req.body.id,
     nombre: req.body.nombre,
-    trasmision: req.body.trasmision,
+    marca: req.body.marca,
+    modelo: req.body.modelo,
+    año: req.body.año,
+    transmision: req.body.transmision,
     capacidad: req.body.capacidad,
-    disponible: req.body.disponible,
     image: req.body.image,
     tipoVehiculo: req.body.tipoVehiculo,
     seguro: req.body.seguro,
@@ -22,8 +24,8 @@ function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction)
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
-  Object.keys(req.body.sanitizedInput).forEach((key)=>{
-    if(req.body.sanitizedInput[key]===undefined){
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
       delete req.body.sanitizedInput[key]
     }
   })
@@ -39,10 +41,27 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
+async function availables(req: Request, res: Response) {
+  try {
+    const { fecha_desde, fecha_hasta, transmision, tipo_vehiculo } = req.query
+    const availableVehicules = await em
+      .getConnection()
+      .execute(`select v.*
+      from vehiculo v inner join tipo_vehiculo tv
+      on v.tipo_vehiculo_id = tv.id
+      where tv.id = ${tipo_vehiculo} and v.transmision = ${transmision}
+      and v.id not in (select vehiculo_id from alquiler a
+      where a.fecha_hasta > ${fecha_desde} and a.fecha_desde < ${fecha_hasta} and a.estado != 'Cancelada')`)
+    res.status(200).json({ vehicles: availableVehicules })
+  } catch (error: any) {
+    res.status(500).json({ message: 'Ocurrió un error', data: error })
+  }
+}
+
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const vehiculo = await em.findOneOrFail(Vehiculo, {id}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+    const vehiculo = await em.findOneOrFail(Vehiculo, { id }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
     res.status(200).json({ message: 'Vehiculo encontrado', data: vehiculo })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontro vehiculo', data: error })
@@ -142,8 +161,8 @@ async function update(req: Request, res: Response) {
     if (!vehiculoExistente) {
       return res.status(404).json({ message: 'El vehiculo no existe' })
     }
-    req.body.sanitizedInput.id=req.params.id
-    const vehiculoModificado= em.getReference(Vehiculo, id)
+    req.body.sanitizedInput.id = req.params.id
+    const vehiculoModificado = em.getReference(Vehiculo, id)
     em.assign(vehiculoModificado, req.body.sanitizedInput)
     await em.flush()
     res.status(200).json({ message: 'Vehiculo actualizado correctamente' })
@@ -167,4 +186,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export{sanitizeVehiculoInput, findAll, findOne, add, update, remove}  
+export { sanitizeVehiculoInput, findAll, findOne, add, update, remove, availables }  

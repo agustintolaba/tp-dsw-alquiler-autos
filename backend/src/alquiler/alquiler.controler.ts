@@ -1,20 +1,22 @@
 import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
 import { Alquiler } from "./alquiler.entity.js"
+import { Usuario } from "../usuario/usuario.entity.js"
+import { ADMIN_DESCRIPTION } from "../shared/constants.js"
 
 const em= orm.em
 
 function sanitizeAlquilerInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    fechaRealizacionReserva: req.body.fechaRealizacionReserva,
-    fechaHoraPactadaEntrega: req.body.fechaHoraPactadaEntrega,
-    fechaHoraPactadaDevolucion: req.body.fechaHoraPactadaDevolucion,
+    fechaRealizacion: req.body.fechaRealizacion,
+    fechaDesde: req.body.fechaDesde,
+    fechaHasta: req.body.fechaHasta,
     fechaCancelacion: req.body.fechaCancelacion,
     precioTotal: req.body.precioTotal,
-    fechaHoraRealEntrega: req.body.fechaHoraRealEntrega,
-    fechaHoraRealDevolucion: req.body.fechaHoraRealEntrega,
-    estadoAlquiler: req.body.estadoAlquiler,
+    fechaRealEntrega: req.body.fechaRealEntrega,
+    fechaRealDevolucion: req.body.fechaRealEntrega,
+    estado: req.body.estado,
     usuario: req.body.usuario,
     vehiculo: req.body.vehiculo
   }
@@ -28,10 +30,16 @@ function sanitizeAlquilerInput (req: Request, res: Response, next: NextFunction)
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function getAll(req: Request, res: Response) { 
   try {
-    const alquileres = await em.find(Alquiler, {},  { populate: ['usuario', 'vehiculo'] })
-    res.status(200).json({ message: 'Alquileres encontrados', data: alquileres })
+    const usuario = await em.findOne(Usuario, { id: req.userId })
+    let alquileres
+    if (usuario?.tipoUsuario.descripcion == ADMIN_DESCRIPTION) {
+      alquileres = await em.find(Alquiler, {},  { populate: ['usuario', 'vehiculo'] })
+    } else {
+      alquileres = await em.find(Alquiler, {usuario},  { populate: ['usuario', 'vehiculo'] })
+    }
+    res.status(200).json({ message: 'Alquileres encontrados', bookings: alquileres })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron alquileres', data: error })
   }
@@ -90,4 +98,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export{sanitizeAlquilerInput, findAll, findOne, add, update, remove}  
+export{sanitizeAlquilerInput, getAll, findOne, add, update, remove}  

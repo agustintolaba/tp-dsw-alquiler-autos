@@ -1,11 +1,14 @@
 'use client';
 import { useState, useEffect, Fragment } from 'react';
-import apiClient from '@/utils/client';
+import apiClient from '@/services/api';
 import { useRouter } from 'next/navigation';
 import ClientHomePage from './ClientHomePage';
 import LoadingScreen from '@/components/LoadingScreen';
 import axios, { AxiosError } from 'axios';
 import { TOKEN_STORAGE_KEY } from '@/utils/constants';
+import { verifyAdmin } from '@/services/user';
+import { handleError } from '@/utils/errorHandling';
+import LoadableScreen from '@/components/LoadableScreen';
 
 
 
@@ -15,43 +18,26 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const verifyAdmin = async () => {
-      const token = window.localStorage.getItem(TOKEN_STORAGE_KEY)
-      apiClient.get("/tipousuario/verifyAdmin", {
-        headers: {
-          'Authorization': token
-        }
-      })
-        .then((res) => {
-          const isAdmin = res.data.message
-          console.log(isAdmin)
-          setIsAdmin(isAdmin)
-          setIsLoading(false)
-        })
-        .catch((error: Error | AxiosError) => {
-          if (axios.isAxiosError(error)) {
-            alert(error.response?.data.message)
-          } else {
-            console.log(error)
-            if (error.message != undefined) {
-              alert(error.message)
-            } else {
-              alert("Ha ocurrido un error")
-            }
-          }
-          router.replace("/")
-        })
-    };
-    verifyAdmin()
+    const fetchData = async () => {
+      try {
+        const isAdmin = await verifyAdmin()
+        setIsAdmin(isAdmin)
+        setIsLoading(false)
+      } catch (error: any) {
+        handleError(error)
+        router.replace("/")
+      }
+    }
+    fetchData()
   }, []);
 
   return (
-    <>
-      {isLoading && <LoadingScreen /> || (isAdmin && (
+    <LoadableScreen isLoading={isLoading}>
+      {(isAdmin && (
         <h1>Empleado</h1>
       ) || (
           <ClientHomePage />
         ))}
-    </>
+    </LoadableScreen>
   );
 }

@@ -3,6 +3,7 @@ import { orm } from "../shared/db/orm.js"
 import { TipoUsuario } from "./tipousuario.entity.js"
 import { SQLError, getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
 import { Usuario } from "../usuario/usuario.entity.js"
+import { ADMIN_DESCRIPTION } from "../shared/constants.js"
 
 const em = orm.em
 
@@ -91,9 +92,8 @@ async function isAdmin(req: Request, res: Response) {
   try {
     const id = req.userId
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['tipoUsuario'] })
-    const adminDescription = "Empleado"
-    const isAdmin = usuario?.tipoUsuario.descripcion == adminDescription
-    res.status(200).json({ message: isAdmin })
+    const isAdmin = usuario?.tipoUsuario.descripcion == ADMIN_DESCRIPTION
+    res.status(200).json({ isAdmin: isAdmin })
   } catch (error: any) {
     res.status(500).json({ message: 'Ocurrió un error al verificar tipo de usuario', data: error })
   }

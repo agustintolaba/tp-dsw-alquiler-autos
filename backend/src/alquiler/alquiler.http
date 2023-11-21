@@ -11,14 +11,14 @@ Content-Type: application/json
 
 {
    "id": "1", 
-    "fechaRealizacionReserva": "20231103",
-    "fechaHoraPactadaEntrega": "20231104 12:00:00",
-    "fechaHoraPactadaDevolucion": "20231104 12:00:00",
+    "fechaRealizacion": "20231103",
+    "fechaDesde": "20231104 12:00:00",
+    "fechaHasta": "20231104 12:00:00",
     "fechaCancelacion": null,
     "precioTotal": null,
-    "fechaHoraRealEntrega": null,
-    "fechaHoraRealDevolucion": null,
-    "estadoAlquiler": "pendiente", 
+    "fechaRealEntrega": null,
+    "fechaRealDevolucion": null,
+    "estado": "pendiente", 
     "idUsuario": 2,
     "idVehiculo": 1 
 }
@@ -29,14 +29,14 @@ Content-Type: application/json
 
 {
    "id": "1", 
-    "fechaRealizacionReserva": "20231103",
-    "fechaHoraPactadaEntrega": "20231104 12:00:00",
-    "fechaHoraPactadaDevolucion": "20231104 12:00:00",
+    "fechaRealizacion": "20231103",
+    "fechaDesde": "20231104 12:00:00",
+    "fechaHasta": "20231104 12:00:00",
     "fechaCancelacion": "20231103",
     "precioTotal": null,
-    "fechaHoraRealEntrega": null,
-    "fechaHoraRealDevolucion": null,
-    "estadoAlquiler": "pendiente", 
+    "fechaRealEntrega": null,
+    "fechaRealDevolucion": null,
+    "estado": "pendiente", 
     "idUsuario": 2,
     "idVehiculo": 1 
 }

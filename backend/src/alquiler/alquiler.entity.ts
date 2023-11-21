@@ -6,13 +6,13 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 @Entity()
 export class Alquiler extends BaseEntity{
   @Property({ nullable: false, unique: false, type: 'Date', columnType: 'date' })
-  fechaRealizacionReserva!: Date
+  fechaRealizacion!: Date
   
   @Property({ nullable: false, unique: false, type: 'date' })
-  fechaHoraPactadaEntrega!: Date
+  fechaDesde!: Date
 
   @Property({ nullable: false, unique: false, type: 'date' })
-  fechaHoraPactadaDevolucion!: Date
+  fechaHasta!: Date
 
   @Property({ nullable: true, unique: false, type: 'Date', columnType: 'date' })
   fechaCancelacion?: Date
@@ -21,13 +21,13 @@ export class Alquiler extends BaseEntity{
   precioTotal?: number
 
   @Property({ nullable: true, unique: false, type: 'date'})
-  fechaHoraRealEntrega!: Date
+  fechaRealEntrega!: Date
   
   @Property({ nullable: true, unique: false, type: 'date' })
-  fechaHoraRealDevolucion!: Date
+  fechaRealDevolucion!: Date
 
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
-  estadoAlquiler!: string
+  estado!: string
 
   @ManyToOne(() => Usuario, { nullable: false })
   usuario!: Rel<Usuario>

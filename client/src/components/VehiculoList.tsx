@@ -2,6 +2,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import VehiculoItem, { VehiculoItemProps } from '@/components/VehiculoItem';
+import apiClient from '@/services/api';
+import { Vehiculo } from '@/types';
 
 interface ShowVehiculosProps {
   idTipoVehiculo: string;
@@ -11,7 +13,7 @@ interface ShowVehiculosProps {
         {
             id: '1',
             nombre: "Chevrolet Cruze",
-            trasmision: "Automatica",
+            transmision: "Automatica",
             capacidad: '4',
             disponible: 'true',
             image: "/assets/images/chevroletCruze.png",
@@ -24,14 +26,14 @@ interface ShowVehiculosProps {
             },
             seguro: {
                 id: '1',
-                nombreSeguro: "Plan Millenials ",
-                companiaSeguro: "La Segunda Seguros"
+                nombre: "Plan Millenials ",
+                compania: "La Segunda Seguros"
             }
         },
         {
             id: '2',
             nombre: "Chevrolet Corsa",
-            trasmision: "Manual",
+            transmision: "Manual",
             capacidad: '4',
             disponible: 'true',
             image: "/assets/images/chevroletCorsa.png",
@@ -44,8 +46,8 @@ interface ShowVehiculosProps {
             },
             seguro: {
                 id: '1',
-                nombreSeguro: "Plan Millenials ",
-                companiaSeguro: "La Segunda Seguros"
+                nombre: "Plan Millenials ",
+                compania: "La Segunda Seguros"
             }
         }
     ]*/
@@ -64,7 +66,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
         return {
           id: item.id.toString(),
           nombre: item.nombre,
-          trasmision: item.trasmision,
+          transmision: item.transmision,
           capacidad: item.capacidad,
           disponible: item.disponible,
           image: item.image,
@@ -84,17 +86,18 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
   useEffect(() => {
     const fetchVehiculoItems = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/vehiculo');
-        const data = await response.json();
+        const response = await apiClient.get('vehiculo/find')
+        const data = response.data
         const list = data.data
-          .filter((item: any) => item.tipoVehiculo.id == idTipoVehiculo && item.disponible == true)
-          .map((item: any) => {
+          .filter((item: Vehiculo) => item.tipoVehiculo.id.toString() == idTipoVehiculo)
+          .map((item: Vehiculo) => {
             return {
               id: item.id.toString(),
-              nombre: item.nombre,
-              trasmision: item.trasmision,
+              marca: item.marca,
+              modelo: item.modelo,
+              año: item.año,
+              transmision: item.transmision,
               capacidad: item.capacidad.toString(),
-              disponible: item.disponible.toString(),
               image: item.image,
               tipoVehiculo: {
                 id: item.tipoVehiculo.id.toString(),
@@ -105,8 +108,8 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
               },
               seguro: {
                 id: item.seguro.id.toString(),
-                nombreSeguro: item.seguro.nombreSeguro,
-                companiaSeguro: item.seguro.companiaSeguro
+                nombre: item.seguro.nombre,
+                compania: item.seguro.compania
               }
             };
           });
@@ -128,7 +131,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
               key={item.id}
               id={item.id}
               nombre={item.nombre}
-              trasmision={item.trasmision}
+              transmision={item.transmision}
               capacidad={item.capacidad}
               disponible={item.disponible}
               image={item.image} 
@@ -145,7 +148,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ idTipoVehiculo }) => {
               key={item.id}
               id={item.id}
               nombre={item.nombre}
-              trasmision={item.trasmision}
+              transmision={item.transmision}
               capacidad={item.capacidad}
               disponible={item.disponible}
               image={item.image}

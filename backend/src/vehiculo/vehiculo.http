@@ -8,16 +8,18 @@ GET http://localhost:3000/api/vehiculo/1
 ### Obtener vehiculo de un tipo especicifico
 GET http://localhost:3000/api/vehiculo?filter=4
 
+### Obtener vehiculos disponibles
+GET http://localhost:3000/api/vehiculo/getAvailables?fecha_desde='2023-12-07T19:56:38.000Z'&fecha_hasta='2023-12-30T19:56:38.000Z'&transmision='MT'&tipo_vehiculo='1'
+
 ### Crear un nuevo vehiculo
 POST http://localhost:3000/api/vehiculo
 Content-Type: application/json
 
 {
-  "id":"11",
-  "nombre":"Chevrolet Corsa",
-  "trasmision": "Manual",
+  "marca": "Chevrolet",
+  "modelo": "Onix",
+  "transmision": "Manual",
   "capacidad": 4,
-  "disponible": 1,
   "image":"/assets/images/chevroletCorsa.png",
   "tipoVehiculo": 1,
   "seguro": 1,
@@ -30,7 +32,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "trasmision": "Semi-automatica",
+  "transmision": "Semi-automatica",
   "capacidad": 4,
   "disponible": 0,
   "idTipoVehiculo": 1,
@@ -44,7 +46,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "trasmision": "Automatica",
+  "transmision": "Automatica",
   "capacidad": 4,
   "disponible": 0,
   "idTipoVehiculo": 1,

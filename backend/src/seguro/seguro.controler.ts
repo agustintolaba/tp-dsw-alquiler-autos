@@ -7,8 +7,8 @@ const em= orm.em
 function sanitizeSeguroInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    nombreSeguro: req.body.nombreSeguro,
-    companiaSeguro: req.body.companiaSeguro
+    nombre: req.body.nombre,
+    compania: req.body.compania
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca
