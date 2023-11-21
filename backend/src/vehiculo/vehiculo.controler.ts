@@ -1,9 +1,12 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction, Express} from "express"
 import { orm } from "../shared/db/orm.js"
 import { Vehiculo } from "./vehiculo.entity.js"
-import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js"
+import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js" //Para el filter desactivado
 
-const em= orm.em
+import cloudinary from "../shared/cloudinaryConfig.js"
+
+
+const em= orm.em.fork() //Es fork porque sino tira error
 
 function sanitizeVehiculoInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
@@ -46,6 +49,7 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+//FUNCION FIND CON FILTER, PARA BUSCAR VEHICULOS SEGUN EL TIPO DE VEHICULO. ESTA INPLEMENTADA LA OTRA FORMA. 
 /*async function find(req: Request, res: Response) {
 try {
   const filterParam = req.query.filter
@@ -76,7 +80,9 @@ try {
   }
 }*/
 
-async function add(req: Request, res: Response) {
+
+//FUNCION ADD ORIGINAL, SIN LA IMAGEN
+/*async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
     const vehiculoNuevo = em.create(Vehiculo, input)
@@ -85,7 +91,49 @@ async function add(req: Request, res: Response) {
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo cargar el nuevo vehiculo', data: error })
   }
+}*/
+
+
+async function add(req: Request, res: Response) {
+  try {
+    const image = req.file
+    if (image) {
+      // Para subir la imagen a Cloudinary
+      const result = await cloudinary.uploader.upload(image.path, {
+        public_id: `${Date.now()}`,
+        resource_type: 'auto',
+        folder: 'images',
+      });
+
+      // Crear objeto para almacenar en bd
+      req.body.sanitizedInput = {
+        id: req.body.id,
+        nombre: req.body.nombre,
+        trasmision: req.body.trasmision,
+        capacidad: parseInt(req.body.capacidad),
+        disponible: parseInt(req.body.disponible),
+        image: result.secure_url,
+        tipoVehiculo: parseInt(req.body.tipoVehiculo),
+        seguro: parseInt(req.body.seguro),
+        sucursal: parseInt(req.body.sucursal),
+      };
+
+      // forma original de hacer el flush
+      const input = req.body.sanitizedInput
+      const vehiculoNuevo = em.create(Vehiculo, input)
+      await em.flush()
+
+      // Devolver res
+      res.status(201).json({ message: 'Se cargó un nuevo vehículo', data: vehiculoNuevo })
+    } else {
+      // Caso en el que no se proporciona una imagen, es obligatoria
+      res.status(400).json({ message: 'No se proporcionó una imagen en la solicitud' })
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al procesar el formulario del nuevo vehiculo:', data: error })
+  }
 }
+
 
 async function update(req: Request, res: Response) {
   try {

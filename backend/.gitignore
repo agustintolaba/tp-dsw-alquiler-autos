@@ -11,6 +11,7 @@
 # production
 /build
 dist/
+images/
 
 # misc
 .DS_Store
