@@ -150,7 +150,7 @@ const CreateBooking = () => {
                             shouldDisableTime={disableNotWorkingTime}
                             onChange={(value) => onDateChange(value, false)}
                         />
-                        <span className="text-md font-light col-span-2">Total de días: <span className="font-bold">{formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span></span>
+                        <span className="text-md font-light sm:col-span-2">Total de días: <span className="font-bold">{formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span></span>
                         <TextField
                             name="tipoVehiculo"
                             label="Tipo de vehículo"
