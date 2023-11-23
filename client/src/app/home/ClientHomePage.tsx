@@ -38,7 +38,7 @@ export default function ClientHomePage() {
       try {
         const response = await apiClient.get('/tipovehiculo')
         const data = response.data
-        const list = data.data.map((item: any) => {
+        const list = data.types.map((item: any) => {
           return {
             id: item.id.toString(),
             nombre: item.nombre,

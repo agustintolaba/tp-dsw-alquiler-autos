@@ -1,10 +1,10 @@
 /*Para crear el componente de la lista de vehiculos*/
 'use client';
 import { useState, useEffect } from 'react';
-import VehiculoItem, {VehiculoItemProps} from '@/components/VehiculoItem';
+import VehiculoItem, {VehiculoItemProps} from '@/components/VehiculeItem';
 
 interface ShowVehiculosProps {
-  id: string;
+  id: string | null;
 }
 
 const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) =>{
@@ -30,11 +30,6 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) =>{
                             descripcion: item.tipoVehiculo.descripcion,
                             precio: item.tipoVehiculo.precio,
                             image: item.tipoVehiculo.image
-                        },
-                        seguro: {
-                            id: item.seguro.id.toString(),
-                            nombreSeguro: item.seguro.nombreSeguro,
-                            companiaSeguro: item.seguro.companiaSeguro
                         }
                     }
                 })
@@ -60,8 +55,7 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) =>{
                         capacidad={item.capacidad}
                         disponible={item.disponible}
                         image={item.image} 
-                        tipoVehiculo={item.tipoVehiculo}
-                        seguro={item.seguro}         
+                        tipoVehiculo={item.tipoVehiculo}      
                       />
                 ))
                 ) : (

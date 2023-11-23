@@ -2,7 +2,7 @@
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
-import VehiculoList from '@/components//VehiculoList';
+import VehiculoList from '@/components/VehiculesList';
 
 export interface TipoVehiculoProps {
   id: string; 

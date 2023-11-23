@@ -24,7 +24,7 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
 async function findAll(req: Request, res: Response) {
   try {
     const sucursales = await em.find(Sucursal, {}, { populate: ['localidad'] })
-    res.status(200).json({ message: 'Sucursales encontradas', data: sucursales })
+    res.status(200).json({ message: 'Sucursales encontradas', branches: sucursales })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron sucursales', data: error })
   }

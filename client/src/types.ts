@@ -3,7 +3,7 @@ export interface Identifiable {
 }
 
 export interface Descriptible {
-    description: string
+    descripcion: string
 }
 
 export type SelectMenuItem = Identifiable & Descriptible
@@ -19,7 +19,7 @@ export interface Usuario extends Identifiable {
     type: TipoUsuario
 }
 
-export interface Vehiculo {
+export interface Vehiculo extends Identifiable {
     id: number,
     marca: string,
     modelo: string,
@@ -28,11 +28,9 @@ export interface Vehiculo {
     año: string,
     image: string
     tipoVehiculo: TipoVehiculo
-    seguro: Seguro
 }
 
-export interface Reserva {
-    id: number,
+export interface Reserva extends Identifiable {
     fechaRealizacion: string,
     fechaDesde: string,
     fechaHasta: string,
@@ -43,16 +41,23 @@ export interface Reserva {
     usuario: Usuario
 }
 
-export interface TipoVehiculo {
-    id: number,
+export interface TipoVehiculo extends Identifiable {
     nombre: string,
     descripcion: string,
     precio: number,
     image: string
 }
 
-export interface Seguro {
-    id: number,
-    nombre: string,
-    compania: string
+export interface Sucursal extends Identifiable {
+    calle: string,
+    numeroCalle: string
+    localidad: Localidad
+}
+
+export interface Localidad extends Identifiable, Descriptible {    
+    provincia: Provincia    
+}
+
+export interface Provincia extends Identifiable, Descriptible {
+    localidades: Localidad[]    
 }

@@ -1,3 +1,4 @@
+import { SelectMenuItem } from "@/types";
 import dayjs from "dayjs";
 
 export const API_BASE_URL = 'http://localhost:3000/api/'
@@ -10,3 +11,21 @@ export const MIN_WORKING_HOUR = 9
 export const MAX_WORKING_HOUR = 17
 export const SIX_PM = dayjs().set('hour', MAX_WORKING_HOUR).startOf('hour');
 export const NINE_AM = dayjs().set('hour', MIN_WORKING_HOUR).startOf('hour');
+export const NO_ACCESS = 'No tiene acceso a este recurso';
+export const transmisions: SelectMenuItem[] = [{
+    id: 1,
+    descripcion: "AT"
+}, {
+    id: 2,
+    descripcion: "MT"
+}]
+export const seatings: SelectMenuItem[] = [{
+    id: 4,
+    descripcion: '4 Personas'
+}, {
+    id: 5,
+    descripcion: '5 Personas'
+}, {
+    id: 7,
+    descripcion: '7 Personas'
+}]

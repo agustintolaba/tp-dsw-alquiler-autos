@@ -5,8 +5,8 @@ import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 @Entity()
 export class Provincia extends BaseEntity{
   @Property({ nullable: false, unique: true, type: 'string', length: 45 })
-  descripcionProvincia!: string
+  descripcion!: string
   
   @OneToMany(() => Localidad, (localidad) => localidad.provincia, {cascade: [Cascade.ALL], })
-  localidad!: Localidad
+  localidades!: Localidad
 }

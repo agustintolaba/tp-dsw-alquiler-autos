@@ -36,13 +36,13 @@ const Bookings = () => {
         <LoadableScreen isLoading={isLoading}>
             <div className="flex flex-col items-center p-8 gap-8" >
                 <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
-                    <span className='text-4xl font-extralight'>{isAdmin ? 'Reservas' : 'Mis reservas'}</span>
-                    <Link href='/home/bookings/create'>
+                    <span className='text-4xl font-extralight'>{isAdmin ? 'Administración de reservas' : 'Mis reservas'}</span>
+                    {!isAdmin && <Link href='/home/bookings/create'>
                         <Button
                             variant='outlined'
                             color='success'
                         >Hacer una nueva reserva</Button>
-                    </Link>
+                    </Link>}
                 </div>
                 {bookings.length == 0 && (
                     <span className="text-lg text-red-300">No hay reservas para mostrar</span>

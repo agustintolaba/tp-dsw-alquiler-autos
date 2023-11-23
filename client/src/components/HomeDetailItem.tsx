@@ -2,7 +2,7 @@
 import { Button } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
-import VehiculoList from '@/components//VehiculoList';
+import VehiculoList from '@/components/VehiculesList';
 
 export interface HomeDetailItemProps {
   id: string;
@@ -47,7 +47,7 @@ const HomeDetailItem: React.FC<HomeDetailItemProps> = ({ id, nombre, descripcion
           >
             {!showVehiculos ? 'Ver vehiculos disponibles' : 'Ver menos'}</Button>
         </div>
-        {showVehiculos && <VehiculoList idTipoVehiculo={id} />}
+        {showVehiculos && <VehiculoList id={id} />}
       </div>
     </div>
   );
