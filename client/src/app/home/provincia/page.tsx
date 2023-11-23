@@ -7,7 +7,7 @@ import ProvinciaList from "@/components/ProvinciaList";
 
 interface ProvinciaFormData{
   id: number,
-  nombre:string
+  descripcionProvincia:string
 }
 
 const Provincia=()=>{
@@ -16,7 +16,7 @@ const Provincia=()=>{
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [formData, setFormData] = useState<ProvinciaFormData>({
         id: -1,
-        nombre: ""
+        descripcionProvincia: ""
     })
     /*const [formErrors, setFormErrors] = useState<LoginFormData>({
         email: "",
@@ -80,7 +80,7 @@ const Provincia=()=>{
                         label="Nombre"
                         variant="outlined"
                         fullWidth
-                        value={formData.nombre}
+                        value={formData.descripcionProvincia}
                         onChange={handleInputChange}
                         //error={formErrors.email.length > 0}
                         //helperText={formErrors.email}
