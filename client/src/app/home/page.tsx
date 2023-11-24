@@ -4,7 +4,7 @@ import apiClient from '@/services/api';
 import { useRouter } from 'next/navigation';
 import ClientHomePage from '../../components/ClientHomePage';
 import { verifyAdmin } from '@/services/user';
-import { handleError } from '@/utils/errorHandling';
+import { alertError } from '@/utils/errorHandling';
 import LoadableScreen from '@/components/LoadableScreen';
 
 
@@ -21,7 +21,7 @@ export default function Home() {
         setIsAdmin(isAdmin)
         setIsLoading(false)
       } catch (error: any) {
-        handleError(error)
+        alertError(error)
         router.replace("/")
       }
     }

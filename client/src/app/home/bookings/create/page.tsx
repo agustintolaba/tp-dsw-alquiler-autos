@@ -3,7 +3,7 @@ import LoadableScreen from "@/components/LoadableScreen";
 import apiClient from "@/services/api";
 import { SelectMenuItem, TipoVehiculo } from "@/types";
 import { MAX_WORKING_HOUR, NINE_AM, transmisions } from "@/utils/constants";
-import { handleError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/errorHandling";
 import { disableNotWorkingTime, getDateError } from "@/utils/validators";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -56,7 +56,7 @@ const CreateBooking = () => {
                 }
                 setIsLoading(false)
             } catch (error: any) {
-                handleError(error)
+                alertError(error)
                 router.replace('/')
             }
         }

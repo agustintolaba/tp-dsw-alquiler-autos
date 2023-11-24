@@ -1,7 +1,7 @@
 'use client'
 import VehiculoList from "@/components/VehiculesList"
 import { verifyAdmin } from "@/services/user"
-import { handleError } from "@/utils/errorHandling"
+import { alertError } from "@/utils/errorHandling"
 import { Button } from "@mui/material"
 import Link from "next/link"
 import { useRouter } from "next/navigation"

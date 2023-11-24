@@ -115,7 +115,7 @@ try {
 
 async function add(req: Request, res: Response) {
   try {
-    const image = req.file
+    const image = req.body.file
     if (image) {
       // Para subir la imagen a Cloudinary
       const result = await cloudinary.uploader.upload(image.path, {

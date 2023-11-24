@@ -4,7 +4,7 @@ import apiClient from "@/services/api";
 import { getBookings } from "@/services/booking";
 import { verifyAdmin } from "@/services/user";
 import { Reserva } from "@/types";
-import { handleError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/errorHandling";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ const Bookings = () => {
                 setIsAdmin(isAdmin)
                 setIsLoading(false)
             } catch (error: any) {
-                handleError(error)
+                alertError(error)
             }
         }
         fetchData()

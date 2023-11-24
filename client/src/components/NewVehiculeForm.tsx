@@ -1,7 +1,6 @@
 'use client';
-import { getVehicleTypesOptions } from "@/services/vehicleTypes";
 import { SelectMenuItem } from "@/types";
-import { handleError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/errorHandling";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect } from "react";
 import LoadableScreen from "./LoadableScreen";
@@ -9,7 +8,7 @@ import { Button, MenuItem, TextField } from "@mui/material";
 import { getBranchOptions } from "@/services/branch";
 import apiClient from "@/services/api";
 import { verifyAdmin } from "@/services/user";
-import { seatings, transmisions } from "@/utils/constants";
+import { NO_ACCESS, seatings, transmisions } from "@/utils/constants";
 import VehicleTypesSelectField from "./VehicleTypesSelectField";
 
 interface INewVehicleFormData {
@@ -44,6 +43,11 @@ const NewVehicleForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const isAdmin = await verifyAdmin()
+                if (!isAdmin) {
+                    alert(NO_ACCESS)
+                    router.replace('/home')
+                }
                 const locations = await getBranchOptions()
                 setOfficeLocations(locations)
 
@@ -55,7 +59,7 @@ const NewVehicleForm = () => {
                 }
                 setIsLoading(false)
             } catch (error: any) {
-                handleError(error)
+                alertError(error)
                 router.replace('/')
             }
         };
@@ -81,7 +85,7 @@ const NewVehicleForm = () => {
         if (files && files.length > 0) {
             setFormData((prevFormData) => {
                 const newFormData = { ...prevFormData, image: files[0] }
-
+                console.log(newFormData)
                 enableButton(newFormData)
 
                 return newFormData
@@ -103,21 +107,22 @@ const NewVehicleForm = () => {
     }
 
     const add = async () => {
-        try {
-            apiClient.post('/vehicle', formData)
-                .then((res) => {
-                    if (confirm("Vehículo cargado correctamente, ¿desea cargar otro?")) {
-                        cleanFields()
-                    } else {
-                        router.push('/home')
-                    }
-                })
-
-        } catch (error: any) {
-            alert("Error al cargar vehículo")
-            console.error("Error:", error.message);
-        }
-    };
+        apiClient.post('/vehiculo', formData, {
+            headers: {
+                'Content-Type': `multipart/form-data`,
+            }
+        })
+            .then((res) => {
+                if (confirm("Vehículo cargado correctamente, ¿desea cargar otro?")) {
+                    cleanFields()
+                } else {
+                    router.push('/home')
+                }
+            })
+            .catch((error: any) => {
+                alertError(error)
+            })
+    }
 
     const cleanFields = () => {
         setFormData(emptyVehicleForm)
@@ -205,6 +210,7 @@ const NewVehicleForm = () => {
                         variant='outlined'
                         color="success"
                         disabled={!buttonEnabled}
+                        type="submit"
                     >Agregar vehículo</Button>
 
                     <Button
