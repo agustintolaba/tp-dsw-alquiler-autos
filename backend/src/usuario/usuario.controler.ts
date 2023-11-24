@@ -3,7 +3,6 @@ import { orm } from "../shared/db/orm.js"
 import { Usuario } from "./usuario.entity.js"
 import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
 import { generateAccessToken } from "../shared/accessToken.js"
-import { TipoUsuario } from "../tipousuario/tipousuario.entity.js"
 
 const em = orm.em
 
@@ -54,9 +53,8 @@ async function login(req: Request, res: Response) {
     const usuario = await em.findOne(Usuario, { email, password }, { populate: ['tipoUsuario'] }) 
     if (usuario) {
       usuario.password = ""
-
       const accessToken: string = generateAccessToken(usuario)
-      console.log(accessToken)
+
       res.status(200).json({ message: 'Logueado correctamente', token: accessToken })
     } else {
       res.status(500).json({ message: 'Los datos ingresados son incorrectos' })

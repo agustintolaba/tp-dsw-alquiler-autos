@@ -1,67 +1,61 @@
 /*Para crear el componente de la lista de vehiculos*/
 'use client';
 import { useState, useEffect } from 'react';
-import VehiculoItem, {VehiculoItemProps} from '@/components/VehiculeItem';
+import VehiculoItem from '@/components/VehiculeItem';
+import { Vehiculo } from '@/types';
+import { verifyAdmin } from '@/services/user';
+import { getVehicleTypes } from '@/services/vehicleTypes';
+import { getVehicles } from '@/services/vehicle';
 
 interface ShowVehiculosProps {
-  id: string | null;
+  id: number | null;
 }
 
-const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) =>{
-  const [vehiculoItems, setVehiculoItems] = useState([])
-  
+const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) => {
+  const [vehicles, setVehicles] = useState<Vehiculo[]>()
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      verifyAdmin()
+        .then((isAdmin) => {
+          setIsAdmin(isAdmin)
+        })
+        .catch((error: any) => {
+          alert('Error al verificar acceso')
+          history.back()
+        })
+    }
+    fetchData()
+  })
+
   useEffect(() => {
     const fetchVehiculoItems = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/api/tipovehiculo/${id}/vehiculo`)
-            const data = await response.json()
-            const list = data.data
-                .map((item: any) => {
-                    return {
-                        id: item.id.toString(),
-                        nombre: item.nombre,
-                        trasmision: item.trasmision,
-                        capacidad: item.capacidad.toString(),
-                        disponible: item.disponible.toString(),
-                        image: item.image,
-                        tipoVehiculo: {
-                            id: item.tipoVehiculo.id.toString(),
-                            nombre: item.tipoVehiculo.nombre,
-                            descripcion: item.tipoVehiculo.descripcion,
-                            precio: item.tipoVehiculo.precio,
-                            image: item.tipoVehiculo.image
-                        }
-                    }
-                })
-              
-            setVehiculoItems(list)
-        } catch (error) {
-            console.error('Error:', error)
-        }
+      try {
+        const vehicles = await getVehicles(id)
+        setVehicles(vehicles)
+      } catch (error) {
+        console.error('Error:', error)
+      }
     }
     fetchVehiculoItems()
-}, [id])
+  }, [id])
 
   return (
-    <main className="flex flex-col p-8 gap-12">      
-       <div className="flex flex-col gap-12 max-w-4xl">
-          {vehiculoItems.length > 0 ? (
-                vehiculoItems.map((item: VehiculoItemProps) => (
-                      <VehiculoItem
-                        key={item.id}
-                        id={item.id}
-                        nombre={item.nombre}
-                        trasmision={item.trasmision}
-                        capacidad={item.capacidad}
-                        disponible={item.disponible}
-                        image={item.image} 
-                        tipoVehiculo={item.tipoVehiculo}      
-                      />
-                ))
-                ) : (
-                    <p>No hay vehículos disponibles por el momento!</p>
-                )}
-        </div> 
+    <main className="flex flex-col p-8 gap-12">
+      <div className="flex flex-col gap-12 max-w-4xl">
+        {vehicles ? (
+          vehicles.map((vehicle: Vehiculo) => (
+            <VehiculoItem
+              key={vehicle.id}
+              isAdmin={isAdmin}
+              vehicle={vehicle}              
+            />
+          ))
+        ) : (
+          <p>No hay vehículos disponibles por el momento!</p>
+        )}
+      </div>
     </main>
   );
 }

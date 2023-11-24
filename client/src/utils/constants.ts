@@ -29,3 +29,7 @@ export const seatings: SelectMenuItem[] = [{
     id: 7,
     descripcion: '7 Personas'
 }]
+export const transmisionDescriptions: { [key: string]: string } = {
+    'AT': 'Automático',
+    'MT': 'Manual'
+}

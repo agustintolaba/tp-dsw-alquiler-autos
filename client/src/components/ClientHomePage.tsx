@@ -31,7 +31,6 @@ const homeItems = [
 
 export default function ClientHomePage() {
   const [homeDetailItems, setHomeDetailItems] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => { // VER SI SE PUEDE CAMBIAR A SSR
     const fetchHomeDetailItems = async () => {

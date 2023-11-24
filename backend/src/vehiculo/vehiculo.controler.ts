@@ -35,7 +35,7 @@ function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) 
 async function findAll(req: Request, res: Response) {
   try {
     const vehiculos = await em.find(Vehiculo, {}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
-    res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+    res.status(200).json({ message: 'Vehiculos encontrados', vehicles: vehiculos })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron vehiculos', data: error })
   }

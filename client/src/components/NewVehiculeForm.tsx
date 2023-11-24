@@ -10,30 +10,7 @@ import { getBranchOptions } from "@/services/branch";
 import apiClient from "@/services/api";
 import { verifyAdmin } from "@/services/user";
 import { seatings, transmisions } from "@/utils/constants";
-
-interface OpcionTipo {
-    id: string,
-    nombre: string,
-    descripcion: string,
-    precio: string,
-    image: string
-}
-
-interface OpcionSeguro {
-    id: string,
-    nombreSeguro: string,
-    companiaSeguro: string
-}
-
-interface OpcionSucursal {
-    id: string,
-    calleSucursal: string,
-    numeroSucursal: string,
-    localidad: {
-        id: string,
-        nombreLocalidad: string
-    }
-}
+import VehicleTypesSelectField from "./VehicleTypesSelectField";
 
 interface INewVehicleFormData {
     marca: string
@@ -46,53 +23,34 @@ interface INewVehicleFormData {
     sucursal: number
 }
 
+const emptyVehicleForm = {
+    marca: "",
+    modelo: "",
+    transmision: transmisions.at(0)?.descripcion || 'Automático',
+    año: "",
+    capacidad: seatings.at(0)?.id || 1,
+    image: null,
+    tipoVehiculo: 1,
+    sucursal: 1
+}
+
 const NewVehicleForm = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
-    const [vehicleTypes, setVehicleTypes] = useState<SelectMenuItem[]>()
+    const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [officeLocations, setOfficeLocations] = useState<SelectMenuItem[]>()
-    const [formData, setFormData] = useState<INewVehicleFormData>({
-        marca: "",
-        modelo: "",
-        transmision: transmisions.at(0)?.descripcion || 'Automático',
-        año: "",
-        capacidad: seatings.at(0)?.id || 4,
-        image: null,
-        tipoVehiculo: 0,
-        sucursal: 0
-    })
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => {
-            const newFormData = { ...prevFormData, [name]: value }
-
-            // enableButton(newFormData, emailError, passwordError, repeatPasswordError)
-            return newFormData
-        });
-    };
-
-    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            setFormData((prevFormData) => ({ ...prevFormData, image: files[0] }))
-        }
-    }
+    const [formData, setFormData] = useState<INewVehicleFormData>(emptyVehicleForm)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const vehicleTypes = await getVehicleTypesOptions()
-                setVehicleTypes(vehicleTypes)
-
                 const locations = await getBranchOptions()
                 setOfficeLocations(locations)
 
-                if (vehicleTypes.length >= 1 && locations.length >= 1) {
+                if (locations.length >= 1) {
                     setFormData({
                         ...formData,
-                        sucursal: locations.at(0)?.id || 1,
-                        tipoVehiculo: vehicleTypes.at(0)?.id || 1
+                        sucursal: locations.at(0)?.id || 0
                     })
                 }
                 setIsLoading(false)
@@ -107,6 +65,42 @@ const NewVehicleForm = () => {
                 setIsLoading(false)
             })
     }, [])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => {
+            const newFormData = { ...prevFormData, [name]: value }
+
+            enableButton(newFormData)
+            return newFormData
+        });
+    };
+
+    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setFormData((prevFormData) => {
+                const newFormData = { ...prevFormData, image: files[0] }
+
+                enableButton(newFormData)
+
+                return newFormData
+            })
+        }
+    }
+
+    const enableButton = (formData: INewVehicleFormData) => {
+        const someFieldIsEmpty = formData.marca.length == 0
+            || formData.modelo.length == 0
+            || formData.image == null
+
+        if (someFieldIsEmpty) {
+            setButtonEnabled(false)
+            return
+        }
+
+        setButtonEnabled(true)
+    }
 
     const add = async () => {
         try {
@@ -126,18 +120,8 @@ const NewVehicleForm = () => {
     };
 
     const cleanFields = () => {
-        setFormData({
-            marca: "",
-            modelo: "",
-            transmision: "",
-            año: "",
-            capacidad: seatings.at(0)?.id || 1,
-            image: null,
-            tipoVehiculo: 1,
-            sucursal: 1
-        })
+        setFormData(emptyVehicleForm)
     };
-
 
     return (
         <LoadableScreen isLoading={isLoading}>
@@ -184,18 +168,8 @@ const NewVehicleForm = () => {
                     >
                         {seatings?.map(s => <MenuItem key={s.id} value={s.id}>{s.descripcion}</MenuItem>)}
                     </TextField>
-                    <TextField
-                        name="tipoVehiculo"
-                        label="Tipo de vehículo"
-                        variant="outlined"
-                        select
-                        InputLabelProps={{ shrink: true }}
-                        fullWidth
-                        value={formData.tipoVehiculo}
-                        onChange={handleInputChange}
-                    >
-                        {vehicleTypes?.map(t => <MenuItem key={t.id} value={t.id}>{t.descripcion}</MenuItem>)}
-                    </TextField>
+
+                    <VehicleTypesSelectField value={formData.tipoVehiculo} onChange={handleInputChange} />
 
                     <TextField
                         name="sucursal"
@@ -230,6 +204,7 @@ const NewVehicleForm = () => {
                         className="sm:col-span-2"
                         variant='outlined'
                         color="success"
+                        disabled={!buttonEnabled}
                     >Agregar vehículo</Button>
 
                     <Button

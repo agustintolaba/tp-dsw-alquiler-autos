@@ -48,7 +48,7 @@ async function findFilter(req: Request, res: Response) {
     if (tipoVehiculo) {
       const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
       if (vehiculos.length > 0) {
-        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+        res.status(200).json({ message: 'Vehiculos encontrados', vehicles: vehiculos })
       } else {
         res.status(200).json({ message: 'No se encontraron vehiculos de tipo de vehiculo especifico', data: vehiculos })
       }
