@@ -46,7 +46,7 @@ async function findFilter(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id)
     const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
     if (tipoVehiculo) {
-      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', /*'seguro',*/ 'sucursal'] })
       if (vehiculos.length > 0) {
         res.status(200).json({ message: 'Vehiculos encontrados', vehicles: vehiculos })
       } else {

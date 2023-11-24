@@ -15,7 +15,7 @@ interface INewVehicleFormData {
     marca: string
     modelo: string
     transmision: string
-    año: string
+    year: string
     capacidad: number
     image: Blob | null
     tipoVehiculo: number
@@ -26,12 +26,12 @@ const emptyVehicleForm = {
     marca: "",
     modelo: "",
     transmision: transmisions.at(0)?.descripcion || 'Automático',
-    año: "",
+    year: "",
     capacidad: seatings.at(0)?.id || 1,
     image: null,
     tipoVehiculo: 1,
     sucursal: 1
-}
+    }
 
 const NewVehicleForm = () => {
     const router = useRouter()
@@ -39,6 +39,7 @@ const NewVehicleForm = () => {
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false)
     const [officeLocations, setOfficeLocations] = useState<SelectMenuItem[]>()
     const [formData, setFormData] = useState<INewVehicleFormData>(emptyVehicleForm)
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -150,6 +151,13 @@ const NewVehicleForm = () => {
                         name="modelo"
                         label="Modelo"
                         value={formData.modelo}
+                        onChange={handleInputChange}
+                    />
+                    <TextField
+                        type="text"
+                        name="year"
+                        label="Año"
+                        value={formData.year}
                         onChange={handleInputChange}
                     />
                     <TextField
