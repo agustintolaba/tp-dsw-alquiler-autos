@@ -1,5 +1,5 @@
 ### Obtener todas los vehiculos 
-GET http://localhost:3000/api/vehiculo
+GET http://localhost:3000/api/vehiculo/find
 
 
 ### Obtener un vehiculo
@@ -20,9 +20,8 @@ Content-Type: application/json
   "modelo": "Onix",
   "transmision": "Manual",
   "capacidad": 4,
-  "image":"/assets/images/chevroletCorsa.png",
+  "image":"/assets/images/lamborghini.png",
   "tipoVehiculo": 1,
-  "seguro": 1,
   "sucursal": 1
 }
 

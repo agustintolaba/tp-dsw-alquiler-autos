@@ -14,7 +14,6 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     fechaNacimiento: req.body.fechaNacimiento,
     numeroDocumento: req.body.numeroDocumento,
     telefono: req.body.telefono,
-    fechaContratacion: req.body.fechaContratacion,
     email: req.body.email,
     password: req.body.password,
     tipoUsuario: req.body.tipoUsuario
@@ -74,9 +73,9 @@ async function signup(req: Request, res: Response) {
     })
   } catch (error: any) {
     if (isSQLError(error)) {
-      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario") })
+      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario"), data: error })
     } else {
-      res.status(500).json({ message: 'No se pudo completar el registro de usuario' })
+      res.status(500).json({ message: 'No se pudo completar el registro de usuario', data: error })
     }
   }
 }

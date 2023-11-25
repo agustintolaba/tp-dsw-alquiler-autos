@@ -7,7 +7,7 @@ const em= orm.em
 function sanitizeProvinciaInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    descripcionProvincia: req.body.descripcionProvincia
+    descripcion: req.body.descripcion
   }
   //MAS VALIDACIONES ACA
   //Sepuede detectar errores e informar desde aca

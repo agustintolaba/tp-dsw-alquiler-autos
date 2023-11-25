@@ -4,52 +4,40 @@ import { useState, useEffect } from 'react';
 import VehiculoItem from '@/components/VehiculeItem';
 import { Vehiculo } from '@/types';
 import { verifyAdmin } from '@/services/user';
-import { getVehicleTypes } from '@/services/vehicleTypes';
 import { getVehicles } from '@/services/vehicle';
+import { alertError } from '@/utils/errorHandling';
 
-interface ShowVehiculosProps {
+interface IVehiclesListProps {
+  isAdmin: boolean;
   id: number | null;
 }
 
-const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) => {
-  const [vehicles, setVehicles] = useState<Vehiculo[]>()
-  const [isAdmin, setIsAdmin] = useState(false);
+const VehiclesList: React.FC<IVehiclesListProps> = ({ isAdmin, id }) => {
+  const [vehicles, setVehicles] = useState<Vehiculo[]>();
 
   useEffect(() => {
     const fetchData = async () => {
-      verifyAdmin()
-        .then((isAdmin) => {
-          setIsAdmin(isAdmin)
+      console.log('vehicleListID:' + id);
+      getVehicles(id)
+        .then((vehicles) => {
+          setVehicles(vehicles);
         })
         .catch((error: any) => {
-          alert('Error al verificar acceso')
-          history.back()
-        })
-    }
-    fetchData()
-  })
-
-  useEffect(() => {
-    const fetchVehiculoItems = async () => {
-      try {
-        const vehicles = await getVehicles(id)
-        setVehicles(vehicles)
-      } catch (error) {
-        console.error('Error:', error)
-      }
-    }
-    fetchVehiculoItems()
-  }, [id])
+          alertError(error);
+        });
+    };
+    fetchData();
+  }, []);
 
   return (
     <main className="flex flex-col p-8 gap-12">
-      <div className="flex flex-col gap-12 max-w-4xl">
+      <div className="flex flex-col gap-8">
         {vehicles ? (
           vehicles.map((vehicle: Vehiculo) => (
             <VehiculoItem
               key={vehicle.id}
               isAdmin={isAdmin}
-              vehicle={vehicle}              
+              vehicle={vehicle}
             />
           ))
         ) : (
@@ -58,6 +46,6 @@ const VehiculoList: React.FC<ShowVehiculosProps> = ({ id }) => {
       </div>
     </main>
   );
-}
+};
 
-export default VehiculoList
+export default VehiclesList;

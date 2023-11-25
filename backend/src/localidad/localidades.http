@@ -5,14 +5,13 @@ GET http://localhost:3000/api/localidad
 ### Obtener una localidad 
 GET http://localhost:3000/api/localidad/1
 
-### Crear una nueva provincia
+### Crear una nueva localidad
 POST http://localhost:3000/api/localidad
 Content-Type: application/json
 
 {
-  "id":"3",
-  "nombreLocalidad": "Mar del Plata",
-  "idProvincia": "3"
+  "descripcion": "Rosario",
+  "provincia": "1"
 }
 
 ### Modificar una nueva localidad (recurso completo e idempotente)

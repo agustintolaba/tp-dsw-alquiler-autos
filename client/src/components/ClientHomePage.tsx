@@ -1,10 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
 import HomeGridItem, { HomeGridItemProps } from '@/components/HomeGridItem';
-import HomeDetailItem, { HomeDetailItemProps } from '@/components/HomeDetailItem';
+import HomeDetailItem from '@/components/HomeDetailItem';
 import apiClient from '@/services/api';
 import Link from 'next/link';
 import { Button } from '@mui/material';
+import { getVehicleTypes } from '@/services/vehicleTypes';
+import { TipoVehiculo } from '@/types';
 
 const homeItems = [
   {
@@ -27,42 +29,39 @@ const homeItems = [
   },
 ];
 
-
-
 export default function ClientHomePage() {
-  const [homeDetailItems, setHomeDetailItems] = useState([]);
+  const [vehicleTypes, setVehicleTypes] = useState<TipoVehiculo[]>([]);
 
-  useEffect(() => { // VER SI SE PUEDE CAMBIAR A SSR
-    const fetchHomeDetailItems = async () => {
+  useEffect(() => {
+    // VER SI SE PUEDE CAMBIAR A SSR
+    const fetchVehicleTypes = async () => {
       try {
-        const response = await apiClient.get('/tipovehiculo')
-        const data = response.data
-        const list = data.types.map((item: any) => {
+        const vehicleTypes = await getVehicleTypes();
+        const list = vehicleTypes.map((item: TipoVehiculo) => {
           return {
-            id: item.id.toString(),
+            id: item.id,
             nombre: item.nombre,
             descripcion: item.descripcion,
             precio: item.precio,
-            image: item.image
+            image: item.image,
           };
         });
         console.log(list);
-        setHomeDetailItems(list);
+        setVehicleTypes(list);
       } catch (error) {
         console.error('Error:', error);
       }
     };
-    fetchHomeDetailItems();
+    fetchVehicleTypes();
   }, []);
 
   return (
     <main className="flex flex-col p-8 gap-12">
-      <div className='w-full flex justify-end'>
-        <Link href='/home/bookings/create'>
-          <Button
-            variant='outlined'
-            color='success'
-          >Hacer una nueva reserva</Button>
+      <div className="w-full flex justify-end">
+        <Link href="/home/bookings/create">
+          <Button variant="outlined" color="success">
+            Hacer una nueva reserva
+          </Button>
         </Link>
       </div>
       <div className="flex flex-row flex-wrap gap-12 justify-center">
@@ -78,7 +77,7 @@ export default function ClientHomePage() {
       </div>
 
       <div className="flex flex-col justify-center items-center gap-16">
-        <div className='flex flex-col max-w-6xl gap-8'>
+        <div className="flex flex-col max-w-6xl gap-8">
           <span className="text-center text-4xl font-extralight">
             Los mejores alquileres de coches y furgonetas en Rosario
           </span>
@@ -90,15 +89,8 @@ export default function ClientHomePage() {
         </div>
 
         <div className="flex flex-col gap-12 max-w-4xl">
-          {homeDetailItems.map((item: HomeDetailItemProps) => (
-            <HomeDetailItem
-              key={item.id}
-              id={item.id}
-              nombre={item.nombre}
-              descripcion={item.descripcion}
-              precio={item.precio}
-              image={item.image}
-            />
+          {vehicleTypes.map((tv: TipoVehiculo) => (
+            <HomeDetailItem key={tv.id} vehicleType={tv} />
           ))}
         </div>
       </div>

@@ -10,9 +10,9 @@ POST http://localhost:3000/api/sucursal
 Content-Type: application/json
 
 {
-  "calleSucursal": "Presidente Anchorena",
-  "numeroCalleSucursal": "1222",
-  "idLocalidad": "1"
+  "calle": "Presidente Anchorena",
+  "numeroCalle": "1222",
+  "localidad": "1"
 }
 
 ### Modificar una nueva sucursal (recurso completo e idempotente)
@@ -20,9 +20,9 @@ PUT http://localhost:3000/api/sucursal/3
 Content-Type: application/json
 
 {
-  "id":"3",
-  "calleSucursal": "Maipu",
-  "numeroCalleSucursal": "4055",
+  "id":"1",
+  "calle": "Maipu",
+  "numeroCalle": "4055",
   "idLocalidad": "3"
 }
 
@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
   "id":"2",
-  "calleSucursal": "Laprida"
+  "calle": "Laprida"
 }
 
 ###Borar una sucursal

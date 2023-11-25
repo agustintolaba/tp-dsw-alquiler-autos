@@ -30,6 +30,6 @@ export const seatings: SelectMenuItem[] = [{
     descripcion: '7 Personas'
 }]
 export const transmisionDescriptions: { [key: string]: string } = {
-    'AT': 'Automático',
+    'AT': 'Automática',
     'MT': 'Manual'
 }
