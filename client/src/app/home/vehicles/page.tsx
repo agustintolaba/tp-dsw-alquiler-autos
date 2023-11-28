@@ -1,5 +1,5 @@
 'use client';
-import VehiclesList from '@/components/VehiculesList';
+import VehiclesList from '@/components/lists/VehiculesList';
 import { verifyAdmin } from '@/services/user';
 import { alertError } from '@/utils/errorHandling';
 import { Button } from '@mui/material';

@@ -3,7 +3,7 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import LoadableScreen from "@/components/LoadableScreen";
-import ProvinciaList from "@/components/ProvinciaList";
+import ProvinciaList from "@/components/lists/ProvinciaList";
 
 interface ProvinciaFormData{
   id: number,

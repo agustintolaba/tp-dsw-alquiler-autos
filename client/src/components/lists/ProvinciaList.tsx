@@ -1,7 +1,7 @@
 /*Para crear el componente de la lista de Provincias*/
 'use client';
 import { useState, useEffect } from 'react';
-import ProvinciaItem, {Provincia} from './ProvinciaItem';
+import ProvinciaItem, {Provincia} from '../items/ProvinciaItem';
 
 
 
