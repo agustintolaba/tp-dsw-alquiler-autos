@@ -43,7 +43,7 @@ const MenuAppBar: React.FC<MenuAppBarProps> = ({ isAdmin }) => {
       position="static"
     >
       <Toolbar>
-        <TemporaryDrawer isAdmin={isAdmin} />
+        <TemporaryDrawer />
         <Link href='/home' className='flex flex-row items-center gap-4 justify-center grow opacity-50'>
           <span className='hidden sm:flex text-xl text-white'>RUEDA</span>
           <Image

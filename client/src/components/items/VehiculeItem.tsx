@@ -13,8 +13,8 @@ interface VehicleListItemProps {
 }
 
 const VehicleListItem: React.FC<VehicleListItemProps> = ({
-  isAdmin = false,
-  isBooking = false,
+  isAdmin,
+  isBooking,
   vehicle,
 }) => {
   const { id, image, marca, modelo, capacidad, transmision } = vehicle;
@@ -32,9 +32,9 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
           <span className="font-bold text-2xl tracking-wider">
             {marca} {modelo}
           </span>
-          <div className="flex flex-col items-start gap-2 text-white">
+          <div className="flex flex-col items-start gap-1 text-white">
             <div className="flex flex-row gap-1 justify-center items-center">
-              <span className="font-semibold">Capacidad: </span>
+              <span className="font-semibold">Capacidad:</span>
               <span className="flex items-center gap-1">
                 {capacidad} <Person fontSize="small" />
               </span>

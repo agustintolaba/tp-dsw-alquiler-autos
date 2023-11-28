@@ -64,7 +64,7 @@ const Login: React.FC = () => {
                 if (axios.isAxiosError(error)) {
                     alert(error.response?.data.message)
                 } else {
-                    console.log(error)
+                    console.error(error)
                     if (error.message) {
                         alert(error.message)
                     } else {
