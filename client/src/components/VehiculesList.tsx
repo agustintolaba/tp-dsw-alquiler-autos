@@ -1,23 +1,21 @@
 /*Para crear el componente de la lista de vehiculos*/
 'use client';
 import { useState, useEffect } from 'react';
-import VehiculoItem from '@/components/VehiculeItem';
+import VehiculoItem from '@/components/items/VehiculeItem';
 import { Vehiculo } from '@/types';
-import { verifyAdmin } from '@/services/user';
 import { getVehicles } from '@/services/vehicle';
 import { alertError } from '@/utils/errorHandling';
 
 interface IVehiclesListProps {
   isAdmin: boolean;
-  id: number | null;
+  vehicleTypeId: number | null;
 }
 
-const VehiclesList: React.FC<IVehiclesListProps> = ({ isAdmin, id }) => {
+const VehiclesList: React.FC<IVehiclesListProps> = ({ isAdmin, vehicleTypeId: id }) => {
   const [vehicles, setVehicles] = useState<Vehiculo[]>();
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('vehicleListID:' + id);
       getVehicles(id)
         .then((vehicles) => {
           setVehicles(vehicles);
@@ -37,6 +35,7 @@ const VehiclesList: React.FC<IVehiclesListProps> = ({ isAdmin, id }) => {
             <VehiculoItem
               key={vehicle.id}
               isAdmin={isAdmin}
+              isBooking={false}
               vehicle={vehicle}
             />
           ))

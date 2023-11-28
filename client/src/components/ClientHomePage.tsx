@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import HomeGridItem, { HomeGridItemProps } from '@/components/HomeGridItem';
-import HomeDetailItem from '@/components/HomeDetailItem';
+import HomeGridItem, { HomeGridItemProps } from '@/components/items/HomeGridItem';
+import HomeDetailItem from '@/components/items/HomeDetailItem';
 import apiClient from '@/services/api';
 import Link from 'next/link';
 import { Button } from '@mui/material';

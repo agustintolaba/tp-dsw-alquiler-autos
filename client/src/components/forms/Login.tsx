@@ -6,7 +6,7 @@ import { Button, TextField } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import LoadableScreen from "./LoadableScreen";
+import LoadableScreen from "../LoadableScreen";
 
 export interface LoginFormData {
     email: string;

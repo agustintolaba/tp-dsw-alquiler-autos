@@ -23,9 +23,9 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
       <Image
         src={image}
         alt={'vehiculo'}
-        width={280}
-        height={280}
-        className="object-contain"
+        width={200}
+        height={200}
+        className="object-cover"
       />
       <div className="flex flex-col justify-end items-center gap-6 sm:items-end">
         <div className="flex flex-col items-start gap-4 text-white">
@@ -46,6 +46,10 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
           </div>
         </div>
       </div>
+      {isBooking && <Button
+      variant='outlined'
+      color='success'
+      >Lo quiero!</Button>}
     </div>
   );
 };

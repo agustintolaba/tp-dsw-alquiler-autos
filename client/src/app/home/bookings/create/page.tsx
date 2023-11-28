@@ -61,6 +61,7 @@ const CreateBooking = () => {
             }
         }
         fetchData()
+        enableButton(formData)
     }, [])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

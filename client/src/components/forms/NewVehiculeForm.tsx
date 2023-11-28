@@ -3,13 +3,13 @@ import { SelectMenuItem } from '@/types';
 import { alertError } from '@/utils/errorHandling';
 import { useRouter } from 'next/navigation';
 import { useState, ChangeEvent, useEffect } from 'react';
-import LoadableScreen from './LoadableScreen';
+import LoadableScreen from '../LoadableScreen';
 import { Button, MenuItem, TextField } from '@mui/material';
 import { getBranchOptions } from '@/services/branch';
 import apiClient from '@/services/api';
 import { verifyAdmin } from '@/services/user';
 import { NO_ACCESS, seatings, transmisions } from '@/utils/constants';
-import VehicleTypesSelectField from './VehicleTypesSelectField';
+import VehicleTypesSelectField from '../VehicleTypesSelectField';
 
 interface INewVehicleFormData {
   marca: string;

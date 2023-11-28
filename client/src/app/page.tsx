@@ -3,9 +3,9 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Login from '@/components/Login';
+import Login from '@/components/forms/Login';
 import Image from 'next/image';
-import SignUp from '@/components/SignUp';
+import SignUp from '@/components/forms/SignUp';
 
 interface TabPanelProps {
   children?: React.ReactNode;

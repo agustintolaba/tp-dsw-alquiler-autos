@@ -1,5 +1,5 @@
 'use client'
-import NewVehicleForm from "@/components/NewVehiculeForm"
+import NewVehicleForm from "@/components/forms/NewVehiculeForm"
 import { verifyAdmin } from "@/services/user"
 import { NO_ACCESS } from "@/utils/constants"
 import { useRouter } from "next/navigation"
