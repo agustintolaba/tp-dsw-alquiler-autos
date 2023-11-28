@@ -2,12 +2,9 @@
 import { useState, useEffect, Fragment } from 'react';
 import apiClient from '@/services/api';
 import { useRouter } from 'next/navigation';
-import ClientHomePage from './ClientHomePage';
-import LoadingScreen from '@/components/LoadingScreen';
-import axios, { AxiosError } from 'axios';
-import { TOKEN_STORAGE_KEY } from '@/utils/constants';
+import ClientHomePage from '../../components/ClientHomePage';
 import { verifyAdmin } from '@/services/user';
-import { handleError } from '@/utils/errorHandling';
+import { alertError } from '@/utils/errorHandling';
 import LoadableScreen from '@/components/LoadableScreen';
 
 
@@ -24,7 +21,7 @@ export default function Home() {
         setIsAdmin(isAdmin)
         setIsLoading(false)
       } catch (error: any) {
-        handleError(error)
+        alertError(error)
         router.replace("/")
       }
     }

@@ -2,8 +2,8 @@
 import LoadableScreen from "@/components/LoadableScreen";
 import apiClient from "@/services/api";
 import { SelectMenuItem, TipoVehiculo } from "@/types";
-import { MAX_WORKING_HOUR, NINE_AM } from "@/utils/constants";
-import { handleError } from "@/utils/errorHandling";
+import { MAX_WORKING_HOUR, NINE_AM, transmisions } from "@/utils/constants";
+import { alertError } from "@/utils/errorHandling";
 import { disableNotWorkingTime, getDateError } from "@/utils/validators";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -12,6 +12,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getVehicleTypesOptions } from "@/services/vehicleTypes";
 
 interface IBookingFormData {
     fechaDesde: Dayjs;
@@ -20,19 +21,11 @@ interface IBookingFormData {
     tipoVehiculo: number
 }
 
-const transmisions: SelectMenuItem[] = [{
-    id: 1,
-    description: "AT"
-}, {
-    id: 2,
-    description: "MT"
-}]
-
 const getBookingDateDefaultValue = (isDateFrom: boolean): Dayjs => {
-    const isLateForToday = dayjs().hour() > MAX_WORKING_HOUR 
+    const isLateForToday = dayjs().hour() > MAX_WORKING_HOUR
     if (isLateForToday) return isDateFrom ? NINE_AM.add(1, 'day') : NINE_AM.add(2, 'day')
-    
-    return isDateFrom ? dayjs().add(1, 'day') : dayjs().add(2, 'day')     
+
+    return isDateFrom ? dayjs().add(1, 'day') : dayjs().add(2, 'day')
 }
 
 const CreateBooking = () => {
@@ -51,31 +44,24 @@ const CreateBooking = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            apiClient.get('/tipovehiculo')
-                .then((res) => {
-                    let types: SelectMenuItem[]
-                    types = res.data.data.map((t: TipoVehiculo) => {
-                        return {
-                            id: t.id,
-                            description: t.nombre
-                        }
+            try {
+                const types = await getVehicleTypesOptions()
+                setVehicleTypes(types)
+                const firstItem = types.at(0)
+                if (firstItem) {
+                    setFormData({
+                        ...formData,
+                        tipoVehiculo: firstItem.id
                     })
-                    setVehicleTypes(types)
-                    const firstItem = types.at(0)
-                    if (firstItem) {
-                        setFormData({
-                            ...formData,
-                            tipoVehiculo: firstItem.id
-                        })
-                    }
-                    setIsLoading(false)
-                })
-                .catch((error: any) => {
-                    handleError(error)
-                    router.replace('/')
-                })
+                }
+                setIsLoading(false)
+            } catch (error: any) {
+                alertError(error)
+                router.replace('/')
+            }
         }
         fetchData()
+        enableButton(formData)
     }, [])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,7 +151,7 @@ const CreateBooking = () => {
                             shouldDisableTime={disableNotWorkingTime}
                             onChange={(value) => onDateChange(value, false)}
                         />
-                        <span className="text-md font-light col-span-2">Total de días: <span className="font-bold">{formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span></span>
+                        <span className="text-md font-light sm:col-span-2">Total de días: <span className="font-bold">{formData.fechaHasta.diff(formData.fechaDesde, 'days')}</span></span>
                         <TextField
                             name="tipoVehiculo"
                             label="Tipo de vehículo"
@@ -176,7 +162,7 @@ const CreateBooking = () => {
                             value={formData.tipoVehiculo}
                             onChange={handleInputChange}
                         >
-                            {vehicleTypes?.map(t => <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>)}
+                            {vehicleTypes?.map(t => <MenuItem key={t.id} value={t.id}>{t.descripcion}</MenuItem>)}
                         </TextField>
 
                         <TextField
@@ -189,7 +175,7 @@ const CreateBooking = () => {
                             value={formData.transmision}
                             onChange={handleInputChange}
                         >
-                            {transmisions?.map(t => <MenuItem key={t.id} value={t.description}>{t.description == 'AT' ? 'Automático' : 'Manual'}</MenuItem>)}
+                            {transmisions?.map(t => <MenuItem key={t.id} value={t.descripcion}>{t.descripcion == 'AT' ? 'Automático' : 'Manual'}</MenuItem>)}
                         </TextField>
 
                         <Button

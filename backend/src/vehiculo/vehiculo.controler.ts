@@ -11,15 +11,15 @@ const em = orm.em.fork() //Es fork porque sino tira error
 function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     id: req.body.id,
-    nombre: req.body.nombre,
+    //nombre: req.body.nombre,
     marca: req.body.marca,
     modelo: req.body.modelo,
-    año: req.body.año,
+    year: req.body.year,
     transmision: req.body.transmision,
     capacidad: req.body.capacidad,
     image: req.body.image,
     tipoVehiculo: req.body.tipoVehiculo,
-    seguro: req.body.seguro,
+    //seguro: req.body.seguro,
     sucursal: req.body.sucursal
   }
   //MAS VALIDACIONES ACA
@@ -34,8 +34,8 @@ function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) 
 
 async function findAll(req: Request, res: Response) {
   try {
-    const vehiculos = await em.find(Vehiculo, {}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
-    res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+    const vehiculos = await em.find(Vehiculo, {}, { populate: ['tipoVehiculo', /*'seguro',*/ 'sucursal'] })
+    res.status(200).json({ message: 'Vehiculos encontrados', vehicles: vehiculos })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron vehiculos', data: error })
   }
@@ -61,7 +61,7 @@ async function availables(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const vehiculo = await em.findOneOrFail(Vehiculo, { id }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+    const vehiculo = await em.findOneOrFail(Vehiculo, { id }, { populate: ['tipoVehiculo', /*'seguro',*/ 'sucursal'] })
     res.status(200).json({ message: 'Vehiculo encontrado', data: vehiculo })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontro vehiculo', data: error })
@@ -126,14 +126,15 @@ async function add(req: Request, res: Response) {
 
       // Crear objeto para almacenar en bd
       req.body.sanitizedInput = {
-        id: req.body.id,
-        nombre: req.body.nombre,
-        trasmision: req.body.trasmision,
+        //id: parseInt(req.body.id), NO SE ENVIA EL ID CUANDO SE CREA, ES AUTOINCREMENTAL EN LA BASE DE DATOS
+        marca: req.body.marca,
+        modelo: req.body.modelo,
+        year: parseInt(req.body.year),
+        transmision: req.body.transmision,
         capacidad: parseInt(req.body.capacidad),
-        disponible: parseInt(req.body.disponible),
         image: result.secure_url,
         tipoVehiculo: parseInt(req.body.tipoVehiculo),
-        seguro: parseInt(req.body.seguro),
+        //seguro: parseInt(req.body.seguro),
         sucursal: parseInt(req.body.sucursal),
       };
 

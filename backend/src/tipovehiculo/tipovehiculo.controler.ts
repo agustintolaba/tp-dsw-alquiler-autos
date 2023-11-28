@@ -24,7 +24,7 @@ function sanitizeTipoVehiculoInput (req: Request, res: Response, next: NextFunct
 async function findAll(req: Request, res: Response) {
   try {
     const tiposVehiculos = await em.find(TipoVehiculo, {})
-    res.status(200).json({ message: 'Tipos de Vehiculos encontrados', data: tiposVehiculos })
+    res.status(200).json({ message: 'Tipos de Vehiculos encontrados', types: tiposVehiculos })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron tipos de vehiculos', data: error })
   }
@@ -46,9 +46,9 @@ async function findFilter(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id)
     const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
     if (tipoVehiculo) {
-      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
+      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', /*'seguro',*/ 'sucursal'] })
       if (vehiculos.length > 0) {
-        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
+        res.status(200).json({ message: 'Vehiculos encontrados', vehicles: vehiculos })
       } else {
         res.status(200).json({ message: 'No se encontraron vehiculos de tipo de vehiculo especifico', data: vehiculos })
       }

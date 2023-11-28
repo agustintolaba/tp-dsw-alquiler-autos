@@ -6,7 +6,7 @@ import { Button, TextField } from "@mui/material";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import LoadableScreen from "./LoadableScreen";
+import LoadableScreen from "../LoadableScreen";
 
 export interface LoginFormData {
     email: string;
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
                 if (axios.isAxiosError(error)) {
                     alert(error.response?.data.message)
                 } else {
-                    console.log(error)
+                    console.error(error)
                     if (error.message) {
                         alert(error.message)
                     } else {

@@ -2,7 +2,6 @@ import { Entity, Property, ManyToOne, OneToMany, Cascade, Rel } from "@mikro-orm
 import { TipoUsuario } from "../tipousuario/tipousuario.entity.js";
 import { BaseEntity } from "../shared/db/baseEntity.entity.js";
 import { Alquiler } from "../alquiler/alquiler.entity.js";
-import { Sucursal } from "../sucursal/sucursal.entity.js";
 
 @Entity()
 export class Usuario extends BaseEntity {
@@ -35,7 +34,4 @@ export class Usuario extends BaseEntity {
 
   @OneToMany(() => Alquiler, (alquiler) => alquiler.usuario, { cascade: [Cascade.ALL], })
   alquiler!: Rel<Alquiler>
-
-  @OneToMany(() => Sucursal, (sucursal) => sucursal.gerente, { cascade: [Cascade.ALL], })
-  sucursal?: Rel<Sucursal>
 }

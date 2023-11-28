@@ -7,8 +7,8 @@ const em= orm.em
 function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction){
   req.body.sanitizedInput={
     id: req.body.id,
-    calleSucursal: req.body.calleSucursal,
-    numeroCalleSucursal: req.body.numeroCalleSucursal,
+    calle: req.body.calle,
+    numeroCalle: req.body.numeroCalle,
     localidad: req.body.localidad
   }
   //MAS VALIDACIONES ACA
@@ -23,8 +23,8 @@ function sanitizeSucursalInput (req: Request, res: Response, next: NextFunction)
 
 async function findAll(req: Request, res: Response) {
   try {
-    const sucursales = await em.find(Sucursal, {}, { populate: ['localidad'] })
-    res.status(200).json({ message: 'Sucursales encontradas', data: sucursales })
+    const sucursales = await em.find(Sucursal, {}, { populate: ['localidad', 'localidad.provincia'] })
+    res.status(200).json({ message: 'Sucursales encontradas', branches: sucursales })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontraron sucursales', data: error })
   }

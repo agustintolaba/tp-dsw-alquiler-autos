@@ -1,5 +1,4 @@
 'use client'
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -12,8 +11,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ChecklistIcon from '@mui/icons-material/Checklist';
-import CarRentalIcon from '@mui/icons-material/CarRental';
 import Link from 'next/link';
+import { CarRental, People } from '@mui/icons-material';
+import { useState, useEffect, Fragment } from 'react';
+import { verifyAdmin } from '@/services/user';
+import { useRouter } from 'next/navigation';
 
 const sharedMenuItems = [{
   title: 'Home',
@@ -25,24 +27,44 @@ const userMenuItems = [{
   title: 'Mis reservas',
   icon: <ChecklistIcon />,
   destination: "/home/bookings"
+}, {
+  title: 'Vehículos disponibles',
+  icon: <CarRental />,
+  destination: "/home/vehicles"
 }]
 
 const adminMenuItems = [{
-  title: 'Administrar autos',
-  icon: <CarRentalIcon />,
-  destination: "/home"
-}, {
   title: 'Administrar reservas',
   icon: <ChecklistIcon />,
-  destination: "/bookings"
+  destination: "/home/bookings"
+}, {
+  title: 'Administrar vehículos',
+  icon: <CarRental />,
+  destination: "/home/vehicles"
+}, {
+  title: 'Administrar usuarios',
+  icon: <People />,
+  destination: "/home/users"
 }]
 
-interface TemporaryDrawerProps {
-  isAdmin: Boolean
-}
+const TemporaryDrawer: React.FC = () => {
+  const router = useRouter()
+  const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      verifyAdmin()
+        .then((isAdmin) => {
+          setIsAdmin(isAdmin)
+        })
+        .catch((error: any) => {
+          alert('Error al verificar acceso')
+          router.replace('/')
+        })
+    }
+    fetchData()
+  })
 
   const toggleDrawer =
     (open: boolean) =>
@@ -114,7 +136,7 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
   return (
     <div>
       {
-        <React.Fragment>
+        <Fragment>
           <Button onClick={toggleDrawer(true)}><MenuIcon sx={{ color: 'white', fontSize: '2rem' }} /></Button>
           <Drawer
             anchor='left'
@@ -123,7 +145,7 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
           >
             {list()}
           </Drawer>
-        </React.Fragment>
+        </Fragment>
       }
     </div>
   );

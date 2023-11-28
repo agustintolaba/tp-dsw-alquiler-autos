@@ -1,7 +1,7 @@
 import axios from "axios"
 
-export const handleError = (error: any) => {
-    if (axios.isAxiosError(error)) {
+export const alertError = (error: any) => {
+    if (axios.isAxiosError(error) && error.response?.data.message != undefined) {
         alert(error.response?.data.message)
     } else {
         if (error.message != undefined) {

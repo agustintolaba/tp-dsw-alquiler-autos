@@ -3,7 +3,6 @@ import { orm } from "../shared/db/orm.js"
 import { Usuario } from "./usuario.entity.js"
 import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
 import { generateAccessToken } from "../shared/accessToken.js"
-import { TipoUsuario } from "../tipousuario/tipousuario.entity.js"
 
 const em = orm.em
 
@@ -15,7 +14,6 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     fechaNacimiento: req.body.fechaNacimiento,
     numeroDocumento: req.body.numeroDocumento,
     telefono: req.body.telefono,
-    fechaContratacion: req.body.fechaContratacion,
     email: req.body.email,
     password: req.body.password,
     tipoUsuario: req.body.tipoUsuario
@@ -54,9 +52,8 @@ async function login(req: Request, res: Response) {
     const usuario = await em.findOne(Usuario, { email, password }, { populate: ['tipoUsuario'] }) 
     if (usuario) {
       usuario.password = ""
-
       const accessToken: string = generateAccessToken(usuario)
-      console.log(accessToken)
+
       res.status(200).json({ message: 'Logueado correctamente', token: accessToken })
     } else {
       res.status(500).json({ message: 'Los datos ingresados son incorrectos' })
@@ -76,9 +73,9 @@ async function signup(req: Request, res: Response) {
     })
   } catch (error: any) {
     if (isSQLError(error)) {
-      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario") })
+      res.status(500).json({ message: getSQLErrorMessage(error, "Usuario"), data: error })
     } else {
-      res.status(500).json({ message: 'No se pudo completar el registro de usuario' })
+      res.status(500).json({ message: 'No se pudo completar el registro de usuario', data: error })
     }
   }
 }
