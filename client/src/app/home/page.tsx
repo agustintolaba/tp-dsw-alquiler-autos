@@ -1,40 +1,22 @@
 'use client';
-import { useState, useEffect, Fragment } from 'react';
-import apiClient from '@/services/api';
-import { useRouter } from 'next/navigation';
-import ClientHomePage from '../../components/ClientHomePage';
-import { verifyAdmin } from '@/services/user';
-import { alertError } from '@/utils/errorHandling';
-import LoadableScreen from '@/components/LoadableScreen';
 
-
+import { useRouter } from "next/navigation";
+import ClientHomePage from "../../components/ClientHomePage";
+import useUser, { verifyAdmin } from "@/services/user";
+import LoadableScreen from "@/components/LoadableScreen";
+import { Typography } from "@mui/material";
 
 export default function Home() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
+  const { isAdmin, isLoading } = useUser();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const isAdmin = await verifyAdmin()
-        setIsAdmin(isAdmin)
-        setIsLoading(false)
-      } catch (error: any) {
-        alertError(error)
-        router.replace("/")
-      }
-    }
-    fetchData()
-  }, []);
+  if (isAdmin == null) return (
+    <Typography variant="h4">No se pudo verificar tipo de usuario</Typography>
+  )
 
   return (
     <LoadableScreen isLoading={isLoading}>
-      {(isAdmin && (
-        <h1>Empleado</h1>
-      ) || (
-          <ClientHomePage />
-        ))}
+      {(isAdmin && <h1>Empleado</h1>) || <ClientHomePage />}
     </LoadableScreen>
   );
 }

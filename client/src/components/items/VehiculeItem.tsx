@@ -1,28 +1,39 @@
-/*Para crear el componente de vehiculo*/
 'use client';
-import { Vehiculo } from '@/types';
-import { transmisionDescriptions } from '@/utils/constants';
-import { Person } from '@mui/icons-material';
-import { Button } from '@mui/material';
-import Image from 'next/image';
+
+import { Vehiculo } from "@/types";
+import { transmisionDescriptions } from "@/utils/constants";
+import { Person } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import Image from "next/image";
 
 interface VehicleListItemProps {
   isAdmin: boolean;
   isBooking: boolean;
   vehicle: Vehiculo;
+  remove: (vehicle: Vehiculo) => void;
+  edit: (vehicle: Vehiculo) => void;
 }
 
 const VehicleListItem: React.FC<VehicleListItemProps> = ({
   isAdmin,
   isBooking,
   vehicle,
+  remove,
+  edit,
 }) => {
   const { id, image, marca, modelo, capacidad, transmision } = vehicle;
+  const handleRemove = () => {
+    if (!confirm(`¿Desea eliminar ${marca} ${modelo}?`)) {
+      return
+    }
+    remove(vehicle)
+  }
+
   return (
     <div className="flex flex-row flex-wrap justify-center items-center gap-6 p-6 rounded-2xl bg-slate-900">
       <Image
         src={image}
-        alt={'vehiculo'}
+        alt={"vehiculo"}
         width={200}
         height={200}
         className="object-cover"
@@ -46,10 +57,22 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
           </div>
         </div>
       </div>
-      {isBooking && <Button
-      variant='outlined'
-      color='success'
-      >Lo quiero!</Button>}
+      {isBooking && (
+        <Button variant="outlined" color="success">
+          Lo quiero!
+        </Button>
+      )}
+      {isAdmin && (
+        <div className="flex flex-col gap-4">
+          <Button
+            onClick={handleRemove}
+            variant="outlined"
+            color="error"
+          >
+            Eliminar
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
