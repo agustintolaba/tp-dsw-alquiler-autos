@@ -1,6 +1,6 @@
 'use client';
 
-import VehiculoItem from "@/components/items/VehiculeItem";
+import VehiculoItem from "@/components/items/VehicleItem";
 import { Vehiculo } from "@/types";
 import useVehicle, { getVehicles } from "@/services/vehicle";
 import LoadableScreen from "./LoadableScreen";

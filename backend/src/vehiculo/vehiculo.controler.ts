@@ -44,7 +44,7 @@ async function findAll(req: Request, res: Response) {
 async function availables(req: Request, res: Response) {
   try {
     const { fecha_desde, fecha_hasta, transmision, tipo_vehiculo } = req.query
-    const availableVehicules = await em
+    const availableVehicles = await em
       .getConnection()
       .execute(`select v.*
       from vehiculo v inner join tipo_vehiculo tv
@@ -52,7 +52,7 @@ async function availables(req: Request, res: Response) {
       where tv.id = ${tipo_vehiculo} and v.transmision = ${transmision}
       and v.id not in (select vehiculo_id from alquiler a
       where a.fecha_hasta > ${fecha_desde} and a.fecha_desde < ${fecha_hasta} and a.estado != 'Cancelada')`)
-    res.status(200).json({ vehicles: availableVehicules })
+    res.status(200).json({ vehicles: availableVehicles })
   } catch (error: any) {
     res.status(500).json({ message: 'Ocurrió un error', data: error })
   }
