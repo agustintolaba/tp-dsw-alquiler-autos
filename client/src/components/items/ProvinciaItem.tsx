@@ -1,5 +1,7 @@
 /* Para crear el componente de una sola provincia */
 'use client';
+import apiClient from '@/services/api';
+import { alertError } from '@/utils/errorHandling';
 import { Button } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -45,19 +47,9 @@ const ProvinciaItem: React.FC<Provincia> = ({ id, nombre }) => {
 
   const deleteProvincia = async (id: string) => {
   try {
-    const response = await fetch(`http://localhost:3000/provincia/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (response.status === 201) {
-            alert('Se eliminó la provincia')
-    } else if (response.status === 404) {
-      alert('La provincia no fue encontrada')
-    } else {
-      throw new Error(`Error: ${response.statusText}`)
-    }
+    const response = await apiClient.delete(`/provincia/${id}`) 
   } catch (error: any) {
-    alert('No se pudo eliminar la provincia')
+    alertError(error)
     console.error('Error:', error.message)
   }
 };

@@ -19,6 +19,9 @@ export function getSQLErrorMessage(error: SQLError, entityName: string, female: 
         case 1062: {
             return `${entityName} ya ${female ? "registrada" : "registrado"}`
         }
+        case 1451: {
+            return `${entityName} imposible de eliminar por referencia`
+        }
         default: {
             return "Error en la base de datos"
         }

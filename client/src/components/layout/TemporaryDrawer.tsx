@@ -12,7 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import Link from 'next/link';
-import { CarRental, People } from '@mui/icons-material';
+import { CarRental, Map, People } from '@mui/icons-material';
 import { useState, useEffect, Fragment } from 'react';
 import { verifyAdmin } from '@/services/user';
 import { useRouter } from 'next/navigation';
@@ -45,6 +45,10 @@ const adminMenuItems = [{
   title: 'Administrar usuarios',
   icon: <People />,
   destination: "/home/users"
+}, {
+  title: 'Administrar provincias',
+  icon: <Map />,
+  destination: "/home/provincia"
 }]
 
 const TemporaryDrawer: React.FC = () => {

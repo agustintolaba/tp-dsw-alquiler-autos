@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { orm } from "../shared/db/orm.js"
 import { Provincia } from "./provincias.entity.js"
+import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js"
 
 const em= orm.em
 
@@ -77,7 +78,11 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(provinciaBorrar)
     res.status(200).send({ message: 'Provincia eliminada correctamente' })
   } catch (error: any) {
-    res.status(500).json({ message: 'No se pudo eliminar la provincia', data: error })
+    if (isSQLError(error)) {
+      res.status(500).json({ message: getSQLErrorMessage(error, "Provincia") })
+    } else {
+      res.status(500).json({ message: 'No se pudo eliminar la provincia', data: error })
+    }    
   }
 }
 
