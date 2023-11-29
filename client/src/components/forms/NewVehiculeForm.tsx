@@ -115,10 +115,10 @@ const NewVehicleForm = () => {
         },
       })
       .then((res) => {
-        if (confirm('Vehículo cargado correctamente, ¿desea cargar otro?')) {
+        if (confirm('Vehículo agregado correctamente, ¿desea agregar otro?')) {
           cleanFields();
         } else {
-          router.push('/home');
+          router.push('/home/vehicles');
         }
       })
       .catch((error: any) => {
