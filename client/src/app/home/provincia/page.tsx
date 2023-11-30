@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { Button, TextField } from "@mui/material";
-import { useState } from "react";
-import LoadableScreen from "@/components/LoadableScreen";
-import ProvinciaList from "@/components/lists/ProvinciaList";
-import apiClient from "@/services/api";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { Button, TextField } from '@mui/material';
+import { useState } from 'react';
+import LoadableScreen from '@/components/LoadableScreen';
+import ProvinciaList from '@/components/lists/ProvinciaList';
+import apiClient from '@/services/api';
+import axios, { AxiosError } from 'axios';
 
 interface ProvinciaFormData {
   descripcion: string;
 }
 
 const Provincia: React.FC = () => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProvinciaFormData>({
-    descripcion: "",
+    descripcion: '',
   });
+  const [provinciaListChanged, setProvinciaListChanged] =
+    useState<boolean>(false);
 
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient
-      .post("/provincia", JSON.stringify(data)) //TIENE QUE SER EL ADMIN??
+      .post('/provincia', JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
       .then((res) => {
-        if (confirm("Desea agregar otra provincia?")) {
-        } else {
-          router.push("/home");
-        }
+        alert('Se cargo una nueva provincia');
+        setFormData({ descripcion: '' });
+        enableButton({ descripcion: '' });
+        handleProvinciaListChanged();
       })
       .catch((error: Error | AxiosError) => {
         if (axios.isAxiosError(error)) {
@@ -37,7 +37,7 @@ const Provincia: React.FC = () => {
           if (error.message) {
             alert(error.message);
           } else {
-            alert("Ha ocurrido un error");
+            alert('Ha ocurrido un error');
           }
         }
       })
@@ -61,6 +61,10 @@ const Provincia: React.FC = () => {
 
   const enableButton = (formData: ProvinciaFormData) => {
     setButtonEnabled(formData.descripcion.length > 0);
+  };
+
+  const handleProvinciaListChanged = () => {
+    setProvinciaListChanged((prev) => !prev);
   };
 
   return (
@@ -92,9 +96,11 @@ const Provincia: React.FC = () => {
             </Button>
           </div>
         </form>
+        <span className="w-full text-4xl font-extralight">
+          Listado de provincias:
+        </span>
+        <ProvinciaList onProvinciaListChanged={handleProvinciaListChanged} />
       </div>
-
-      <ProvinciaList />
     </LoadableScreen>
   );
 };
