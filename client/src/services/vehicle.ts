@@ -28,7 +28,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
         setVehicles((vehicles) => vehicles?.filter((v) => v.id != vehicle.id));
       })
       .catch((error: any) => {
-        alertError(error)
+        alertError(error);
       });
   };
 
@@ -36,10 +36,21 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
     setVehicles((vehicles) => [...vehicles, vehicle]);
   };
 
-  const edit = (vehicle: Vehiculo) => {
-    setVehicles((vehicles) =>
-      vehicles.map((v) => (v.id === vehicle.id ? vehicle : v))
-    );
+  const edit = (id: number, newKm: number) => {
+    apiClient
+      .patch(`/vehiculo/${id}`, {
+        km: newKm,
+      })
+      .then(() => {
+        setVehicles((vehicles) =>
+          vehicles.map((vehicle) =>
+            vehicle.id === id ? { ...vehicle, km: newKm } : vehicle
+          )
+        );
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
   };
 
   return {

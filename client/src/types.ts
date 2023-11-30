@@ -25,7 +25,8 @@ export interface Vehiculo extends Identifiable {
     modelo: string,
     transmision: string,
     capacidad: number,
-    año: string,
+    year: string,
+    km: number,
     image: string
     tipoVehiculo: TipoVehiculo
 }

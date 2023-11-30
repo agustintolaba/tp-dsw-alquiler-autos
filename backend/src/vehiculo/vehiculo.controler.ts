@@ -11,15 +11,14 @@ const em = orm.em.fork() //Es fork porque sino tira error
 function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     id: req.body.id,
-    //nombre: req.body.nombre,
     marca: req.body.marca,
     modelo: req.body.modelo,
     year: req.body.year,
+    km: req.body.km,
     transmision: req.body.transmision,
     capacidad: req.body.capacidad,
     image: req.body.image,
     tipoVehiculo: req.body.tipoVehiculo,
-    //seguro: req.body.seguro,
     sucursal: req.body.sucursal
   }
   //MAS VALIDACIONES ACA
@@ -67,51 +66,6 @@ async function findOne(req: Request, res: Response) {
     res.status(500).json({ message: 'No se encontro vehiculo', data: error })
   }
 }
-
-//FUNCION FIND CON FILTER, PARA BUSCAR VEHICULOS SEGUN EL TIPO DE VEHICULO. ESTA INPLEMENTADA LA OTRA FORMA. 
-/*async function find(req: Request, res: Response) {
-try {
-  const filterParam = req.query.filter
-
-  if (filterParam === undefined || filterParam === null)  {
-    try {
-        const vehiculos = await em.find(Vehiculo, {}, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
-        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
-      } catch (error: any) {
-        res.status(500).json({ message: 'No se encontraron vehiculos', data: error })
-      }}
-  else{
-    const id = Number.parseInt(filterParam as string)
-    
-    const tipoVehiculo = await em.findOneOrFail(TipoVehiculo, { id })
-    if (tipoVehiculo) {
-      const vehiculos = await em.find(Vehiculo, { tipoVehiculo }, { populate: ['tipoVehiculo', 'seguro', 'sucursal'] })
-      if (vehiculos.length > 0) {
-        res.status(200).json({ message: 'Vehiculos encontrados', data: vehiculos })
-      } else {
-        res.status(200).json({ message: 'No se encontraron vehiculos de tipo de vehiculo especifico', data: vehiculos })
-      }
-    } else {
-      res.status(404).json({ message: 'Tipo de vehículo no encontrado' })
-    }
-  }} catch (error: any) {
-    res.status(500).json({ message: 'Error al buscar vehículos', data: error })
-  }
-}*/
-
-
-//FUNCION ADD ORIGINAL, SIN LA IMAGEN
-/*async function add(req: Request, res: Response) {
-  try {
-    const input = req.body.sanitizedInput
-    const vehiculoNuevo = em.create(Vehiculo, input)
-    await em.flush()
-    res.status(201).json({ message: 'Se cargo nuevo vehiculo', data: vehiculoNuevo })
-  } catch (error: any) {
-    res.status(500).json({ message: 'No se pudo cargar el nuevo vehiculo', data: error })
-  }
-}*/
-
 
 async function add(req: Request, res: Response) {
   try {
