@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useRouter } from "next/navigation";
 import ClientHomePage from "../../components/ClientHomePage";
@@ -8,14 +8,10 @@ import { Typography } from "@mui/material";
 
 export default function Home() {
   const router = useRouter();
-  const { isAdmin, isLoading } = useUser();
-
-  if (isAdmin == null) return (
-    <Typography variant="h4">No se pudo verificar tipo de usuario</Typography>
-  )
+  const { isAdmin, isLoadingUser } = useUser();
 
   return (
-    <LoadableScreen isLoading={isLoading}>
+    <LoadableScreen isLoading={isLoadingUser}>
       {(isAdmin && <h1>Empleado</h1>) || <ClientHomePage />}
     </LoadableScreen>
   );

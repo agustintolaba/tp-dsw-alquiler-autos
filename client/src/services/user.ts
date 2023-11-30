@@ -24,7 +24,7 @@ const useUser = () => {
   }, []);
 
   return {
-    isLoading: isLoadingUser,
+    isLoadingUser,
     isAdmin,
   };
 };
