@@ -1,10 +1,10 @@
-'use client';
-import VehiclesList from '@/components/VehiclesList';
-import { verifyAdmin } from '@/services/user';
-import { Button } from '@mui/material';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+"use client";
+import VehiclesList from "@/components/VehiclesList";
+import { verifyAdmin } from "@/services/user";
+import { Button } from "@mui/material";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Vehicles = () => {
   const router = useRouter();
@@ -18,9 +18,9 @@ const Vehicles = () => {
           setIsAdmin(isAdmin);
         })
         .catch((error: any) => {
-          console.log(error)
-          alert('Error al verificar acceso');
-          router.replace('/');
+          console.log(error);
+          alert("Error al verificar acceso");
+          router.replace("/");
         });
     };
     fetchData();
@@ -30,7 +30,7 @@ const Vehicles = () => {
     <div className="flex flex-col items-center p-8 gap-8">
       <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
         <span className="text-4xl font-extralight text-center">
-          {isAdmin ? 'Administración de vehículos' : 'Vehículos disponibles'}
+          {isAdmin ? "Administración de vehículos" : "Vehículos disponibles"}
         </span>
         {isAdmin && (
           <Link href="/home/vehicles/new">
@@ -40,10 +40,22 @@ const Vehicles = () => {
           </Link>
         )}
       </div>
-      <VehiclesList isAdmin={isAdmin} vehicleTypeId={Number(params.get('vehicleType'))} />
+      <VehiclesList
+        isAdmin={isAdmin}
+        vehicleTypeId={Number(params.get("vehicleType"))}
+      />
       <Button variant="outlined" color="error" onClick={() => history.back()}>
         Volver
       </Button>
+
+      {isAdmin && (
+        <footer className="absolute flex items-center justify-center bottom-0 w-full py-4 px-2 bg-slate-700">
+          <span className="text-sm text-center text-yellow-400 sm:text-md">
+            Para actualizar los kilómetros debe ingresar un número mayor al
+            kilometraje anterior
+          </span>
+        </footer>
+      )}
     </div>
   );
 };

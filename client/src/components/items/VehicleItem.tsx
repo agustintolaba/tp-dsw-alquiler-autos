@@ -98,7 +98,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
             onClick={handleEdit}
             variant="outlined"
             color="warning"
-            disabled={(km >= newKm || newKm.toString().length == 0)}
+            disabled={km >= newKm || newKm.toString().length == 0}
           >
             Actualizar
           </Button>
