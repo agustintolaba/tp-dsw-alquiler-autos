@@ -20,6 +20,9 @@ export class Vehiculo extends BaseEntity {
   year!: number
 
   @Property({ nullable: false, unique: false })
+  km!: number
+
+  @Property({ nullable: false, unique: false })
   capacidad!: number
 
   @Property({ nullable: false, unique: false, type: 'string', length: 255 })
@@ -27,9 +30,6 @@ export class Vehiculo extends BaseEntity {
 
   @ManyToOne(() => TipoVehiculo, { nullable: false })
   tipoVehiculo!: Rel<TipoVehiculo>
-
-  //@ManyToOne(() => Seguro, { nullable: true })
-  //seguro?: Rel<Seguro>
 
   @ManyToOne(() => Sucursal, { nullable: false })
   sucursal!: Rel<Sucursal>
