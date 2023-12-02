@@ -2,21 +2,11 @@
 import LoadableScreen from "@/components/LoadableScreen";
 import UsersList from "@/components/lists/UsersList";
 import useUser from "@/services/user";
-import useAdmin from "@/services/userType";
-import { NO_ACCESS } from "@/utils/constants";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const Users = () => {
   const router = useRouter();
-  const { isAdmin, isLoadingAdmin } = useAdmin();
-  const { users, edit, remove, isLoadingUsers } = useUser();
-
-  if (isAdmin == false) {
-    alert(NO_ACCESS);
-    router.replace("/home");
-    return;
-  }
+  const { users, edit, remove, isLoadingUsers } = useUser(); //Admin status already handled here
 
   return (
     <div className="w-full flex flex-col items-center p-2 gap-8">
@@ -25,7 +15,7 @@ const Users = () => {
           Administración de usuarios
         </span>
       </div>
-      <LoadableScreen isLoading={isLoadingAdmin || isLoadingUsers}>
+      <LoadableScreen isLoading={isLoadingUsers}>
         <UsersList users={users} edit={edit} remove={remove} />
       </LoadableScreen>
       <footer className="absolute flex items-center justify-center bottom-0 w-full py-4 px-2 bg-slate-700">

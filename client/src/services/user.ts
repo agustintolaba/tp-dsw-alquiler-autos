@@ -2,8 +2,10 @@ import { TipoUsuario, Usuario } from "@/types";
 import { useEffect, useState } from "react";
 import apiClient from "./api";
 import { alertError } from "@/utils/errorHandling";
+import { useRouter } from "next/navigation";
 
 const useUser = () => {
+  const router = useRouter();
   const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(true);
   const [users, setUsers] = useState<Usuario[]>([]);
 
@@ -17,6 +19,7 @@ const useUser = () => {
         })
         .catch((error: any) => {
           alertError(error);
+          router.replace("/home")
         });
     };
     fetchUsers();
