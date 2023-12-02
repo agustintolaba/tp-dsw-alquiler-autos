@@ -30,7 +30,7 @@ const Vehicles = () => {
     <div className="flex flex-col items-center p-8 gap-8">
       <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
         <span className="text-4xl font-extralight text-center">
-          {isAdmin ? "Administración de vehículos" : "Vehículos disponibles"}
+          {isAdmin ? "Administración de vehículos" : "Nuestros vehículos"}
         </span>
         {isAdmin && (
           <Link href="/home/vehicles/new">

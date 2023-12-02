@@ -2,10 +2,12 @@ import { Vehiculo } from "@/types";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
 import { alertError } from "@/utils/errorHandling";
+import { transmisionDescriptions } from "@/utils/constants";
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
   const [vehicles, setVehicles] = useState<Vehiculo[]>([]);
+  const [filteredList, setFilteredList] = useState<Vehiculo[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,12 +55,32 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
       });
   };
 
+  const filter = (search: string) => {
+    if (search.trim() == "" || search.length == 0) {
+      setFilteredList(null);
+      return;
+    }
+
+    let searchTerms = search.toLowerCase().split(" ");
+
+    setFilteredList(
+      vehicles.filter((v) =>
+        searchTerms.some(
+          (term) =>
+            v.marca.toLowerCase().includes(term) ||
+            v.modelo.toLowerCase().includes(term)
+        )
+      )
+    );
+  };
+
   return {
     isLoadingVehicle,
-    vehicles,
+    vehicles: filteredList || vehicles,
     remove,
     add,
     edit,
+    filter,
   };
 };
 
