@@ -3,7 +3,7 @@
 import VehiculoItem from "@/components/items/VehicleItem";
 import { Vehiculo } from "@/types";
 import useVehicle, { getVehicles } from "@/services/vehicle";
-import LoadableScreen from "./LoadableScreen";
+import LoadableScreen from "../LoadableScreen";
 
 interface IVehiclesListProps {
   isAdmin: boolean;

@@ -14,7 +14,7 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import Link from "next/link";
 import { CarRental, People } from "@mui/icons-material";
 import { useState, useEffect, Fragment } from "react";
-import useUser, { verifyAdmin } from "@/services/user";
+import useAdmin, { verifyAdmin } from "@/services/userType";
 import { useRouter } from "next/navigation";
 
 const sharedMenuItems = [
@@ -58,7 +58,7 @@ const adminMenuItems = [
 
 const TemporaryDrawer: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const { isAdmin } = useUser();
+  const { isAdmin } = useAdmin();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {

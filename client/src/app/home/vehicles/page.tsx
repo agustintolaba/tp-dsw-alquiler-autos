@@ -1,6 +1,6 @@
 "use client";
-import VehiclesList from "@/components/VehiclesList";
-import { verifyAdmin } from "@/services/user";
+import VehiclesList from "@/components/lists/VehiclesList";
+import { verifyAdmin } from "@/services/userType";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";

@@ -22,7 +22,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   }, []);
 
   const remove = async (vehicle: Vehiculo) => {
-    apiClient
+    apiClient()
       .delete(`/vehiculo/${vehicle.id}`)
       .then(() => {
         setVehicles((vehicles) => vehicles?.filter((v) => v.id != vehicle.id));
@@ -37,7 +37,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   };
 
   const edit = (id: number, newKm: number) => {
-    apiClient
+    apiClient()
       .patch(`/vehiculo/${id}`, {
         km: newKm,
       })
@@ -71,7 +71,7 @@ export default useVehicle;
 export const getVehicles = async (
   idTipo: number | null = null
 ): Promise<Vehiculo[]> => {
-  const res = await apiClient.get(
+  const res = await apiClient().get(
     idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : "/vehiculo/find"
   );
 

@@ -72,7 +72,7 @@ const SignUp: React.FC = ({}) => {
   };
 
   const signUp = (data: IUserRegisterFormData) => {
-    const res = apiClient.post('usuario/signup', {
+    const res = apiClient().post('usuario/signup', {
       ...formData,
       fechaNacimiento: formData.fechaNacimiento.toISOString(),
     });

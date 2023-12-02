@@ -1,6 +1,6 @@
 'use client'
 import NewVehicleForm from "@/components/forms/NewVehiculeForm"
-import { verifyAdmin } from "@/services/user"
+import { verifyAdmin } from "@/services/userType"
 import { NO_ACCESS } from "@/utils/constants"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
