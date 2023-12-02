@@ -77,14 +77,14 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
             <span className="font-semibold">Transmisión:</span>
             <span className="">{transmisionDescriptions[transmision]}</span>
           </div>
-          <TextField
+          {isAdmin && <TextField
             variant="outlined"
             onChange={handleKmChange}
             type="number"
             value={newKm}
             name="km"
             label="Kilómetros"
-          />
+          />}
         </div>
       </div>
       {isBooking && (
