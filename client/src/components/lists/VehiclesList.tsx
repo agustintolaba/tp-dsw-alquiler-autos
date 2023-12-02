@@ -30,13 +30,14 @@ const VehiclesList: React.FC<IVehiclesListProps> = ({
 
   return (
     <LoadableScreen isLoading={isLoadingVehicle}>
-      <div className="flex flex-col p-8 gap-12">
+      <div className="w-full flex flex-col p-8 gap-12 items-center">
         <TextField
+          className="w-96"
           label="Búsqueda por marca o modelo"
           value={search}
           onChange={handleSearchChange}
         />
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-row flex-wrap justify-center gap-8">
           {vehicles ? (
             vehicles.map((vehicle: Vehiculo) => (
               <VehiculoItem
