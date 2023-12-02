@@ -84,6 +84,7 @@ const Login: React.FC = () => {
                     label="E-mail"
                     variant="outlined"
                     fullWidth
+                    type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     error={formErrors.email.length > 0}
