@@ -5,6 +5,7 @@ import ClientHomePage from "../../components/ClientHomePage";
 import useAdmin, { verifyAdmin } from "@/services/userType";
 import LoadableScreen from "@/components/LoadableScreen";
 import { Typography } from "@mui/material";
+import AdminHomePage from "@/components/AdminHomePage";
 
 export default function Home() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function Home() {
 
   return (
     <LoadableScreen isLoading={isLoadingUser}>
-      {(isAdmin && <h1>Empleado</h1>) || <ClientHomePage />}
+      {(isAdmin && <AdminHomePage />) || <ClientHomePage />}
     </LoadableScreen>
   );
 }
