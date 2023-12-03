@@ -54,9 +54,9 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
 
   return (
     <div className="relative flex flex-row flex-wrap justify-center items-center gap-6 p-6 rounded-md bg-slate-900">
-      <span className="absolute top-0 right-0 w-24 text-center rounded-md bg-slate-600 text-slate-200 font-light">
+      {isAdmin && <span className="absolute top-0 right-0 w-24 text-center rounded-md bg-slate-600 text-slate-200 font-light">
         {patente}
-      </span>
+      </span>}
       <Image
         src={image}
         alt={"vehiculo"}
