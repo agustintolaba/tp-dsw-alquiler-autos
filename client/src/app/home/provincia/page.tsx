@@ -83,7 +83,7 @@ const Provincia: React.FC = () => {
   };
 
   const handleProvinciaListChanged = () => {
-    setProvinciaListChanged((prev) => !prev);
+    setProvinciaListChanged(!provinciaListChanged);
   };
 
   return (
