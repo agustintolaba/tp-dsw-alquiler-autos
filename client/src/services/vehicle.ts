@@ -2,7 +2,6 @@ import { Vehiculo } from "@/types";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
 import { alertError } from "@/utils/errorHandling";
-import { transmisionDescriptions } from "@/utils/constants";
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
@@ -13,6 +12,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
     const fetchData = async () => {
       getVehicles(vehicleTypeId)
         .then((vehicles) => {
+          console.log(vehicles)
           setVehicles(vehicles);
           setIsLoadingVehicle(false);
         })

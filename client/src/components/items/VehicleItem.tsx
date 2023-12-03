@@ -22,7 +22,8 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   remove,
   edit,
 }) => {
-  const { id, image, marca, modelo, capacidad, transmision, km } = vehicle;
+  const { id, patente, image, marca, modelo, capacidad, transmision, km } =
+    vehicle;
   const [newKm, setNewKm] = useState(km);
 
   const handleRemove = () => {
@@ -52,7 +53,10 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   };
 
   return (
-    <div className="flex flex-row flex-wrap justify-center items-center gap-6 p-6 rounded-2xl bg-slate-900">
+    <div className="relative flex flex-row flex-wrap justify-center items-center gap-6 p-6 rounded-md bg-slate-900">
+      <span className="absolute top-0 right-0 w-24 text-center rounded-md bg-slate-600 text-slate-200 font-light">
+        {patente}
+      </span>
       <Image
         src={image}
         alt={"vehiculo"}
@@ -77,14 +81,16 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
             <span className="font-semibold">Transmisión:</span>
             <span className="">{transmisionDescriptions[transmision]}</span>
           </div>
-          {isAdmin && <TextField
-            variant="outlined"
-            onChange={handleKmChange}
-            type="number"
-            value={newKm}
-            name="km"
-            label="Kilómetros"
-          />}
+          {isAdmin && (
+            <TextField
+              variant="outlined"
+              onChange={handleKmChange}
+              type="number"
+              value={newKm}
+              name="km"
+              label="Kilómetros"
+            />
+          )}
         </div>
       </div>
       {isBooking && (

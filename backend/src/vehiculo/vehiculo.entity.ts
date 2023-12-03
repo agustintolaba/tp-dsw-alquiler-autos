@@ -13,6 +13,9 @@ export class Vehiculo extends BaseEntity {
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   modelo!: string
 
+  @Property({ nullable: false, unique: true, type: 'string', length: 7 })
+  patente!: string
+
   @Property({ nullable: false, unique: false, type: 'string', length: 45 })
   transmision!: string
 
