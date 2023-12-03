@@ -10,6 +10,13 @@ export interface Provincia {
   descripcion: string;
 }
 
+interface ProvinciaProps {
+  isAdmin: boolean;
+  id: number;
+  descripcion: string;
+  onProvinciaListChanged: () => void;
+}
+
 function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T>();
   useEffect(() => {
@@ -18,9 +25,12 @@ function usePrevious<T>(value: T): T | undefined {
   return ref.current;
 }
 
-const ProvinciaItem: React.FC<
-  Provincia & { onProvinciaListChanged: () => void }
-> = ({ id, descripcion, onProvinciaListChanged }) => {
+const ProvinciaItem: React.FC<ProvinciaProps> = ({
+  isAdmin,
+  id,
+  descripcion,
+  onProvinciaListChanged,
+}) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
   const wasEditing = usePrevious(isEditing);
@@ -88,26 +98,21 @@ const ProvinciaItem: React.FC<
 
   const editingTemplate = (
     <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
-      <div className="flex flex-row flex-wrap justify-center items-center gap-6 pt-8 pb-4 px-4 rounded-2xl bg-slate-500 lg:px-8">
-        <div className="flex flex-col justify-end items-center gap-6 sm:items-end">
-          <div className="flex flex-col items-start gap-2 text-white">
-            <label className="todo-label" htmlFor={id.toString()}>
-              Nuevo nombre para: {descripcion}
-            </label>
-            <TextField
-              id={id.toString()}
-              name="descripcion"
-              variant="outlined"
-              fullWidth
-              value={newName}
-              onChange={handleChange}
-              ref={editFieldRef}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-2 text-white sm:flex-row sm:justify-end">
+      <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
+        <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
+          <TextField
+            id={id.toString()}
+            name="descripcion"
+            variant="outlined"
+            fullWidth
+            value={newName}
+            onChange={handleChange}
+            ref={editFieldRef}
+          />
+          <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
               variant="outlined"
-              color="success"
+              color="error"
               onClick={() => setEditing(false)}
               ref={editButtonRef}
             >
@@ -128,26 +133,28 @@ const ProvinciaItem: React.FC<
   );
 
   const viewTemplate = (
-    <div className="flex flex-row flex-wrap justify-center items-center gap-6 pt-8 pb-4 px-4 rounded-2xl bg-slate-500 lg:px-8">
-      <div className="flex flex-col items-start gap-2 text-white">
+    <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
+      <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
         <span className="font-bold text-2xl tracking-wider">{descripcion}</span>
-      </div>
-      <div className="flex flex-col items-center gap-2 text-white sm:flex-row sm:justify-end">
-        <Button
-          variant="outlined"
-          color="success"
-          onClick={() => setEditing(true)}
-          ref={editButtonRef}
-        >
-          Editar
-        </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => deleteProvincia(id.toString())}
-        >
-          Eliminar
-        </Button>
+        {isAdmin && (
+          <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={() => setEditing(true)}
+              ref={editButtonRef}
+            >
+              Editar
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => deleteProvincia(id.toString())}
+            >
+              Eliminar
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -161,7 +168,7 @@ const ProvinciaItem: React.FC<
     }
   }, [wasEditing, isEditing]);
 
-  return <li>{isEditing ? editingTemplate : viewTemplate}</li>;
+  return <>{isEditing ? editingTemplate : viewTemplate}</>;
 };
 
 export default ProvinciaItem;

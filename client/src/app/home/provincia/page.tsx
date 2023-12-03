@@ -1,17 +1,20 @@
 'use client';
 
 import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { verifyAdmin } from '@/services/user';
 import LoadableScreen from '@/components/LoadableScreen';
 import ProvinciaList from '@/components/lists/ProvinciaList';
 import apiClient from '@/services/api';
 import axios, { AxiosError } from 'axios';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface ProvinciaFormData {
   descripcion: string;
 }
 
 const Provincia: React.FC = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProvinciaFormData>({
@@ -19,6 +22,22 @@ const Provincia: React.FC = () => {
   });
   const [provinciaListChanged, setProvinciaListChanged] =
     useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      verifyAdmin()
+        .then((isAdmin) => {
+          setIsAdmin(isAdmin);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          alert('Error al verificar acceso');
+          router.replace('/');
+        });
+    };
+    fetchData();
+  }, []);
 
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient
@@ -69,37 +88,46 @@ const Provincia: React.FC = () => {
 
   return (
     <LoadableScreen isLoading={isLoading}>
-      <div className="flex flex-col items-center p-8 gap-8">
-        <span className="w-full text-4xl font-extralight">
-          Agregar una nueva provincia
+      <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
+        <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
+          {isAdmin
+            ? 'Administración de Provincias'
+            : 'Provincias en las que nos encontramos!'}
         </span>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col w-96 space-y-4">
-            <TextField
-              className=""
-              name="descripcion"
-              label="Nombre"
-              variant="outlined"
-              fullWidth
-              value={formData.descripcion}
-              onChange={handleInputChange}
-              //error={formErrors.email.length > 0}
-              //helperText={formErrors.email}
-            />
-            <Button
-              variant="outlined"
-              color="success"
-              disabled={!buttonEnabled}
-              type="submit"
-            >
-              Añadir
-            </Button>
-          </div>
-        </form>
-        <span className="w-full text-4xl font-extralight">
-          Listado de provincias:
-        </span>
-        <ProvinciaList onProvinciaListChanged={handleProvinciaListChanged} />
+        {isAdmin && (
+          <form onSubmit={handleSubmit} className="w-full sm:w-1/2">
+            <div className="flex flex-col space-y-4">
+              <TextField
+                className=""
+                name="descripcion"
+                label="Nombre"
+                variant="outlined"
+                fullWidth
+                value={formData.descripcion}
+                onChange={handleInputChange}
+              />
+              <Button
+                variant="outlined"
+                color="success"
+                disabled={!buttonEnabled}
+                type="submit"
+              >
+                Añadir
+              </Button>
+            </div>
+          </form>
+        )}
+      </div>
+      <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-full mx-auto">
+        {isAdmin && (
+          <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
+            Listado de provincias:
+          </span>
+        )}
+        <ProvinciaList
+          isAdmin={isAdmin}
+          onProvinciaListChanged={handleProvinciaListChanged}
+        />
       </div>
     </LoadableScreen>
   );

@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react';
 import ProvinciaItem, { Provincia } from '../items/ProvinciaItem';
 import apiClient from '@/services/api';
 
-const ProvinciaList: React.FC<{ onProvinciaListChanged: () => void }> = ({
+interface ProvinciaListProps {
+  isAdmin: boolean;
+  onProvinciaListChanged: () => void;
+}
+
+const ProvinciaList: React.FC<ProvinciaListProps> = ({
+  isAdmin,
   onProvinciaListChanged,
 }) => {
   const [provinciaItems, setProvinciaItems] = useState<Provincia[]>([]);
@@ -29,11 +35,12 @@ const ProvinciaList: React.FC<{ onProvinciaListChanged: () => void }> = ({
   }, [onProvinciaListChanged]);
 
   return (
-    <main className="flex flex-col items-center p-8 gap-12">
-      <div className="grid grid-cols-3 gap-12 max-w-4xl">
+    <div className="flex flex-col items-center p-4 sm:p-8 gap-4 sm:gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
         {provinciaItems.length > 0 ? (
           provinciaItems.map((item: Provincia) => (
             <ProvinciaItem
+              isAdmin={isAdmin}
               onProvinciaListChanged={onProvinciaListChanged}
               key={item.id}
               id={item.id}
@@ -41,10 +48,10 @@ const ProvinciaList: React.FC<{ onProvinciaListChanged: () => void }> = ({
             />
           ))
         ) : (
-          <p>Sin provincias en el sistema actualmente!</p>
+          <span>Sin provincias actualmente en el sistema.</span>
         )}
       </div>
-    </main>
+    </div>
   );
 };
 
