@@ -1,7 +1,11 @@
 "use client";
 
 import { Vehiculo } from "@/types";
-import { transmisionDescriptions } from "@/utils/constants";
+import {
+  NEW_PATENTE_FORMAT,
+  OLD_PATENTE_FORMAT,
+  transmisionDescriptions,
+} from "@/utils/constants";
 import { Person } from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
 import Image from "next/image";
@@ -52,11 +56,38 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
     setNewKm(Number(value));
   };
 
+  const getFormattedLicensePlate = (plate: string): string => {
+    if (OLD_PATENTE_FORMAT.test(plate.toLowerCase())) {
+      return `${plate.slice(0, 3)} ${plate.slice(3, 6)}`;
+    }
+    if (NEW_PATENTE_FORMAT.test(plate.toLowerCase())) {
+      return `${plate.slice(0, 2)} ${plate.slice(2, 5)} ${plate.slice(5, 7)}`;
+    }
+    return plate;
+  };
+
   return (
-    <div className="relative flex flex-row flex-wrap justify-center items-center gap-6 p-6 rounded-md bg-slate-900">
-      {isAdmin && <span className="absolute top-0 right-0 w-24 text-center rounded-md bg-slate-600 text-slate-200 font-light">
-        {patente}
-      </span>}
+    <div className="relative flex flex-col justify-center items-center gap-6 pt-12 p-6 md:p-6 rounded-md bg-slate-900 md:flex-row">
+      {isAdmin && (
+        <span
+          className={`absolute top-0 w-24 flex items-center bg-white justify-center rounded-sm ${
+            OLD_PATENTE_FORMAT.test(patente.toLowerCase()) ? "h-9 scale-90 md:-right-1" : "h-8"
+          } font-light md:right-0`}
+        >
+          {NEW_PATENTE_FORMAT.test(patente.toLowerCase()) && (
+            <span className="absolute top-0 right-0 w-full bg-sky-800 h-1.5 text-center"></span>
+          )}
+          <span
+            className={`absolute font-semibold ${
+              OLD_PATENTE_FORMAT.test(patente.toLowerCase())
+                ? "bg-black text-white rounded-md px-3.5 py-0.5"
+                : " text-black bottom-0.5"
+            }`}
+          >
+            {getFormattedLicensePlate(patente)}
+          </span>
+        </span>
+      )}
       <Image
         src={image}
         alt={"vehiculo"}

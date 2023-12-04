@@ -13,6 +13,7 @@ function sanitizeVehiculoInput(req: Request, res: Response, next: NextFunction) 
     id: req.body.id,
     marca: req.body.marca,
     modelo: req.body.modelo,
+    patente: req.body.patente,
     year: req.body.year,
     km: req.body.km,
     transmision: req.body.transmision,
@@ -83,17 +84,19 @@ async function add(req: Request, res: Response) {
         //id: parseInt(req.body.id), NO SE ENVIA EL ID CUANDO SE CREA, ES AUTOINCREMENTAL EN LA BASE DE DATOS
         marca: req.body.marca,
         modelo: req.body.modelo,
+        patente: req.body.patente,
+        km: req.body.km,
         year: parseInt(req.body.year),
         transmision: req.body.transmision,
         capacidad: parseInt(req.body.capacidad),
         image: result.secure_url,
         tipoVehiculo: parseInt(req.body.tipoVehiculo),
-        //seguro: parseInt(req.body.seguro),
         sucursal: parseInt(req.body.sucursal),
       };
 
       // forma original de hacer el flush
       const input = req.body.sanitizedInput
+      console.log(input)
       const vehiculoNuevo = em.create(Vehiculo, input)
       await em.flush()
 
@@ -104,7 +107,7 @@ async function add(req: Request, res: Response) {
       res.status(400).json({ message: 'No se proporcionó una imagen en la solicitud' })
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error al procesar el formulario del nuevo vehiculo:', data: error })
+    res.status(500).json({ message: 'Error al procesar el formulario', data: error })
   }
 }
 

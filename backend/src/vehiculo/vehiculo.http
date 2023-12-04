@@ -18,9 +18,11 @@ Content-Type: application/json
 {
   "marca": "Chevrolet",
   "modelo": "Onix",
-  "transmision": "Manual",
+  "patente": "ABC123",
+  "year": "2021",
+  "transmision": "AT",
   "capacidad": 4,
-  "image":"/assets/images/lamborghini.png",
+  "image":"https://res.cloudinary.com/dniykkfdv/image/upload/v1701646512/images/1701646511113.png",
   "tipoVehiculo": 1,
   "sucursal": 1
 }

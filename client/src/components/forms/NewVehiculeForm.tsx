@@ -1,20 +1,23 @@
-'use client';
-import { SelectMenuItem } from '@/types';
-import { alertError } from '@/utils/errorHandling';
-import { useRouter } from 'next/navigation';
-import { useState, ChangeEvent, useEffect } from 'react';
-import LoadableScreen from '../LoadableScreen';
-import { Button, MenuItem, TextField } from '@mui/material';
-import { getBranchOptions } from '@/services/branch';
-import apiClient from '@/services/api';
-import { verifyAdmin } from '@/services/userType';
-import { NO_ACCESS, seatings, transmisions } from '@/utils/constants';
-import VehicleTypesSelectField from '../VehicleTypesSelectField';
+"use client";
+import { SelectMenuItem } from "@/types";
+import { alertError } from "@/utils/errorHandling";
+import { useRouter } from "next/navigation";
+import { useState, ChangeEvent, useEffect } from "react";
+import LoadableScreen from "../LoadableScreen";
+import { Button, MenuItem, TextField } from "@mui/material";
+import { getBranchOptions } from "@/services/branch";
+import apiClient from "@/services/api";
+import { verifyAdmin } from "@/services/userType";
+import { NO_ACCESS, seatings, transmisions } from "@/utils/constants";
+import VehicleTypesSelectField from "../VehicleTypesSelectField";
+import { patenteValidator } from "@/utils/validators";
 
 interface INewVehicleFormData {
   marca: string;
   modelo: string;
+  patente: string;
   transmision: string;
+  km: string;
   year: string;
   capacidad: number;
   image: Blob | null;
@@ -23,10 +26,12 @@ interface INewVehicleFormData {
 }
 
 const emptyVehicleForm = {
-  marca: '',
-  modelo: '',
-  transmision: transmisions.at(0)?.descripcion || 'Automático',
-  year: '',
+  marca: "",
+  modelo: "",
+  patente: "",
+  transmision: transmisions.at(0)?.descripcion || "Automático",
+  year: "",
+  km: "",
   capacidad: seatings.at(0)?.id || 1,
   image: null,
   tipoVehiculo: 1,
@@ -37,6 +42,7 @@ const NewVehicleForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
+  const [licensePlateError, setLicensePlateError] = useState<string>("");
   const [officeLocations, setOfficeLocations] = useState<SelectMenuItem[]>();
   const [formData, setFormData] =
     useState<INewVehicleFormData>(emptyVehicleForm);
@@ -47,7 +53,7 @@ const NewVehicleForm = () => {
         const isAdmin = await verifyAdmin();
         if (!isAdmin) {
           alert(NO_ACCESS);
-          router.replace('/home');
+          router.replace("/home");
         }
         const locations = await getBranchOptions();
         setOfficeLocations(locations);
@@ -61,7 +67,7 @@ const NewVehicleForm = () => {
         setIsLoading(false);
       } catch (error: any) {
         alertError(error);
-        router.replace('/');
+        router.replace("/");
       }
     };
 
@@ -74,6 +80,10 @@ const NewVehicleForm = () => {
     const { name, value } = e.target;
     setFormData((prevFormData) => {
       const newFormData = { ...prevFormData, [name]: value };
+
+      if (name == "patente") {
+        setLicensePlateError(patenteValidator(value.toLowerCase()));
+      }
 
       enableButton(newFormData);
       return newFormData;
@@ -97,6 +107,9 @@ const NewVehicleForm = () => {
     const someFieldIsEmpty =
       formData.marca.length == 0 ||
       formData.modelo.length == 0 ||
+      formData.km.length == 0 ||
+      formData.year.length == 0 ||
+      formData.patente.length == 0 ||
       formData.image == null;
 
     if (someFieldIsEmpty) {
@@ -108,17 +121,18 @@ const NewVehicleForm = () => {
   };
 
   const add = async () => {
-    apiClient
-      .post('/vehiculo', formData, {
+    console.log(formData);
+    apiClient()
+      .post("/vehiculo", formData, {
         headers: {
-          'Content-Type': `multipart/form-data`,
+          "Content-Type": `multipart/form-data`,
         },
       })
-      .then((res) => {
-        if (confirm('Vehículo agregado correctamente, ¿desea agregar otro?')) {
+      .then(() => {
+        if (confirm("Vehículo agregado correctamente, ¿desea agregar otro?")) {
           cleanFields();
         } else {
-          router.push('/home/vehicles');
+          router.push("/home/vehicles");
         }
       })
       .catch((error: any) => {
@@ -132,12 +146,12 @@ const NewVehicleForm = () => {
 
   return (
     <LoadableScreen isLoading={isLoading}>
-      <div className="flex flex-col items-center p-8 gap-8">
+      <div className="flex flex-col items-center p-8 pb-20 gap-8">
         <span className="w-full text-4xl font-extralight">
           Agregar vehículo
         </span>
         <form
-          className="grid gap-6"
+          className="grid gap-6 grid-cols-1 sm:grid-cols-2"
           onSubmit={(event) => {
             event.preventDefault();
             add();
@@ -147,6 +161,7 @@ const NewVehicleForm = () => {
             type="text"
             name="marca"
             label="Marca"
+            fullWidth
             value={formData.marca}
             onChange={handleInputChange}
           />
@@ -155,14 +170,34 @@ const NewVehicleForm = () => {
             type="text"
             name="modelo"
             label="Modelo"
+            fullWidth
             value={formData.modelo}
             onChange={handleInputChange}
           />
           <TextField
             type="text"
-            name="year"
+            name="patente"
+            label="Patente"
+            error={licensePlateError.length > 0}
+            helperText={licensePlateError}
+            fullWidth
+            value={formData.patente}
+            onChange={handleInputChange}
+          />
+          <TextField
+            type="number"
+            name="year"            
             label="Año"
+            fullWidth
             value={formData.year}
+            onChange={handleInputChange}
+          />
+          <TextField
+            type="number"
+            name="km"
+            label="Kilómetros"
+            fullWidth
+            value={formData.km}
             onChange={handleInputChange}
           />
           <TextField
@@ -177,13 +212,14 @@ const NewVehicleForm = () => {
           >
             {transmisions?.map((t) => (
               <MenuItem key={t.id} value={t.descripcion}>
-                {t.descripcion == 'AT' ? 'Automático' : 'Manual'}
+                {t.descripcion == "AT" ? "Automático" : "Manual"}
               </MenuItem>
             ))}
           </TextField>
           <TextField
             name="capacidad"
             label="Capacidad"
+            fullWidth
             select
             value={formData.capacidad}
             onChange={handleInputChange}
@@ -253,6 +289,11 @@ const NewVehicleForm = () => {
             </Button>
           </div>
         </form>
+        <footer className="fixed flex items-center justify-center bottom-0 w-full py-4 px-2 bg-slate-700">
+          <span className="text-sm text-center text-yellow-400 sm:text-md">
+            Formato de patente: ABC123 o AB123CD
+          </span>
+        </footer>
       </div>
     </LoadableScreen>
   );

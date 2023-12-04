@@ -1,5 +1,5 @@
 import { TimePickerProps } from "@mui/x-date-pickers";
-import { MAX_WORKING_HOUR, MIN_WORKING_HOUR, PASSWORD_LENGTH_ERROR, PASSWORD_MIN_LENGTH, PASSWORDS_NOT_MATCH_ERROR } from "./constants";
+import { EMAIL_FORMAT, MAX_WORKING_HOUR, MIN_WORKING_HOUR, NEW_PATENTE_FORMAT, OLD_PATENTE_FORMAT, PASSWORD_LENGTH_ERROR, PASSWORD_MIN_LENGTH, PASSWORDS_NOT_MATCH_ERROR } from "./constants";
 import { Dayjs } from "dayjs";
 
 export const emailValidator = (email: string) => {
@@ -9,6 +9,18 @@ export const emailValidator = (email: string) => {
 
     if (!new RegExp(/\S+@\S+\.\S+/).test(email)) {
         return "Formato de email incorrecto";
+    }
+
+    return "";
+};
+
+export const patenteValidator = (patente: string) => {
+    if (patente.length == 0) {
+        return ""
+    }
+
+    if (!OLD_PATENTE_FORMAT.test(patente) && !NEW_PATENTE_FORMAT.test(patente)) {
+        return "Formato inválido";
     }
 
     return "";

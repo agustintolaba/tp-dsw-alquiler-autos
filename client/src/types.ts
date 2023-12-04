@@ -31,6 +31,7 @@ export interface Vehiculo extends Identifiable {
     km: number,
     image: string
     tipoVehiculo: TipoVehiculo
+    sucursal: Sucursal
 }
 
 export interface Reserva extends Identifiable {
