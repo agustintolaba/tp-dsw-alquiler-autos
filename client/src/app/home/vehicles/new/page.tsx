@@ -24,7 +24,7 @@ const NewVehicle: React.FC = () => {
     }, [])
 
     if (!isAdmin) {
-        router.push(`/error?description=${NO_ACCESS}`)
+        router.push(`/error?name=noAccess`)
         return
     } else {
         return <NewVehicleForm />

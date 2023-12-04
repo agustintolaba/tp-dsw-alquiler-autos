@@ -2,7 +2,7 @@ import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
 import { alertError } from "@/utils/errorHandling";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const useAdmin = () => {
   const router = useRouter();
@@ -16,15 +16,14 @@ const useAdmin = () => {
         setIsAdmin(isAdmin);
         setIsLoadingAdmin(false);
       } catch (error: any) {
-        alertError(error);
-        router.replace("/home");
+        router.replace(`/error?name=verifyAccess`);
       }
     };
     fetchData();
   }, []);
 
   return {
-    isLoadingAdmin: isLoadingAdmin,
+    isLoadingAdmin,
     isAdmin,
   };
 };
