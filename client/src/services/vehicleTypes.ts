@@ -14,7 +14,7 @@ export const getVehicleTypesOptions = async (): Promise<SelectMenuItem[]> => {
 };
 
 export const getVehicleTypes = async (): Promise<TipoVehiculo[]> => {
-    const res = await apiClient.get('/tipovehiculo')
+    const res = await apiClient().get('/tipovehiculo')
 
     return res.data.types
 };

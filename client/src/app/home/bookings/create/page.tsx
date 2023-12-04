@@ -80,7 +80,7 @@ const CreateBooking = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        apiClient.get(`/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde.toISOString()}'&fecha_hasta='${formData.fechaHasta.toISOString()}'&transmision='${formData.transmision}'&tipo_vehiculo='${formData.tipoVehiculo}'`)
+        apiClient().get(`/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde.toISOString()}'&fecha_hasta='${formData.fechaHasta.toISOString()}'&transmision='${formData.transmision}'&tipo_vehiculo='${formData.tipoVehiculo}'`)
             .then((res) => {
                 console.log(res.data.vehicles)
             })

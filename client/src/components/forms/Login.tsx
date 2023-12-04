@@ -53,7 +53,7 @@ const Login: React.FC = () => {
     };
 
     const login = (data: LoginFormData) => {
-        const res = apiClient.post("usuario/login", JSON.stringify(data))
+        const res = apiClient().post("usuario/login", JSON.stringify(data))
         res
             .then((response) => {
                 const token = response.data.token
@@ -84,6 +84,7 @@ const Login: React.FC = () => {
                     label="E-mail"
                     variant="outlined"
                     fullWidth
+                    type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     error={formErrors.email.length > 0}

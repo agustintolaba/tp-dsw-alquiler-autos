@@ -6,11 +6,13 @@ import { alertError } from "@/utils/errorHandling";
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
   const [vehicles, setVehicles] = useState<Vehiculo[]>([]);
+  const [filteredList, setFilteredList] = useState<Vehiculo[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       getVehicles(vehicleTypeId)
         .then((vehicles) => {
+          console.log(vehicles)
           setVehicles(vehicles);
           setIsLoadingVehicle(false);
         })
@@ -22,7 +24,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   }, []);
 
   const remove = async (vehicle: Vehiculo) => {
-    apiClient
+    apiClient()
       .delete(`/vehiculo/${vehicle.id}`)
       .then(() => {
         setVehicles((vehicles) => vehicles?.filter((v) => v.id != vehicle.id));
@@ -37,7 +39,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   };
 
   const edit = (id: number, newKm: number) => {
-    apiClient
+    apiClient()
       .patch(`/vehiculo/${id}`, {
         km: newKm,
       })
@@ -53,12 +55,32 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
       });
   };
 
+  const filter = (search: string) => {
+    if (search.trim() == "" || search.length == 0) {
+      setFilteredList(null);
+      return;
+    }
+
+    let searchTerms = search.toLowerCase().split(" ");
+
+    setFilteredList(
+      vehicles.filter((v) =>
+        searchTerms.some(
+          (term) =>
+            v.marca.toLowerCase().includes(term) ||
+            v.modelo.toLowerCase().includes(term)
+        )
+      )
+    );
+  };
+
   return {
     isLoadingVehicle,
-    vehicles,
+    vehicles: filteredList || vehicles,
     remove,
     add,
     edit,
+    filter,
   };
 };
 
@@ -71,7 +93,7 @@ export default useVehicle;
 export const getVehicles = async (
   idTipo: number | null = null
 ): Promise<Vehiculo[]> => {
-  const res = await apiClient.get(
+  const res = await apiClient().get(
     idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : "/vehiculo/find"
   );
 

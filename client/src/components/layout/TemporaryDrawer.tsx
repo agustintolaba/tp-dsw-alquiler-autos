@@ -14,8 +14,6 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import Link from "next/link";
 import { CarRental, Map, People } from "@mui/icons-material";
 import { useState, useEffect, Fragment } from "react";
-import useUser, { verifyAdmin } from "@/services/user";
-import { useRouter } from "next/navigation";
 
 const sharedMenuItems = [
   {
@@ -56,9 +54,12 @@ const adminMenuItems = [{
   destination: "/home/provincia"
 }]
 
-const TemporaryDrawer: React.FC = () => {
+interface TemporaryDrawerProps {
+  isAdmin: boolean;
+}
+
+const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
   const [open, setOpen] = useState(false);
-  const { isAdmin } = useUser();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {

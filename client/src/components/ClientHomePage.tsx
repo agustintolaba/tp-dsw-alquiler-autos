@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import HomeGridItem, { HomeGridItemProps } from '@/components/items/HomeGridItem';
-import HomeDetailItem from '@/components/items/HomeDetailItem';
+import HomeGridItem, { HomeGridItemProps } from '@/components/items/ClientHomeGridItem';
+import HomeDetailItem from '@/components/items/ClientHomeDetailItem';
 import apiClient from '@/services/api';
 import Link from 'next/link';
 import { Button } from '@mui/material';
@@ -33,7 +33,6 @@ export default function ClientHomePage() {
   const [vehicleTypes, setVehicleTypes] = useState<TipoVehiculo[]>([]);
 
   useEffect(() => {
-    // VER SI SE PUEDE CAMBIAR A SSR
     const fetchVehicleTypes = async () => {
       try {
         const vehicleTypes = await getVehicleTypes();

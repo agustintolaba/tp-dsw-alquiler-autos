@@ -1,43 +1,59 @@
-import { TOKEN_STORAGE_KEY } from "@/utils/constants";
-import apiClient from "./api";
+import { TipoUsuario, Usuario } from "@/types";
 import { useEffect, useState } from "react";
+import apiClient from "./api";
 import { alertError } from "@/utils/errorHandling";
 import { useRouter } from "next/navigation";
 
 const useUser = () => {
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(true);
+  const [users, setUsers] = useState<Usuario[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const isAdmin = await verifyAdmin();
-        setIsAdmin(isAdmin);
-        setIsLoadingUser(false);
-      } catch (error: any) {
-        alertError(error);
-        router.replace("/home");
-      }
+    const fetchUsers = async () => {
+      apiClient(true)
+        .get("/usuario")
+        .then((res) => {
+          setIsLoadingUsers(false);
+          setUsers(res.data.users);
+        })
+        .catch((error: any) => {
+          alertError(error);
+          router.replace("/home")
+        });
     };
-    fetchData();
+    fetchUsers();
   }, []);
 
-  return {
-    isLoadingUser,
-    isAdmin,
+  const remove = async (user: Usuario) => {
+    apiClient(true)
+      .delete(`/usuario/${user.id}`)
+      .then(() => {
+        setUsers((users) => users?.filter((v) => v.id != user.id));
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
   };
+
+  const edit = (user: Usuario, newTipoUsuario: TipoUsuario) => {
+    apiClient(true)
+      .patch(`/usuario/${user.id}`, {
+        tipoUsuario: newTipoUsuario,
+      })
+      .then(() => {
+        setUsers((users) =>
+          users.map((u) =>
+            u.id === user.id ? { ...u, tipoUsuario: newTipoUsuario } : u
+          )
+        );
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
+  };
+
+  return { users, edit, remove, isLoadingUsers };
 };
 
 export default useUser;
-
-export const verifyAdmin = async (): Promise<boolean> => {
-  const token = window.localStorage.getItem(TOKEN_STORAGE_KEY);
-
-  const res = await apiClient.get("/tipousuario/verifyAdmin", {
-    headers: {
-      Authorization: token,
-    },
-  });
-  return res.data.admin;
-};

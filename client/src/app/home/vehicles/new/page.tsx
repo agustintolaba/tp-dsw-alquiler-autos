@@ -1,6 +1,6 @@
 'use client'
 import NewVehicleForm from "@/components/forms/NewVehiculeForm"
-import { verifyAdmin } from "@/services/user"
+import { verifyAdmin } from "@/services/userType"
 import { NO_ACCESS } from "@/utils/constants"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -24,7 +24,7 @@ const NewVehicle: React.FC = () => {
     }, [])
 
     if (!isAdmin) {
-        router.push(`/error?description=${NO_ACCESS}`)
+        router.push(`/error?name=noAccess`)
         return
     } else {
         return <NewVehicleForm />

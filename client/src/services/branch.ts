@@ -15,7 +15,7 @@ export const getBranchOptions = async (): Promise<SelectMenuItem[]> => {
 };
 
 export const getBranches = async (): Promise<Sucursal[]> => {
-    const res = await apiClient.get('/sucursal')
+    const res = await apiClient().get('/sucursal')
 
     return res.data.branches
 };

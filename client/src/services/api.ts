@@ -1,11 +1,24 @@
 import axios from "axios";
-import { API_BASE_URL } from "../utils/constants";
+import { API_BASE_URL, TOKEN_STORAGE_KEY } from "../utils/constants";
 
-const apiClient = axios.create({
+const apiClient = (requiresAuthorization: boolean = false) => {
+  let headers: { [key: string]: string } = {
+    "Content-type": "application/json",
+  };
+
+  if (requiresAuthorization) {
+    headers = {
+      ...headers,
+      Authorization: localStorage.getItem(TOKEN_STORAGE_KEY) || "",
+    };
+  }
+
+  const client = axios.create({
     baseURL: API_BASE_URL,
-    headers: {
-        "Content-type": "application/json",
-    }
-})
+    headers: headers,
+  });
 
-export default apiClient
+  return client
+};
+
+export default apiClient;

@@ -2,7 +2,7 @@
 import LoadableScreen from "@/components/LoadableScreen";
 import apiClient from "@/services/api";
 import { getBookings } from "@/services/booking";
-import { verifyAdmin } from "@/services/user";
+import { verifyAdmin } from "@/services/userType";
 import { Reserva } from "@/types";
 import { alertError } from "@/utils/errorHandling";
 import { Button } from "@mui/material";
