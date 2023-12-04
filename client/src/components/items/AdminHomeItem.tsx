@@ -18,7 +18,7 @@ const AdminHomeItem: React.FC<AdminHomeItemProps> = ({
 }) => {
   return (
     <Link href={href}>
-      <div className={`w-96 h-48 flex flex-col px-4 items-center justify-center gap-4 ${bgColor} rounded-md cursor-pointer transition-transform hover:scale-105`}>
+      <div className={`sm:w-96 w-72 h-48 flex flex-col px-4 items-center justify-center gap-4 ${bgColor} rounded-md cursor-pointer transition-transform hover:scale-105`}>
         <DynamicIcon name={icon}/>
         <span className="font-bold text-2xl text-center">{title}</span>
         <span className="font-light text-md text-center italic">{subtitle}</span>
