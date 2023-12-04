@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Button, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { verifyAdmin } from '@/services/user';
-import LoadableScreen from '@/components/LoadableScreen';
-import ProvinciaList from '@/components/lists/ProvinciaList';
-import apiClient from '@/services/api';
-import axios, { AxiosError } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Button, TextField } from "@mui/material";
+import { useState, useEffect } from "react";
+import LoadableScreen from "@/components/LoadableScreen";
+import ProvinciaList from "@/components/lists/ProvinciaList";
+import apiClient from "@/services/api";
+import axios, { AxiosError } from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import useAdmin from "@/services/userType";
 
 interface ProvinciaFormData {
   descripcion: string;
@@ -18,34 +18,20 @@ const Provincia: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProvinciaFormData>({
-    descripcion: '',
+    descripcion: "",
   });
   const [provinciaListChanged, setProvinciaListChanged] =
     useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { isAdmin, isLoadingAdmin } = useAdmin();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      verifyAdmin()
-        .then((isAdmin) => {
-          setIsAdmin(isAdmin);
-        })
-        .catch((error: any) => {
-          console.log(error);
-          alert('Error al verificar acceso');
-          router.replace('/');
-        });
-    };
-    fetchData();
-  }, []);
-
+  
   const newProvincia = (data: ProvinciaFormData) => {
-    const res = apiClient
-      .post('/provincia', JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
+    const res = apiClient()
+      .post("/provincia", JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
       .then((res) => {
-        alert('Se cargo una nueva provincia');
-        setFormData({ descripcion: '' });
-        enableButton({ descripcion: '' });
+        alert("Se cargo una nueva provincia");
+        setFormData({ descripcion: "" });
+        enableButton({ descripcion: "" });
         handleProvinciaListChanged();
       })
       .catch((error: Error | AxiosError) => {
@@ -56,7 +42,7 @@ const Provincia: React.FC = () => {
           if (error.message) {
             alert(error.message);
           } else {
-            alert('Ha ocurrido un error');
+            alert("Ha ocurrido un error");
           }
         }
       })
@@ -87,12 +73,12 @@ const Provincia: React.FC = () => {
   };
 
   return (
-    <LoadableScreen isLoading={isLoading}>
+    <LoadableScreen isLoading={isLoading || isAdmin == null}>
       <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin
-            ? 'Administración de Provincias'
-            : 'Provincias en las que nos encontramos!'}
+            ? "Administración de Provincias"
+            : "Provincias en las que nos encontramos!"}
         </span>
         {isAdmin && (
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">
@@ -125,7 +111,7 @@ const Provincia: React.FC = () => {
           </span>
         )}
         <ProvinciaList
-          isAdmin={isAdmin}
+          isAdmin={isAdmin || false}
           onProvinciaListChanged={handleProvinciaListChanged}
         />
       </div>

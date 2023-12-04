@@ -20,7 +20,7 @@ const homeItems = [
     title: "Administrar provincias",
     subtitle: "Aquí puedes eliminar y editar el nombre de las provincias",
     bgColor: "bg-teal-900",
-    href: "/home/provincias"
+    href: "/home/provincia"
   },
   {
     icon: "group",

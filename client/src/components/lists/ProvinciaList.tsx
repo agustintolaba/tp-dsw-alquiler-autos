@@ -18,7 +18,7 @@ const ProvinciaList: React.FC<ProvinciaListProps> = ({
   useEffect(() => {
     const fetchProvinciaItems = async () => {
       try {
-        const response = apiClient.get('/provincia').then((res) => {
+        const response = apiClient().get('/provincia').then((res) => {
           const list = res.data.data.map((item: Provincia) => {
             return {
               id: item.id.toString(),

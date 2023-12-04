@@ -1,11 +1,22 @@
 import { Router } from "express";
-import { sanitizeProvinciaInput, findAll, findOne, add, update, remove } from "./provincia.controler.js";
+import {
+  sanitizeProvinciaInput,
+  findAll,
+  findOne,
+  add,
+  update,
+  remove,
+} from "./provincia.controler.js";
+import { validateToken } from "../shared/accessToken.js";
 
-export const provinciaRouter= Router()
+export const provinciaRouter = Router();
 
-provinciaRouter.get('/', findAll) /*LA RUTA ES GENERICA, DARLE USOS EN OTRAS PARTES DE LA APP */
-provinciaRouter.get('/:id', findOne)
-provinciaRouter.post('/', sanitizeProvinciaInput, add)
-provinciaRouter.put('/:id', sanitizeProvinciaInput, update)
-provinciaRouter.patch('/:id', sanitizeProvinciaInput, update)
-provinciaRouter.delete('/:id', remove)
+provinciaRouter.get(
+  "/",
+  findAll
+); /*LA RUTA ES GENERICA, DARLE USOS EN OTRAS PARTES DE LA APP */
+provinciaRouter.get("/:id", findOne);
+provinciaRouter.post("/", validateToken, sanitizeProvinciaInput, add);
+provinciaRouter.put("/:id", validateToken, sanitizeProvinciaInput, update);
+provinciaRouter.patch("/:id", validateToken, sanitizeProvinciaInput, update);
+provinciaRouter.delete("/:id", validateToken, remove);

@@ -29,16 +29,11 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const id = req.userId;
-    const usuario = await em.findOneOrFail(
-      Usuario,
-      { id },
-      { populate: ["tipoUsuario"] }
-    );
-    const isAdmin = usuario?.tipoUsuario.descripcion == ADMIN_DESCRIPTION;
+    const userId = req.userId
+    const isAdmin = req.isAdmin
     if (isAdmin) {
       let usuarios = await em.find(Usuario, {}, { populate: ["tipoUsuario"] });
-      usuarios = usuarios.filter((usuario) => usuario.id != id);
+      usuarios = usuarios.filter((usuario) => usuario.id != userId);
       res
         .status(200)
         .json({ message: "Ususarios encontrados", users: usuarios });

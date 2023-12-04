@@ -1,9 +1,9 @@
 /* Para crear el componente de una sola provincia */
-'use client';
-import apiClient from '@/services/api';
-import { alertError } from '@/utils/errorHandling';
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+"use client";
+import apiClient from "@/services/api";
+import { alertError } from "@/utils/errorHandling";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 
 export interface Provincia {
   id: number;
@@ -40,39 +40,34 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
 
   const editProvincia = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/provincia/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id: id, descripcion: newName }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      alert('Se edito provincia');
-      onProvinciaListChanged();
+      await apiClient(true)
+        .put(`/provincia/${id}`, {
+          id: id,
+          descripcion: newName,
+        })
+        .then(() => {
+          alert("Se edito provincia");
+          onProvinciaListChanged();
+        })
+        .catch((error: any) => {
+          alertError(error);
+        });
     } catch (error: any) {
-      alert('No se pudo editar');
-      console.error('Error:', error.message);
+      alert("No se pudo editar");
+      console.error("Error:", error.message);
     }
   };
 
   const deleteProvincia = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la provincia?');
+    const respuesta = confirm("Desea eliminar la provincia?");
     if (respuesta) {
       try {
-        const response = await apiClient.delete(`/provincia/${id}`);
-        //alert(response.data.json());
-        alert('Se elimino una provincia');
+        const response = await apiClient(true).delete(`/provincia/${id}`);
+        alert("Se elimino una provincia");
         onProvinciaListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   };
