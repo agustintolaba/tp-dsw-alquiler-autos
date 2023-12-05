@@ -58,7 +58,7 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const input = req.body.sanitizedInput
-    const alquilerNuevo = em.create(Alquiler, input)
+    const alquilerNuevo = em.create(Alquiler, {...input, estado: "Realizada", fechaRealizacion: new Date().toISOString()})
     await em.flush()
     res.status(201).json({ message: 'Se cargo nuevo alquiler', data: alquilerNuevo})
   } catch (error: any) {

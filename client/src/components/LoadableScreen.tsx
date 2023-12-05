@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react"
-import LoadingScreen from "./LoadingScreen"
 import { CircularProgress } from "@mui/material"
 
 interface LoadableScreenProps {
