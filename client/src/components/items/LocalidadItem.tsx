@@ -37,7 +37,9 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
+  const [oldName, setOldName] = useState(descripcion);
   const [newProv, setNewProv] = useState(provincia.id);
+  const [oldProv, setOldProv] = useState(provincia.id);
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
@@ -82,10 +84,14 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
     setButtonEnabled(false);
   }, [isEditing]);
 
+  useEffect(() => {
+    setOldName(newName);
+    setOldProv(newProv);
+    enableButton();
+  }, [newName, newProv]);
+
   const enableButton = () => {
-    setButtonEnabled(
-      newName.trim() !== descripcion.trim() || provincia.id !== newProv
-    );
+    setButtonEnabled(newName.trim() !== oldName.trim() || oldProv !== newProv);
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
