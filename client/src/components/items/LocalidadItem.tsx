@@ -36,6 +36,7 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
+  const [newProv, setNewProv] = useState(provincia.id);
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
