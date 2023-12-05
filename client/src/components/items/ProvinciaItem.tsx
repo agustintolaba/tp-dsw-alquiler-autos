@@ -1,9 +1,9 @@
 /* Para crear el componente de una sola provincia */
-"use client";
-import apiClient from "@/services/api";
-import { alertError } from "@/utils/errorHandling";
-import { Button, TextField } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+'use client';
+import apiClient from '@/services/api';
+import { alertError } from '@/utils/errorHandling';
+import { Button, TextField } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface Provincia {
   id: number;
@@ -33,6 +33,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
+  const [oldName, setOldName] = useState(descripcion);
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
@@ -46,43 +47,52 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
           descripcion: newName,
         })
         .then(() => {
-          alert("Se edito provincia");
+          alert('Se edito provincia');
           onProvinciaListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert("No se pudo editar");
-      console.error("Error:", error.message);
+      alert('No se pudo editar');
+      console.error('Error:', error.message);
     }
   };
 
   const deleteProvincia = async (id: string) => {
-    const respuesta = confirm("Desea eliminar la provincia?");
+    const respuesta = confirm('Desea eliminar la provincia?');
     if (respuesta) {
       try {
         const response = await apiClient(true).delete(`/provincia/${id}`);
-        alert("Se elimino una provincia");
+        alert('Se elimino una provincia');
         onProvinciaListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error("Error:", error.message);
+        console.error('Error:', error.message);
       }
     }
   };
 
   useEffect(() => {
     setButtonEnabled(false);
+    setNewName(descripcion);
+    setOldName(descripcion);
   }, [isEditing]);
 
-  const enableButton = (value: string) => {
-    setButtonEnabled(value.trim().length > 0);
+  useEffect(() => {
+    setOldName(newName);
+    enableButton();
+  }, [newName]);
+
+  const enableButton = () => {
+    setButtonEnabled(
+      newName.trim().length > 0 && newName.trim() !== oldName.trim()
+    );
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewName(e.target.value);
-    enableButton(e.target.value);
+    enableButton();
   }
 
   function handleSubmit(e: React.FormEvent) {

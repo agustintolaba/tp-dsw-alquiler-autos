@@ -82,6 +82,10 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
 
   useEffect(() => {
     setButtonEnabled(false);
+    setNewName(descripcion);
+    setOldName(descripcion);
+    setNewProv(provincia.id);
+    setOldProv(provincia.id);
   }, [isEditing]);
 
   useEffect(() => {
