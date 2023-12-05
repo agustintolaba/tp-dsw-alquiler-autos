@@ -4,6 +4,7 @@ import apiClient from '@/services/api';
 import { alertError } from '@/utils/errorHandling';
 import { Button, TextField } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
+import ProvinciaSelectField from '../ProvinciaSelectField';
 
 export interface Localidad {
   id: number;
@@ -42,16 +43,17 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
-  const editProvincia = async () => {
+  const editLocalidad = async () => {
     try {
       await apiClient(true)
-        .put(`/provincia/${id}`, {
+        .put(`/localidad/${id}`, {
           id: id,
           descripcion: newName,
+          provincia: newProv,
         })
         .then(() => {
-          alert('Se edito provincia');
-          onProvinciaListChanged();
+          alert('Se edito una localidad');
+          onLocalidadListChanged();
         })
         .catch((error: any) => {
           alertError(error);
@@ -62,13 +64,13 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
     }
   };
 
-  const deleteProvincia = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la provincia?');
+  const deleteLocalidad = async (id: string) => {
+    const respuesta = confirm('Desea eliminar la localidad?');
     if (respuesta) {
       try {
-        const response = await apiClient(true).delete(`/provincia/${id}`);
-        alert('Se elimino una provincia');
-        onProvinciaListChanged();
+        const response = await apiClient(true).delete(`/localidad/${id}`);
+        alert('Se elimino una localidad');
+        onLocalidadListChanged();
       } catch (error: any) {
         alertError(error);
         console.error('Error:', error.message);
@@ -80,25 +82,32 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
     setButtonEnabled(false);
   }, [isEditing]);
 
-  const enableButton = (value: string) => {
-    setButtonEnabled(value.trim().length > 0);
+  const enableButton = () => {
+    setButtonEnabled(
+      newName.trim() !== descripcion.trim() || provincia.id !== newProv
+    );
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setNewName(e.target.value);
-    enableButton(e.target.value);
+    enableButton();
+  }
+
+  function handleProvinciaChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setNewProv(parseInt(e.target.value));
+    enableButton();
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    editProvincia();
+    editLocalidad();
     setEditing(false);
   }
 
   const editingTemplate = (
     <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
       <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
-        <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
+        <div className="flex flex-col items-center  space-y-4 text-white w-full lg:w-full lg:text-center mx-auto">
           <TextField
             id={id.toString()}
             name="descripcion"
@@ -107,6 +116,10 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
             value={newName}
             onChange={handleChange}
             ref={editFieldRef}
+          />
+          <ProvinciaSelectField
+            value={newProv}
+            onChange={handleProvinciaChange}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
@@ -135,6 +148,9 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
     <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
       <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
         <span className="font-bold text-2xl tracking-wider">{descripcion}</span>
+        <span className="font-bold text-2xl tracking-wider">
+          {provincia.descripcion}
+        </span>
         {isAdmin && (
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
@@ -148,7 +164,7 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
             <Button
               variant="outlined"
               color="error"
-              onClick={() => deleteProvincia(id.toString())}
+              onClick={() => deleteLocalidad(id.toString())}
             >
               Eliminar
             </Button>
@@ -170,4 +186,4 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
   return <>{isEditing ? editingTemplate : viewTemplate}</>;
 };
 
-export default ProvinciaItem;
+export default LocalidadItem;

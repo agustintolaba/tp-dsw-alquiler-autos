@@ -16,6 +16,7 @@ export const getProvinciaBranchOptions = async (): Promise<SelectMenuItem[]> => 
 
 export const getBranches = async (): Promise<Provincia[]> => {
     const res = await apiClient().get('/provincia')
+    console.log(res.data.data)
 
-    return res.data.branches
+    return res.data.data
 };

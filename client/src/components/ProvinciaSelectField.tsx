@@ -1,6 +1,6 @@
 'use client';
 import { SelectMenuItem } from '@/types';
-import { getProvinciaBranchOptions } from '@/services/provinciaBranch.js';
+import { getProvinciaBranchOptions } from '@/services/provinciaBranch';
 import { MenuItem, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
