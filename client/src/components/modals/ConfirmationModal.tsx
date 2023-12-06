@@ -30,7 +30,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
       .post("/alquiler", {
         fechaDesde: formData.fechaDesde.toISOString(),
         fechaHasta: formData.fechaHasta.toISOString(),
-        precioTotal: "9999", // TODO!!
+        precioTotal: vehicle.tipoVehiculo.precio * totalDays, // TODO!!
         vehiculo: vehicle.id,
       })
       .then(() => {
@@ -43,8 +43,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
     <div className="absolute flex items-start pt-4 justify-center w-full h-full z-30">
       <span className="absolute top-0 right-0 h-full w-full bg-black opacity-60"></span>
       <div className="flex flex-col items-center justify-between p-8 gap-8 w-11/12 max-w-xl bg-slate-800 rounded-md z-40">
-        <div className="flex flex-col gap-8 items-center">
-          <span className="text-center text-3xl md:text-5xl">
+        <div className="flex flex-col gap-2 items-center">
+          <span className="text-center text-3xl mb-4 md:text-4xl">
             Confirmación de reserva
           </span>
           <Image
@@ -81,6 +81,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
               <ConfirmModalLabel
                 label="Sucursal de retiro:"
                 value={`${location}`}
+              />
+            </div>
+            <div className="flex flex-row gap-8">
+              <ConfirmModalLabel
+                label="Precio total:"
+                value={`$${vehicle.tipoVehiculo.precio * totalDays}`}
               />
             </div>
           </div>

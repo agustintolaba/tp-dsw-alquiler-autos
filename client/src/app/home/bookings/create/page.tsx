@@ -47,10 +47,11 @@ const CreateBooking = () => {
 
   const onCarSelect = (vehiculo: Vehiculo) => {
     apiClient()
-      .get(`/sucursal/${formData.sucursal}`)
+      .get(`/vehiculo/find/${vehiculo.id}`)
       .then((res) => {
-        const sucursal: Sucursal = res.data.sucursal;
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        const vehiculo: Vehiculo = res.data.vehicle;
+        const sucursal = vehiculo.sucursal;
+        window.scrollTo({ top: 0, behavior: "smooth" });
         setConfirmModal({
           formData,
           vehicle: vehiculo,

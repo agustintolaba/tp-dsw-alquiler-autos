@@ -75,9 +75,16 @@ async function findOne(req: Request, res: Response) {
     const vehiculo = await em.findOneOrFail(
       Vehiculo,
       { id },
-      { populate: ["tipoVehiculo", /*'seguro',*/ "sucursal"] }
+      {
+        populate: [
+          "tipoVehiculo",
+          "sucursal",
+          "sucursal.localidad",
+          "sucursal.localidad.provincia",
+        ],
+      }
     );
-    res.status(200).json({ message: "Vehiculo encontrado", data: vehiculo });
+    res.status(200).json({ message: "Vehiculo encontrado", vehicle: vehiculo });
   } catch (error: any) {
     res.status(500).json({ message: "No se encontro vehiculo", data: error });
   }
