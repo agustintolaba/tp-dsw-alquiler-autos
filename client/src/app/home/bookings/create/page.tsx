@@ -27,6 +27,7 @@ const CreateBooking = () => {
     fechaHasta: getBookingDateDefaultValue(false),
     transmision: "AT",
     tipoVehiculo: 1,
+    sucursal: 1,
   });
   const [availableVehicles, setAvailableVehicles] = useState<Vehiculo[]>();
 

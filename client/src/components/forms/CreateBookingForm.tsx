@@ -1,4 +1,5 @@
 import apiClient from "@/services/api";
+import { getBranchOptions } from "@/services/branch";
 import { getVehicleTypesOptions } from "@/services/vehicleTypes";
 import { SelectMenuItem, Vehiculo } from "@/types";
 import { MAX_WORKING_HOUR, NINE_AM, transmisions } from "@/utils/constants";
@@ -24,12 +25,15 @@ export interface CreateBookingFormData {
   fechaHasta: Dayjs;
   transmision: string;
   tipoVehiculo: number;
+  sucursal: number;
 }
 
 interface CreateBookingFormProps {
   formData: CreateBookingFormData;
   setFormData: React.Dispatch<React.SetStateAction<CreateBookingFormData>>;
-  setAvailableVehicles: React.Dispatch<React.SetStateAction<Vehiculo[] | undefined>>;
+  setAvailableVehicles: React.Dispatch<
+    React.SetStateAction<Vehiculo[] | undefined>
+  >;
 }
 
 export const initialBookingFormValues = {
@@ -49,17 +53,22 @@ const CreateBookingForm: React.FC<CreateBookingFormProps> = ({
   const [vehicleTypes, setVehicleTypes] = useState<SelectMenuItem[]>();
   const [dateFromError, setDateFromError] = useState<string | null>();
   const [dateToError, setDateToError] = useState<string>("");
+  const [branches, setBranches] = useState<SelectMenuItem[]>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const types = await getVehicleTypesOptions();
         setVehicleTypes(types);
-        const firstItem = types.at(0);
-        if (firstItem) {
+        const branches = await getBranchOptions();
+        setBranches(branches);
+        const firstTypeItem = types.at(0);
+        const firstBranchItem = branches.at(0);
+        if (firstTypeItem && firstBranchItem) {
           setFormData({
             ...formData,
-            tipoVehiculo: firstItem.id,
+            sucursal: firstBranchItem.id,
+            tipoVehiculo: firstTypeItem.id,
           });
         }
       } catch (error: any) {
@@ -122,7 +131,7 @@ const CreateBookingForm: React.FC<CreateBookingFormProps> = ({
       .get(
         `/vehiculo/getAvailables?fecha_desde='${formData.fechaDesde.toISOString()}'&fecha_hasta='${formData.fechaHasta.toISOString()}'&transmision='${
           formData.transmision
-        }'&tipo_vehiculo='${formData.tipoVehiculo}'`
+        }'&tipo_vehiculo=${formData.tipoVehiculo}&sucursal=${formData.sucursal}`
       )
       .then((res) => {
         const vehicles = res.data.vehicles;
@@ -202,6 +211,25 @@ const CreateBookingForm: React.FC<CreateBookingFormProps> = ({
             {transmisions?.map((t) => (
               <MenuItem key={t.id} value={t.descripcion}>
                 {t.descripcion == "AT" ? "Automático" : "Manual"}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            className="sm:col-span-2"
+            name="sucursal"
+            label="Sucursal"
+            variant="outlined"
+            disabled={branches?.length == 0}
+            select
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+            value={formData.sucursal}
+            onChange={handleInputChange}
+          >
+            {branches?.map((t) => (
+              <MenuItem key={t.id} value={t.id}>
+                {t.descripcion}
               </MenuItem>
             ))}
           </TextField>
