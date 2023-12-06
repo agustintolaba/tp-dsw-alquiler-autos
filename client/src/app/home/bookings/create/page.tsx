@@ -8,7 +8,7 @@ import CreateBookingForm, {
 } from "@/components/forms/CreateBookingForm";
 import useAdmin from "@/services/userType";
 import VehicleListItem from "@/components/items/VehicleItem";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { MAX_WORKING_HOUR, NINE_AM } from "@/utils/constants";
 
@@ -44,7 +44,7 @@ const CreateBooking = () => {
   return (
     <LoadableScreen isLoading={isLoadingAdmin || isAdmin == null}>
       <div className="flex flex-col justify-center p-8 gap-8">
-        <span className="w-full text-4xl font-extralight">
+        <span className="text-center w-full text-4xl font-extralight md:text-left">
           Elija sus preferencias
         </span>
         <CreateBookingForm
@@ -55,8 +55,8 @@ const CreateBooking = () => {
 
         {availableVehicles ? (
           (availableVehicles.length > 0 && (
-            <div className="flex flex-col gap-4">
-              <span className="w-full text-4xl font-extralight">
+            <div className="flex flex-col gap-8">
+              <span className="text-center w-full text-4xl font-extralight md:text-left">
                 Vehículos disponibles
               </span>
               <div className="flex flex-row gap-4 flex-wrap justify-center">
