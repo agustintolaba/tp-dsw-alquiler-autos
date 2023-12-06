@@ -18,7 +18,7 @@ interface VehicleListItemProps {
   vehicle: Vehiculo;
   remove?: (vehicle: Vehiculo) => void;
   edit?: (id: number, newKm: number) => void;
-  book?: (vehicle: Vehiculo) => void;
+  select?: (vehicle: Vehiculo) => void;
 }
 
 const VehicleListItem: React.FC<VehicleListItemProps> = ({
@@ -27,7 +27,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   vehicle,
   remove,
   edit,
-  book,
+  select,
 }) => {
   const { id, patente, image, marca, modelo, capacidad, transmision, km } =
     vehicle;
@@ -52,10 +52,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   };
 
   const handleBook = () => {
-    if (!confirm(`¿Desea reservar ${marca} ${modelo} ${transmision}?`)) {
-      return;
-    }
-    book ? book(vehicle) : alert(NO_ACCESS);
+    select ? select(vehicle) : alert(NO_ACCESS);
   };
 
   const handleKmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
