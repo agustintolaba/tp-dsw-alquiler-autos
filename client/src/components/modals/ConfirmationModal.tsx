@@ -3,6 +3,9 @@ import { transmisionDescriptions } from "@/utils/constants";
 import { Button } from "@mui/material";
 import { CreateBookingFormData } from "../forms/CreateBookingForm";
 import Image from "next/image";
+import { useState } from "react";
+import apiClient from "@/services/api";
+import { useRouter } from "next/navigation";
 
 interface ConfirmModalProps {
   confirmData: ConfirmModalData;
@@ -16,8 +19,26 @@ export interface ConfirmModalData {
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
+  const router = useRouter();
+  const [confirming, setConfirming] = useState<boolean>(false);
   const { vehicle, formData, location } = confirmData;
   const totalDays = formData.fechaHasta.diff(formData.fechaDesde, "day");
+
+  const onConfirm = () => {
+    setConfirming(true);
+    apiClient(true)
+      .post("/alquiler", {
+        fechaDesde: formData.fechaDesde.toISOString(),
+        fechaHasta: formData.fechaHasta.toISOString(),
+        precioTotal: "9999", // TODO!!
+        vehiculo: vehicle.id,
+      })
+      .then(() => {
+        alert("¡¡Felicidades!! Se realizó la reserva correctamente.")
+        router.push("/home")
+      });
+  };
+
   return (
     <div className="absolute flex items-start pt-4 justify-center w-full h-full z-30">
       <span className="absolute top-0 right-0 h-full w-full bg-black opacity-60"></span>
@@ -52,8 +73,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
                 label="Hasta:"
                 value={formData.fechaHasta.format("DD/MM/YYYY - HH:mm")}
               />
-              <span className="text-sm font-bold">
-                ({totalDays} {totalDays == 1 ? "día" : "días"})
+              <span className="text-center text-sm font-bold">
+                {totalDays} {totalDays == 1 ? "día" : "días"}
               </span>
             </div>
             <div className="flex flex-row gap-8">
@@ -65,10 +86,22 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
           </div>
         </div>
         <div className="w-full space-y-6 flex-row">
-          <Button variant="outlined" color="success" fullWidth>
-            Confirmar
+          <Button
+            onClick={onConfirm}
+            variant="outlined"
+            color="success"
+            disabled={confirming}
+            fullWidth
+          >
+            {confirming ? "Generando reserva..." : "Confirmar"}
           </Button>
-          <Button onClick={cancel} variant="outlined" color="error" fullWidth>
+          <Button
+            onClick={cancel}
+            disabled={confirming}
+            variant="outlined"
+            color="error"
+            fullWidth
+          >
             Cancelar
           </Button>
         </div>
