@@ -50,6 +50,7 @@ const CreateBooking = () => {
       .get(`/sucursal/${formData.sucursal}`)
       .then((res) => {
         const sucursal: Sucursal = res.data.sucursal;
+        window.scrollTo({ top: 0, behavior: 'smooth' })
         setConfirmModal({
           formData,
           vehicle: vehiculo,
@@ -60,53 +61,62 @@ const CreateBooking = () => {
 
   return (
     <LoadableScreen isLoading={isLoadingAdmin || isAdmin == null}>
-      {confirmModal ? (
-        <ConfirmModal
-          confirmData={confirmModal}
-          cancel={() => setConfirmModal(undefined)}
-        />
-      ) : (
-        <></>
-      )}
-      <div className="flex flex-col justify-center p-8 gap-8">
-        <span className="text-center w-full text-4xl font-extralight md:text-left">
-          Elija sus preferencias
-        </span>
-        <CreateBookingForm
-          formData={formData}
-          setFormData={setFormData}
-          setAvailableVehicles={setAvailableVehicles}
-        />
-
-        {availableVehicles ? (
-          (availableVehicles.length > 0 && (
-            <div className="flex flex-col gap-8">
-              <span className="text-center w-full text-4xl font-extralight md:text-left">
-                Vehículos disponibles
-              </span>
-              <div className="flex flex-row gap-4 flex-wrap justify-center">
-                {availableVehicles.map((vehicle: Vehiculo) => (
-                  <VehicleListItem
-                    key={vehicle.id}
-                    isAdmin={isAdmin || false}
-                    isBooking={true}
-                    vehicle={vehicle}
-                    select={onCarSelect}
-                  />
-                ))}
-              </div>
-            </div>
-          )) || (
-            <Typography variant="h6" className="text-center mt-4" color="error">
-              No se encontraron vehículos disponibles para las preferencias
-              elegidas.
-            </Typography>
-          )
+      <div className={`${confirmModal ? "h-screen overflow-hidden" : ""}`}>
+        {confirmModal ? (
+          <ConfirmModal
+            confirmData={confirmModal}
+            cancel={() => setConfirmModal(undefined)}
+          />
         ) : (
-          <Typography variant="h6" className="text-center mt-4 text-yellow-400">
-            Aquí se mostrarán los vehículos disponibles.
-          </Typography>
+          <></>
         )}
+        <div className="flex flex-col justify-center p-8 gap-8">
+          <span className="text-center w-full text-4xl font-extralight md:text-left">
+            Elija sus preferencias
+          </span>
+          <CreateBookingForm
+            formData={formData}
+            setFormData={setFormData}
+            setAvailableVehicles={setAvailableVehicles}
+          />
+
+          {availableVehicles ? (
+            (availableVehicles.length > 0 && (
+              <div className="flex flex-col gap-8">
+                <span className="text-center w-full text-4xl font-extralight md:text-left">
+                  Vehículos disponibles
+                </span>
+                <div className="flex flex-row gap-4 flex-wrap justify-center">
+                  {availableVehicles.map((vehicle: Vehiculo) => (
+                    <VehicleListItem
+                      key={vehicle.id}
+                      isAdmin={isAdmin || false}
+                      isBooking={true}
+                      vehicle={vehicle}
+                      select={onCarSelect}
+                    />
+                  ))}
+                </div>
+              </div>
+            )) || (
+              <Typography
+                variant="h6"
+                className="text-center mt-4"
+                color="error"
+              >
+                No se encontraron vehículos disponibles para las preferencias
+                elegidas.
+              </Typography>
+            )
+          ) : (
+            <Typography
+              variant="h6"
+              className="text-center mt-4 text-yellow-400"
+            >
+              Aquí se mostrarán los vehículos disponibles.
+            </Typography>
+          )}
+        </div>
       </div>
     </LoadableScreen>
   );

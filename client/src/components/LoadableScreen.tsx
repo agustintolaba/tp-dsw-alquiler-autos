@@ -9,7 +9,7 @@ interface LoadableScreenProps {
 const LoadableScreen: React.FC<LoadableScreenProps> = ({ children, isLoading }) => {
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center w-screen h-screen">
+            <div className="relative flex items-center justify-center w-screen h-screen">
                 <CircularProgress />
             </div>
         )

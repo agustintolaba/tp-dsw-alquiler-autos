@@ -19,10 +19,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
   const { vehicle, formData, location } = confirmData;
   const totalDays = formData.fechaHasta.diff(formData.fechaDesde, "day");
   return (
-    <div className="absolute flex items-start pt-12 justify-center w-screen h-screen z-30">
-      <span className="absolute top-0 right-0 h-screen w-screen bg-black opacity-60"></span>
+    <div className="absolute flex items-start pt-4 justify-center w-full h-full z-30">
+      <span className="absolute top-0 right-0 h-full w-full bg-black opacity-60"></span>
       <div className="flex flex-col items-center justify-between p-8 gap-8 w-11/12 max-w-xl bg-slate-800 rounded-md z-40">
-        <div className="flex flex-col gap-12 items-center">
+        <div className="flex flex-col gap-8 items-center">
           <span className="text-center text-3xl md:text-5xl">
             Confirmación de reserva
           </span>
@@ -52,7 +52,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
                 label="Hasta:"
                 value={formData.fechaHasta.format("DD/MM/YYYY - HH:mm")}
               />
-              <span className="text-lg font-bold">
+              <span className="text-sm font-bold">
                 ({totalDays} {totalDays == 1 ? "día" : "días"})
               </span>
             </div>
@@ -86,7 +86,7 @@ const ConfirmModalLabel = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <span className="font-bold text-md w-36">{label}</span>
+      <span className="font-bold text-md w-24">{label}</span>
       <span className="font-light text-md">{value}</span>
     </div>
   );
