@@ -49,19 +49,13 @@ const SucursalItem: React.FC<SucursalProps> = ({
   onSucursalListChanged,
 }) => {
   const [isEditing, setEditing] = useState(false);
-  const [provincia, setProvincia] = useState(0);
+  const [provincia, setProvincia] = useState(sucursal.localidad.provincia.id);
+  const [newLoc, setNewLoc] = useState(sucursal.localidad.id);
+  const [oldLoc, setOldLoc] = useState(sucursal.localidad.id);
   const [newCalle, setNewCalle] = useState(sucursal.calle);
   const [oldCalle, setOldCalle] = useState(sucursal.calle);
   const [newNroCalle, setNewNroCalle] = useState(sucursal.numeroCalle);
   const [oldNroCalle, setOldNroCalle] = useState(sucursal.numeroCalle);
-  const [newLoc, setNewLoc] = useState(sucursal.localidad.id);
-  const [oldLoc, setOldLoc] = useState(sucursal.localidad.id);
-
-  const [formData, setFormData] = useState<SucursalFormData>({
-    calle: '',
-    numeroCalle: '',
-    localidad: 0,
-  });
 
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
@@ -73,9 +67,9 @@ const SucursalItem: React.FC<SucursalProps> = ({
       await apiClient(true)
         .put(`/sucursal/${id}`, {
           id: id,
+          localidad: newLoc,
           calle: newCalle,
           numeroCalle: newNroCalle,
-          localidad: newLoc,
         })
         .then(() => {
           alert('Se edito una sucursal');
@@ -114,11 +108,12 @@ const SucursalItem: React.FC<SucursalProps> = ({
     setOldLoc(sucursal.localidad.id);
   }, [isEditing]);
 
-  /*useEffect(() => {
-    setOldName(newName);
-    setOldProv(newProv);
+  useEffect(() => {
+    setOldCalle(newCalle);
+    setOldNroCalle(newNroCalle);
+    setOldLoc(newLoc);
     enableButton();
-  }, [newName, newProv]);*/
+  }, [newCalle, newNroCalle, newLoc]);
 
   const enableButton = () => {
     setButtonEnabled(
@@ -128,13 +123,24 @@ const SucursalItem: React.FC<SucursalProps> = ({
     );
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => {
-      const newFormData = { ...prevFormData, [name]: value };
-      enableButton();
-      return newFormData;
-    });
+  const handleProvinciaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProvincia(parseInt(e.target.value));
+  };
+
+  const handleLocalidadInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewLoc(parseInt(e.target.value));
+  };
+
+  const handleCalleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewCalle(e.target.value);
+  };
+
+  const handleNroCalleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewNroCalle(e.target.value);
   };
 
   function handleSubmit(e: React.FormEvent) {
@@ -147,13 +153,23 @@ const SucursalItem: React.FC<SucursalProps> = ({
     <form onSubmit={handleSubmit} className="flex flex-col w-full space-y-4">
       <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
         <div className="flex flex-col items-center  space-y-4 text-white w-full lg:w-full lg:text-center mx-auto">
+          <ProvinciaSelectField
+            value={provincia}
+            onChange={handleProvinciaSelect}
+          />
+          <LocalidadSelectField
+            filterProv={provincia}
+            value={newLoc}
+            onChange={handleLocalidadInputChange}
+            disabled={provincia === 0}
+          />
           <TextField
             id={id.toString()}
             name="calle"
             variant="outlined"
             fullWidth
             value={newCalle}
-            onChange={handleInputChange}
+            onChange={handleCalleInputChange}
             ref={editFieldRef}
           />
           <TextField
@@ -162,18 +178,8 @@ const SucursalItem: React.FC<SucursalProps> = ({
             variant="outlined"
             fullWidth
             value={newNroCalle}
-            onChange={handleInputChange}
+            onChange={handleNroCalleInputChange}
             ref={editFieldRef}
-          />
-          <ProvinciaSelectField
-            value={provincia}
-            onChange={handleInputChange}
-          />
-          <LocalidadSelectField
-            filterProv={provincia}
-            value={newLoc}
-            onChange={handleInputChange}
-            disabled={provincia === 0}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
