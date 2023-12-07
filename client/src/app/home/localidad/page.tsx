@@ -27,8 +27,8 @@ const Localidad: React.FC = () => {
     useState<boolean>(false);
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
-  const newProvincia = (data: LocalidadFormData) => {
-    const res = apiClient()
+  const newLocalidad = (data: LocalidadFormData) => {
+    const res = apiClient(true)
       .post('/localidad', JSON.stringify(data))
       .then((res) => {
         alert('Se cargo una nueva Localidad');
@@ -63,7 +63,7 @@ const Localidad: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    newProvincia(formData);
+    newLocalidad(formData);
   };
 
   const enableButton = (formData: LocalidadFormData) => {
