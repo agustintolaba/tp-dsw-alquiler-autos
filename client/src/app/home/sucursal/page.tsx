@@ -102,6 +102,7 @@ const Sucursal: React.FC = () => {
               />
               <LocalidadSelectField
                 filterProv={provincia}
+                name="localidad"
                 value={formData.localidad}
                 onChange={handleInputChange}
                 disabled={provincia === 0}

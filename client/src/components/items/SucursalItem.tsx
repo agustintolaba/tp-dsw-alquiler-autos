@@ -50,26 +50,40 @@ const SucursalItem: React.FC<SucursalProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [provincia, setProvincia] = useState(sucursal.localidad.provincia.id);
-  const [newLoc, setNewLoc] = useState(sucursal.localidad.id);
+  /*const [newLoc, setNewLoc] = useState(sucursal.localidad.id);
   const [oldLoc, setOldLoc] = useState(sucursal.localidad.id);
   const [newCalle, setNewCalle] = useState(sucursal.calle);
   const [oldCalle, setOldCalle] = useState(sucursal.calle);
   const [newNroCalle, setNewNroCalle] = useState(sucursal.numeroCalle);
-  const [oldNroCalle, setOldNroCalle] = useState(sucursal.numeroCalle);
+  const [oldNroCalle, setOldNroCalle] = useState(sucursal.numeroCalle);*/
+
+  const [formData, setFormData] = useState<SucursalFormData>({
+    calle: sucursal.calle,
+    numeroCalle: sucursal.numeroCalle,
+    localidad: sucursal.localidad.id,
+  });
+
+  const [oldFormData, setOldFormData] = useState<SucursalFormData>({
+    calle: sucursal.calle,
+    numeroCalle: sucursal.numeroCalle,
+    localidad: sucursal.localidad.id,
+  });
 
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
-  const editSucursal = async () => {
+  const editSucursal = async (formData: SucursalFormData) => {
     try {
       await apiClient(true)
         .put(`/sucursal/${id}`, {
+          ...formData,
           id: id,
+          /*id: id,
           localidad: newLoc,
           calle: newCalle,
-          numeroCalle: newNroCalle,
+          numeroCalle: newNroCalle,*/
         })
         .then(() => {
           alert('Se edito una sucursal');
@@ -100,26 +114,41 @@ const SucursalItem: React.FC<SucursalProps> = ({
 
   useEffect(() => {
     setButtonEnabled(false);
-    setNewCalle(sucursal.calle);
+    /*setNewCalle(sucursal.calle);
     setOldCalle(sucursal.calle);
     setNewNroCalle(sucursal.numeroCalle);
     setOldNroCalle(sucursal.numeroCalle);
     setNewLoc(sucursal.localidad.id);
-    setOldLoc(sucursal.localidad.id);
+    setOldLoc(sucursal.localidad.id);*/
+    setFormData({
+      calle: sucursal.calle,
+      numeroCalle: sucursal.numeroCalle,
+      localidad: sucursal.localidad.id,
+    });
+    setOldFormData({
+      calle: sucursal.calle,
+      numeroCalle: sucursal.numeroCalle,
+      localidad: sucursal.localidad.id,
+    });
   }, [isEditing]);
 
   useEffect(() => {
-    setOldCalle(newCalle);
+    /*setOldCalle(newCalle);
     setOldNroCalle(newNroCalle);
-    setOldLoc(newLoc);
+    setOldLoc(newLoc);*/
+    setOldFormData({
+      calle: sucursal.calle,
+      numeroCalle: sucursal.numeroCalle,
+      localidad: sucursal.localidad.id,
+    });
     enableButton();
-  }, [newCalle, newNroCalle, newLoc]);
+  }, [formData.calle, formData.numeroCalle, formData.localidad]);
 
   const enableButton = () => {
     setButtonEnabled(
-      newCalle.trim() !== oldCalle.trim() ||
-        oldNroCalle.trim() !== newNroCalle.trim() ||
-        oldLoc !== newLoc
+      formData.calle.trim() !== oldFormData.calle.trim() ||
+        formData.numeroCalle.trim() !== oldFormData.numeroCalle.trim() ||
+        formData.localidad !== oldFormData.localidad
     );
   };
 
@@ -127,7 +156,7 @@ const SucursalItem: React.FC<SucursalProps> = ({
     setProvincia(parseInt(e.target.value));
   };
 
-  const handleLocalidadInputChange = (
+  /*const handleLocalidadInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setNewLoc(parseInt(e.target.value));
@@ -141,11 +170,16 @@ const SucursalItem: React.FC<SucursalProps> = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setNewNroCalle(e.target.value);
+  };*/
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    editSucursal();
+    editSucursal(formData);
     setEditing(false);
   }
 
@@ -159,8 +193,9 @@ const SucursalItem: React.FC<SucursalProps> = ({
           />
           <LocalidadSelectField
             filterProv={provincia}
-            value={newLoc}
-            onChange={handleLocalidadInputChange}
+            name="localidad"
+            value={formData.localidad}
+            onChange={handleInputChange}
             disabled={provincia === 0}
           />
           <TextField
@@ -168,8 +203,8 @@ const SucursalItem: React.FC<SucursalProps> = ({
             name="calle"
             variant="outlined"
             fullWidth
-            value={newCalle}
-            onChange={handleCalleInputChange}
+            value={formData.calle}
+            onChange={handleInputChange}
             ref={editFieldRef}
           />
           <TextField
@@ -177,8 +212,8 @@ const SucursalItem: React.FC<SucursalProps> = ({
             name="numeroCalle"
             variant="outlined"
             fullWidth
-            value={newNroCalle}
-            onChange={handleNroCalleInputChange}
+            value={formData.numeroCalle}
+            onChange={handleInputChange}
             ref={editFieldRef}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">

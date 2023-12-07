@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 interface ILocalidadSelectFieldProps {
   filterProv: number;
+  name: string;
   value: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled: boolean;
