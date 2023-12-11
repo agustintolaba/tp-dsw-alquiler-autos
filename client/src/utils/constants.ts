@@ -1,7 +1,6 @@
 import { SelectMenuItem } from "@/types";
 import dayjs from "dayjs";
 
-export const API_BASE_URL = 'http://localhost:3000/api/'
 export const TOKEN_STORAGE_KEY = 'access-token'
 export const EMAIL_FORMAT = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 export const OLD_PATENTE_FORMAT = /[a-z]{3}[0-9]{3}$/;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_BASE_URL, TOKEN_STORAGE_KEY } from "../utils/constants";
+import { TOKEN_STORAGE_KEY } from "../utils/constants";
 
 const apiClient = (requiresAuthorization: boolean = false) => {
   let headers: { [key: string]: string } = {
@@ -14,7 +14,7 @@ const apiClient = (requiresAuthorization: boolean = false) => {
   }
 
   const client = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: headers,
   });
 
