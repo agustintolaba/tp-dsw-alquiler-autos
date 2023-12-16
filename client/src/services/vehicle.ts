@@ -1,7 +1,7 @@
-import { Vehiculo } from "@/types";
-import apiClient from "./api";
-import { useEffect, useState } from "react";
-import { alertError } from "@/utils/errorHandling";
+import { Vehiculo } from '@/types';
+import apiClient from './api';
+import { useEffect, useState } from 'react';
+import { alertError } from '@/utils/errorHandling';
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
@@ -12,7 +12,7 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
     const fetchData = async () => {
       getVehicles(vehicleTypeId)
         .then((vehicles) => {
-          console.log(vehicles)
+          console.log(vehicles);
           setVehicles(vehicles);
           setIsLoadingVehicle(false);
         })
@@ -56,22 +56,39 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   };
 
   const filter = (search: string) => {
-    if (search.trim() == "" || search.length == 0) {
-      setFilteredList(null);
-      return;
-    }
+    apiClient(true)
+      .get(`/vehiculo/search/${search}`)
+      .then((res) => {
+        const vehicles = res.data.vehicles;
+        if (vehicles == undefined) {
+          const message = res.data.vehicles;
+          alertError(Error(!message || message === '' ? message : ''));
+        }
+        if (vehicles.length == 0) {
+          alertError(Error('La búsqueda no arrojó ningun resultado'));
+        }
+        setFilteredList(vehicles);
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
 
-    let searchTerms = search.toLowerCase().split(" ");
+    // if (search.trim() == "" || search.length == 0) {
+    //   setFilteredList(null);
+    //   return;
+    // }
 
-    setFilteredList(
-      vehicles.filter((v) =>
-        searchTerms.some(
-          (term) =>
-            v.marca.toLowerCase().includes(term) ||
-            v.modelo.toLowerCase().includes(term)
-        )
-      )
-    );
+    // let searchTerms = search.toLowerCase().split(" ");
+
+    // setFilteredList(
+    //   vehicles.filter((v) =>
+    //     searchTerms.some(
+    //       (term) =>
+    //         v.marca.toLowerCase().includes(term) ||
+    //         v.modelo.toLowerCase().includes(term)
+    //     )
+    //   )
+    // );
   };
 
   return {
@@ -94,7 +111,7 @@ export const getVehicles = async (
   idTipo: number | null = null
 ): Promise<Vehiculo[]> => {
   const res = await apiClient().get(
-    idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : "/vehiculo/find"
+    idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : '/vehiculo/find'
   );
 
   return res.data.vehicles;
