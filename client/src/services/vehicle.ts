@@ -63,32 +63,17 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
         if (vehicles == undefined) {
           const message = res.data.vehicles;
           alertError(Error(!message || message === '' ? message : ''));
+          return;
         }
         if (vehicles.length == 0) {
           alertError(Error('La búsqueda no arrojó ningun resultado'));
+          return;
         }
         setFilteredList(vehicles);
       })
       .catch((error: any) => {
         alertError(error);
       });
-
-    // if (search.trim() == "" || search.length == 0) {
-    //   setFilteredList(null);
-    //   return;
-    // }
-
-    // let searchTerms = search.toLowerCase().split(" ");
-
-    // setFilteredList(
-    //   vehicles.filter((v) =>
-    //     searchTerms.some(
-    //       (term) =>
-    //         v.marca.toLowerCase().includes(term) ||
-    //         v.modelo.toLowerCase().includes(term)
-    //     )
-    //   )
-    // );
   };
 
   return {
