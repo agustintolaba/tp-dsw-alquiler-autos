@@ -57,8 +57,9 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   };
 
   const filter = async (search: string) => {
+    const emptySearch = search === "" || search.length === 0;
     apiClient(true)
-      .get(`/vehiculo/search/${search}`)
+      .get(emptySearch ? "vehiculo/find" : `/vehiculo/search/${search}`)
       .then((res) => {
         const vehicles = res.data.vehicles;
         if (vehicles == undefined) {
