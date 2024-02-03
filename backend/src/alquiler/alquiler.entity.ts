@@ -34,7 +34,7 @@ export class Alquiler extends BaseEntity {
   @Property({ nullable: true, unique: false, type: "date" })
   fechaRealEntrega!: Date;
 
-  @Property({ nullable: true, unique: false, type: "date" })
+  @Property({ nullable: true, unique: false, type: "date", columnType: "date" })
   fechaRealDevolucion!: Date;
 
   @Property({ nullable: false, unique: false, type: "string", length: 45 })

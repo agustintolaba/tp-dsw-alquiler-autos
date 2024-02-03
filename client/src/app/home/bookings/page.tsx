@@ -1,15 +1,15 @@
-'use client';
-import LoadableScreen from '@/components/LoadableScreen';
-import BookingItem from '@/components/items/BookingItem';
-import apiClient from '@/services/api';
-import { getBookings } from '@/services/booking';
-import { verifyAdmin } from '@/services/userType';
-import { Reserva } from '@/types';
-import { alertError } from '@/utils/errorHandling';
-import { Button } from '@mui/material';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+"use client";
+import LoadableScreen from "@/components/LoadableScreen";
+import BookingItem from "@/components/items/BookingItem";
+import apiClient from "@/services/api";
+import { getBookings } from "@/services/booking";
+import { verifyAdmin } from "@/services/userType";
+import { Reserva } from "@/types";
+import { alertError } from "@/utils/errorHandling";
+import { Button } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
 
 const Bookings = () => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const Bookings = () => {
       <div className="flex flex-col items-center p-8 gap-8">
         <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
           <span className="text-4xl font-extralight">
-            {isAdmin ? 'Administración de reservas' : 'Mis reservas'}
+            {isAdmin ? "Administración de reservas" : "Mis reservas"}
           </span>
           {!isAdmin && (
             <Link href="/home/bookings/create">
@@ -53,7 +53,9 @@ const Bookings = () => {
             No hay reservas para mostrar
           </span>
         ) : (
-          bookings.map((booking) => <BookingItem reserva={booking} />)
+          bookings.map((booking) => (
+            <BookingItem key={booking.id} isAdmin={isAdmin} reserva={booking} />
+          ))
         )}
         <Button variant="outlined" color="error" onClick={() => history.back()}>
           Volver

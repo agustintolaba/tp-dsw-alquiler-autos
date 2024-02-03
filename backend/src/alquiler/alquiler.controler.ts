@@ -3,6 +3,7 @@ import { orm } from "../shared/db/orm.js";
 import { Alquiler } from "./alquiler.entity.js";
 import { Usuario } from "../usuario/usuario.entity.js";
 import { ADMIN_DESCRIPTION } from "../shared/constants.js";
+import { BookingState } from "../shared/bookingState.js";
 
 const em = orm.em;
 
@@ -38,7 +39,7 @@ async function getAll(req: Request, res: Response) {
   try {
     const usuario = await em.findOne(Usuario, { id: req.userId });
     let alquileres;
-    if (usuario?.tipoUsuario.descripcion == ADMIN_DESCRIPTION) {
+    if (req.isAdmin) {
       alquileres = await em.find(
         Alquiler,
         {},
@@ -106,18 +107,61 @@ async function add(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+async function updateStatus(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id);
-    const alquilerExistente = await em.findOne(Alquiler, { id });
-    if (!alquilerExistente) {
+    const alquiler = await em.findOne(
+      Alquiler,
+      { id },
+      { populate: ["usuario"] }
+    );
+    if (!alquiler) {
       return res.status(404).json({ message: "El alquiler no existe" });
     }
-    req.body.sanitizedInput.id = req.params.id;
-    const alquilerModificado = em.getReference(Alquiler, id);
-    em.assign(alquilerModificado, req.body.sanitizedInput);
+
+    if (!req.isAdmin && alquiler.usuario.id !== req.userId) {
+      return res
+        .status(401)
+        .json({ message: "No tiene acceso a esta reserva" });
+    }
+
+    let alquilerModificado = alquiler;
+
+    if (req.body.isCancel) {
+      if (alquilerModificado.estado === BookingState.Cancelada) {
+        return res
+          .status(400)
+          .json({ message: "La reserva ya se encuentra cancelada" });
+      } else {
+        alquilerModificado.estado = BookingState.Cancelada;
+      }
+    } else {
+      switch (alquiler.estado) {
+        case BookingState.Realizada:
+          alquilerModificado.estado = BookingState.Iniciada;
+          break;
+        case BookingState.Iniciada:
+          alquilerModificado.estado = BookingState.Finalizada;
+          alquilerModificado.fechaRealDevolucion = new Date();
+          break;
+        case BookingState.Finalizada:
+        case BookingState.Cancelada:
+          return res
+            .status(400)
+            .json({ message: "La reserva ya fue cancelada o finalizada" });
+        default:
+          return res
+            .status(400)
+            .json({ message: "No se pudo actualizar la reserva" });
+      }
+    }
+    const referenciaAlquiler = em.getReference(Alquiler, id);
+    em.assign(referenciaAlquiler, alquilerModificado);
     await em.flush();
-    res.status(200).json({ message: "Alquiler actualizado correctamente" });
+    res.status(200).json({
+      message: "Alquiler actualizado correctamente",
+      updatedBooking: alquilerModificado,
+    });
   } catch (error: any) {
     res
       .status(500)
@@ -142,4 +186,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeAlquilerInput, getAll, findOne, add, update, remove };
+export { sanitizeAlquilerInput, getAll, findOne, add, updateStatus, remove };

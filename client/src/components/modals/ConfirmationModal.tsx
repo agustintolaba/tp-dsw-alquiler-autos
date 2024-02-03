@@ -1,6 +1,6 @@
 import { Vehiculo } from "@/types";
 import { transmisionDescriptions } from "@/utils/constants";
-import { Button } from "@mui/material";
+import { Button, Dialog } from "@mui/material";
 import { CreateBookingFormData } from "../forms/CreateBookingForm";
 import Image from "next/image";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import apiClient from "@/services/api";
 import { useRouter } from "next/navigation";
 
 interface ConfirmModalProps {
+  open: boolean;
   confirmData: ConfirmModalData;
   cancel: () => void;
 }
@@ -18,7 +19,11 @@ export interface ConfirmModalData {
   location: string;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  open,
+  confirmData,
+  cancel,
+}) => {
   const router = useRouter();
   const [confirming, setConfirming] = useState<boolean>(false);
   const { vehicle, formData, location } = confirmData;
@@ -34,15 +39,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
         vehiculo: vehicle.id,
       })
       .then(() => {
-        alert("¡¡Felicidades!! Se realizó la reserva correctamente.")
-        router.push("/home")
+        alert("¡¡Felicidades!! Se realizó la reserva correctamente.");
+        router.push("/home");
       });
   };
 
   return (
-    <div className="absolute flex items-start pt-4 justify-center w-full h-full z-30">
-      <span className="absolute top-0 right-0 h-full w-full bg-black opacity-60"></span>
-      <div className="flex flex-col items-center justify-between p-8 gap-8 w-11/12 max-w-xl bg-slate-800 rounded-md z-40">
+    <Dialog open={open}>
+      <div className="flex flex-col items-center justify-between p-8 gap-8">
         <div className="flex flex-col gap-2 items-center">
           <span className="text-center text-3xl mb-4 md:text-4xl">
             Confirmación de reserva
@@ -112,7 +116,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ confirmData, cancel }) => {
           </Button>
         </div>
       </div>
-    </div>
+    </Dialog>
   );
 };
 

@@ -1,3 +1,5 @@
+import { BookingState } from "./utils/bookingState";
+
 export interface Identifiable {
   id: number;
 }
@@ -39,7 +41,7 @@ export interface Reserva extends Identifiable {
   fechaHasta: string;
   fechaRealEntrega: string;
   fechaRealDevolucion: string;
-  estado: string;
+  estado: BookingState;
   vehiculo: Vehiculo;
   usuario: Usuario;
 }

@@ -65,6 +65,7 @@ const CreateBooking = () => {
       <div className={`${confirmModal ? "h-screen overflow-hidden" : ""}`}>
         {confirmModal ? (
           <ConfirmModal
+            open={confirmModal !== undefined}
             confirmData={confirmModal}
             cancel={() => setConfirmModal(undefined)}
           />

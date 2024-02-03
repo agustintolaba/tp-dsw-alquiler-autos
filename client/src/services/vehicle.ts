@@ -1,7 +1,7 @@
-import { Vehiculo } from '@/types';
-import apiClient from './api';
-import { useEffect, useState } from 'react';
-import { alertError } from '@/utils/errorHandling';
+import { Vehiculo } from "@/types";
+import apiClient from "./api";
+import { useEffect, useState } from "react";
+import { alertError } from "@/utils/errorHandling";
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
@@ -9,19 +9,20 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   const [filteredList, setFilteredList] = useState<Vehiculo[] | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      getVehicles(vehicleTypeId)
-        .then((vehicles) => {
-          console.log(vehicles);
-          setVehicles(vehicles);
-          setIsLoadingVehicle(false);
-        })
-        .catch((error: any) => {
-          alertError(error);
-        });
-    };
-    fetchData();
+    getAllVehicules();
   }, []);
+
+  const getAllVehicules = async () => {
+    getVehicles(vehicleTypeId)
+      .then((vehicles) => {
+        console.log(vehicles);
+        setVehicles(vehicles);
+        setIsLoadingVehicle(false);
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
+  };
 
   const remove = async (vehicle: Vehiculo) => {
     apiClient()
@@ -55,18 +56,18 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
       });
   };
 
-  const filter = (search: string) => {
+  const filter = async (search: string) => {
     apiClient(true)
       .get(`/vehiculo/search/${search}`)
       .then((res) => {
         const vehicles = res.data.vehicles;
         if (vehicles == undefined) {
           const message = res.data.vehicles;
-          alertError(Error(!message || message === '' ? message : ''));
+          alertError(Error(!message || message === "" ? message : ""));
           return;
         }
         if (vehicles.length == 0) {
-          alertError(Error('La búsqueda no arrojó ningun resultado'));
+          alertError(Error("La búsqueda no arrojó ningun resultado"));
           return;
         }
         setFilteredList(vehicles);
@@ -96,7 +97,7 @@ export const getVehicles = async (
   idTipo: number | null = null
 ): Promise<Vehiculo[]> => {
   const res = await apiClient().get(
-    idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : '/vehiculo/find'
+    idTipo ? `/tipovehiculo/${idTipo}/vehiculo` : "/vehiculo/find"
   );
 
   return res.data.vehicles;
