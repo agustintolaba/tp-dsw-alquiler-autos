@@ -3,35 +3,38 @@
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import LoadableScreen from '@/components/LoadableScreen';
-import ProvinciaList from '@/components/lists/ProvinciaList';
+import LocalidadList from '@/components/lists/LocalidadList';
+import ProvinciaSelectField from '@/components/ProvinciaSelectField';
 import apiClient from '@/services/api';
 import axios, { AxiosError } from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useAdmin from '@/services/userType';
 
-interface ProvinciaFormData {
+interface LocalidadFormData {
   descripcion: string;
+  provincia: number;
 }
 
-const Provincia: React.FC = () => {
+const Localidad: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
-  const [formData, setFormData] = useState<ProvinciaFormData>({
+  const [formData, setFormData] = useState<LocalidadFormData>({
     descripcion: '',
+    provincia: 0,
   });
-  const [provinciaListChanged, setProvinciaListChanged] =
+  const [localidadListChanged, setLocalidadListChanged] =
     useState<boolean>(false);
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
-  const newProvincia = (data: ProvinciaFormData) => {
+  const newLocalidad = (data: LocalidadFormData) => {
     const res = apiClient(true)
-      .post('/provincia', JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
+      .post('/localidad', JSON.stringify(data))
       .then((res) => {
-        alert('Se cargo una nueva provincia');
-        setFormData({ descripcion: '' });
-        enableButton({ descripcion: '' });
-        handleProvinciaListChanged();
+        alert('Se cargo una nueva Localidad');
+        setFormData({ descripcion: '', provincia: parseInt('') });
+        enableButton({ descripcion: '', provincia: parseInt('') });
+        handleLocalidadListChanged();
       })
       .catch((error: Error | AxiosError) => {
         if (axios.isAxiosError(error)) {
@@ -59,25 +62,27 @@ const Provincia: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    //setIsLoading(true)
-    newProvincia(formData);
+    setIsLoading(true);
+    newLocalidad(formData);
   };
 
-  const enableButton = (formData: ProvinciaFormData) => {
-    setButtonEnabled(formData.descripcion.length > 0);
+  const enableButton = (formData: LocalidadFormData) => {
+    setButtonEnabled(
+      formData.descripcion.length > 0 && formData.provincia !== 0
+    );
   };
 
-  const handleProvinciaListChanged = () => {
-    setProvinciaListChanged(!provinciaListChanged);
+  const handleLocalidadListChanged = () => {
+    setLocalidadListChanged(!localidadListChanged);
   };
 
   return (
-    <LoadableScreen isLoading={isLoading || isLoadingAdmin}>
-      <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
+    <LoadableScreen isLoading={isLoading || isAdmin == null}>
+      <div className="flex flex-col items-center p-4  space-y-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin
-            ? 'Administración de Provincias'
-            : 'Provincias en las que nos encontramos!'}
+            ? 'Administración de Localidades'
+            : 'Localidades en las que nos encontramos!'}
         </span>
         {isAdmin && (
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">
@@ -89,6 +94,10 @@ const Provincia: React.FC = () => {
                 variant="outlined"
                 fullWidth
                 value={formData.descripcion}
+                onChange={handleInputChange}
+              />
+              <ProvinciaSelectField
+                value={formData.provincia}
                 onChange={handleInputChange}
               />
               <Button
@@ -106,16 +115,16 @@ const Provincia: React.FC = () => {
       <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-full mx-auto">
         {isAdmin && (
           <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
-            Listado de provincias:
+            Listado de Localidades:
           </span>
         )}
-        <ProvinciaList
+        <LocalidadList
           isAdmin={isAdmin || false}
-          onProvinciaListChanged={handleProvinciaListChanged}
+          onLocalidadListChanged={handleLocalidadListChanged}
         />
       </div>
     </LoadableScreen>
   );
 };
 
-export default Provincia;
+export default Localidad;

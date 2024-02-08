@@ -42,10 +42,15 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
+    const isAdmin=req.isAdmin
+    if (isAdmin){
     const input = req.body.sanitizedInput
     const sucursalNueva = em.create(Sucursal, input)
     await em.flush()
     res.status(201).json({ message: 'Se cargo nueva sucursal', data: sucursalNueva })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo cargar la nueva sucursal', data: error })
   }
@@ -53,6 +58,8 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
+    const isAdmin=req.isAdmin
+    if (isAdmin){
     const id = Number.parseInt(req.params.id)
     const sucursalExistente = await em.findOne(Sucursal, { id })
     if (!sucursalExistente) {
@@ -63,6 +70,9 @@ async function update(req: Request, res: Response) {
     em.assign(sucursalModificada, req.body.sanitizedInput)
     await em.flush()
     res.status(200).json({ message: 'Sucursal actualizada correctamente' })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo actualizar la sucursal', data: error })
   }
@@ -70,6 +80,8 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
+    const isAdmin=req.isAdmin
+    if (isAdmin){
     const id = Number.parseInt(req.params.id)
     const sucursalExistente = await em.findOne(Sucursal, { id })
     if (!sucursalExistente) {
@@ -78,6 +90,9 @@ async function remove(req: Request, res: Response) {
     const sucursalBorrar = em.getReference(Sucursal, id)
     await em.removeAndFlush(sucursalBorrar)
     res.status(200).send({ message: 'Sucursal eliminada correctamente' })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo eliminar la sucursal', data:error })
   }

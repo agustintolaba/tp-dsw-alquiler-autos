@@ -41,10 +41,15 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
+    const isAdmin= req.isAdmin
+    if (isAdmin){
     const input = req.body.sanitizedInput
     const localidadNueva = em.create(Localidad, input)
     await em.flush()
     res.status(201).json({ message: 'Se cargo nueva localidad', data: localidadNueva })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo cargar la nueva localidad', data: error})
   }
@@ -52,6 +57,8 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
+    const isAdmin= req.isAdmin
+    if (isAdmin){
     const id = Number.parseInt(req.params.id)
     const localidadExistente = await em.findOne(Localidad, { id })
     if (!localidadExistente) {
@@ -62,6 +69,9 @@ async function update(req: Request, res: Response) {
     em.assign(localidadModificada, req.body.sanitizedInput)
     await em.flush()
     res.status(200).json({ message: 'Localidad actualizada correctamente' })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo actualizar la localidad', data: error })
   }
@@ -69,6 +79,8 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
+    const isAdmin= req.isAdmin
+    if (isAdmin){
     const id = Number.parseInt(req.params.id)
     const localidadExistente = await em.findOne(Localidad, { id })
     if (!localidadExistente) {
@@ -77,6 +89,9 @@ async function remove(req: Request, res: Response) {
     const localidadBorrar = em.getReference(Localidad, id)
     await em.removeAndFlush(localidadBorrar)
     res.status(200).send({ message: 'Localidad eliminada correctamente' })
+    } else {
+      res.status(401).json({ message: "No tiene acceso" });
+    }
   } catch (error: any) {
     res.status(500).json({ message: 'No se pudo eliminar la localidad', data: error })
   }
