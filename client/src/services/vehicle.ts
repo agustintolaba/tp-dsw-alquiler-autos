@@ -9,19 +9,20 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   const [filteredList, setFilteredList] = useState<Vehiculo[] | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      getVehicles(vehicleTypeId)
-        .then((vehicles) => {
-          console.log(vehicles)
-          setVehicles(vehicles);
-          setIsLoadingVehicle(false);
-        })
-        .catch((error: any) => {
-          alertError(error);
-        });
-    };
-    fetchData();
+    getAllVehicules();
   }, []);
+
+  const getAllVehicules = async () => {
+    getVehicles(vehicleTypeId)
+      .then((vehicles) => {
+        console.log(vehicles);
+        setVehicles(vehicles);
+        setIsLoadingVehicle(false);
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
+  };
 
   const remove = async (vehicle: Vehiculo) => {
     apiClient()
@@ -55,23 +56,26 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
       });
   };
 
-  const filter = (search: string) => {
-    if (search.trim() == "" || search.length == 0) {
-      setFilteredList(null);
-      return;
-    }
-
-    let searchTerms = search.toLowerCase().split(" ");
-
-    setFilteredList(
-      vehicles.filter((v) =>
-        searchTerms.some(
-          (term) =>
-            v.marca.toLowerCase().includes(term) ||
-            v.modelo.toLowerCase().includes(term)
-        )
-      )
-    );
+  const filter = async (search: string) => {
+    const emptySearch = search === "" || search.length === 0;
+    apiClient(true)
+      .get(emptySearch ? "vehiculo/find" : `/vehiculo/search/${search}`)
+      .then((res) => {
+        const vehicles = res.data.vehicles;
+        if (vehicles == undefined) {
+          const message = res.data.vehicles;
+          alertError(Error(!message || message === "" ? message : ""));
+          return;
+        }
+        if (vehicles.length == 0) {
+          alertError(Error("La búsqueda no arrojó ningun resultado"));
+          return;
+        }
+        setFilteredList(vehicles);
+      })
+      .catch((error: any) => {
+        alertError(error);
+      });
   };
 
   return {

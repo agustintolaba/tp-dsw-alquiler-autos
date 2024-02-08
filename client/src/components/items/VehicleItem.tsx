@@ -3,6 +3,7 @@
 import { Vehiculo } from "@/types";
 import {
   NEW_PATENTE_FORMAT,
+  NO_ACCESS,
   OLD_PATENTE_FORMAT,
   transmisionDescriptions,
 } from "@/utils/constants";
@@ -15,8 +16,9 @@ interface VehicleListItemProps {
   isAdmin: boolean;
   isBooking: boolean;
   vehicle: Vehiculo;
-  remove: (vehicle: Vehiculo) => void;
-  edit: (id: number, newKm: number) => void;
+  remove?: (vehicle: Vehiculo) => void;
+  edit?: (id: number, newKm: number) => void;
+  select?: (vehicle: Vehiculo) => void;
 }
 
 const VehicleListItem: React.FC<VehicleListItemProps> = ({
@@ -25,6 +27,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   vehicle,
   remove,
   edit,
+  select,
 }) => {
   const { id, patente, image, marca, modelo, capacidad, transmision, km } =
     vehicle;
@@ -34,7 +37,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
     if (!confirm(`¿Desea eliminar ${marca} ${modelo}?`)) {
       return;
     }
-    remove(vehicle);
+    remove ? remove(vehicle) : alert(NO_ACCESS);
   };
 
   const handleEdit = () => {
@@ -45,7 +48,11 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
     ) {
       return;
     }
-    edit(id, newKm);
+    edit ? edit(id, newKm) : alert(NO_ACCESS);
+  };
+
+  const handleBook = () => {
+    select ? select(vehicle) : alert(NO_ACCESS);
   };
 
   const handleKmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +78,9 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
       {isAdmin && (
         <span
           className={`absolute top-0 w-24 flex items-center bg-white justify-center rounded-sm ${
-            OLD_PATENTE_FORMAT.test(patente.toLowerCase()) ? "h-9 scale-90 md:-right-1" : "h-8"
+            OLD_PATENTE_FORMAT.test(patente.toLowerCase())
+              ? "h-9 scale-90 md:-right-1"
+              : "h-8"
           } font-light md:right-0`}
         >
           {NEW_PATENTE_FORMAT.test(patente.toLowerCase()) && (
@@ -125,7 +134,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
         </div>
       </div>
       {isBooking && (
-        <Button variant="outlined" color="success">
+        <Button onClick={handleBook} variant="outlined" color="success">
           Lo quiero!
         </Button>
       )}

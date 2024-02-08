@@ -33,8 +33,8 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['localidad'] })
-    res.status(200).json({ message: 'Sucursal encontrada', data: sucursal })
+    const sucursal = await em.findOneOrFail(Sucursal, { id }, { populate: ['localidad', 'localidad.provincia'] })
+    res.status(200).json({ message: 'Sucursal encontrada', sucursal: sucursal })
   } catch (error: any) {
     res.status(500).json({ message: 'No se encontro sucursal', data: error })
   }
