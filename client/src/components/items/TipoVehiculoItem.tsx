@@ -7,13 +7,17 @@ import React, { useEffect, useRef, useState } from "react";
 
 export interface TipoVehiculo {
   id: number;
+  nombre: string;
   descripcion: string;
+  precio: number;
 }
 
 interface TipoVehiculoProps {
   isAdmin: boolean;
   id: number;
+  nombre: string;
   descripcion: string;
+  precio: number;
   onTipoVehiculoListChanged: () => void;
 }
 
@@ -28,11 +32,16 @@ function usePrevious<T>(value: T): T | undefined {
 const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
   isAdmin,
   id,
+  nombre,
   descripcion,
+  precio,
   onTipoVehiculoListChanged,
 }) =>  {
   const [isEditing, setEditing] = useState(false);
-  const [newName, setNewName] = useState(descripcion);
+  const [newId, setNewId] = useState(id);
+  const [newName, setNewName] = useState(nombre);
+  const [newDescription, setNewDescription] = useState(descripcion);
+  const [newPrecio, setNewPrecio] = useState(precio);
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
@@ -43,7 +52,9 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
       await apiClient(true)
         .put(`/tipoVehiculo/${id}`, {
           id: id,
-          descripcion: newName,
+          nombre: newName,
+          descripcion: newDescription,
+          precio: newPrecio
         })
         .then(() => {
           alert("Se edito el Tipo de Vehiculo");
@@ -87,7 +98,7 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    editProvincia();
+    editTipoVehiculo();
     setEditing(false);
   }
 
@@ -100,7 +111,34 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
             name="descripcion"
             variant="outlined"
             fullWidth
+            value={newId}
+            onChange={handleChange}
+            ref={editFieldRef}
+          />
+          <TextField
+            id={id.toString()}
+            name="nombre"
+            variant="outlined"
+            fullWidth
             value={newName}
+            onChange={handleChange}
+            ref={editFieldRef}
+          />
+          <TextField
+            id={id.toString()}
+            name="descripcion"
+            variant="outlined"
+            fullWidth
+            value={newDescription}
+            onChange={handleChange}
+            ref={editFieldRef}
+          />
+          <TextField
+            id={id.toString()}
+            name="precio"
+            variant="outlined"
+            fullWidth
+            value={newPrecio}
             onChange={handleChange}
             ref={editFieldRef}
           />
@@ -130,7 +168,9 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
   const viewTemplate = (
     <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
       <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
-        <span className="font-bold text-2xl tracking-wider">{descripcion}</span>
+        <span className="font-bold text-2xl tracking-wider text-primary">{nombre}</span>
+        <span className="font-light text-2xl tracking-wider text-secondary">{descripcion}</span>
+        <span className="font-light text-2xl tracking-wider text-secondary">{precio}</span>
         {isAdmin && (
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button

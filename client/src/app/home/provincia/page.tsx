@@ -26,7 +26,7 @@ const Provincia: React.FC = () => {
 
   
   const newProvincia = (data: ProvinciaFormData) => {
-    const res = apiClient()
+    const res = apiClient(true)
       .post("/provincia", JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
       .then((res) => {
         alert("Se cargo una nueva provincia");

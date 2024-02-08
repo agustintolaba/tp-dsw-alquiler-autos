@@ -44,7 +44,9 @@ const TipoVehiculoList: React.FC<TipoVehiculoListProps> = ({
               onTipoVehiculoListChanged={onTipoVehiculoListChanged}
               key={item.id}
               id={item.id}
+              nombre={item.nombre}
               descripcion={item.descripcion}
+              precio={item.precio}
             />
           ))
         ) : (

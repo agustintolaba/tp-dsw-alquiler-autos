@@ -10,7 +10,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import useAdmin from "@/services/userType";
 
 interface TipoVehiculoFormData {
-  descripcion: string; // ACA NO SE SI VAN O NO OTROS ATRIBUTOS DE TIPOVEHICULO
+  descripcion: string;
+  nombre: string
+  precio: number // ACA NO SE SI VAN O NO OTROS ATRIBUTOS DE TIPOVEHICULO
 }
 
 const TipoVehiculo: React.FC = () => {
@@ -19,6 +21,8 @@ const TipoVehiculo: React.FC = () => {
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<TipoVehiculoFormData>({
     descripcion: "",
+    nombre: "",
+    precio:0
   });
   const [TipoVehiculoListChanged, setTipoVehiculoListChanged] =
     useState<boolean>(false);
@@ -29,8 +33,8 @@ const TipoVehiculo: React.FC = () => {
       .post("/tipoVehiculo", JSON.stringify(data))
       .then((res) => {
         alert("Se cargo un nuevo tipo de vehiculo");
-        setFormData({ descripcion: "" });
-        enableButton({ descripcion: "" });
+        setFormData({ descripcion: "", nombre: "", precio:0});
+        enableButton({ descripcion: "", nombre: "", precio:0 });
         handleTipoVehiculoListChanged();
         })
       .catch((error: Error | AxiosError) =>  {
@@ -92,6 +96,24 @@ return (
                 value={formData.descripcion}
                 onChange={handleInputChange}
               />
+              <TextField
+                className=""
+                name="nombre"
+                label="Nombre"
+                variant="outlined"
+                fullWidth
+                value={formData.nombre}
+                onChange={handleInputChange}
+              />
+              <TextField
+                className=""
+                name="precio"
+                label="Precio"
+                variant="outlined"
+                fullWidth
+                value={formData.precio}
+                onChange={handleInputChange}
+              />
               <Button
                 variant="outlined"
                 color="success"
@@ -123,13 +145,5 @@ return (
 export default TipoVehiculo;
 
 
-
-
-
-
-
-
-
-}
 
 
