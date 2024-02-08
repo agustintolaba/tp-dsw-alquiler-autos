@@ -4,6 +4,7 @@ import { Alquiler } from "./alquiler.entity.js";
 import { Usuario } from "../usuario/usuario.entity.js";
 import { ADMIN_DESCRIPTION } from "../shared/constants.js";
 import { BookingState } from "../shared/bookingState.js";
+import { addDays } from "../shared/dateUtils.js";
 
 const em = orm.em;
 
@@ -42,7 +43,12 @@ async function getAll(req: Request, res: Response) {
     if (req.isAdmin) {
       alquileres = await em.find(
         Alquiler,
-        {},
+        {
+          $and: [
+            { fechaDesde: { $gte: new Date() } },
+            { fechaDesde: { $lte: addDays(new Date(), 30) } },
+          ],
+        },
         { populate: ["usuario", "vehiculo"] }
       );
     } else {

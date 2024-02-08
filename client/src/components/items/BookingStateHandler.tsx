@@ -29,7 +29,10 @@ const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
     case BookingState.Cancelada:
     case BookingState.Finalizada:
       return (
-        <Typography className="text-red-600 mr-2" variant="subtitle1">
+        <Typography
+          className="text-white mr-2 px-2 rounded bg-red-600"
+          variant="subtitle1"
+        >
           {estado}
         </Typography>
       );
@@ -60,7 +63,10 @@ const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
         );
       } else {
         return (
-          <Typography className="text-green-500 mr-2" variant="subtitle1">
+          <Typography
+            className="text-black bg-green-500 px-2 rounded mr-2"
+            variant="subtitle1"
+          >
             {estado}
           </Typography>
         );

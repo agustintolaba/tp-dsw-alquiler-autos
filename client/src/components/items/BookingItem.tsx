@@ -43,11 +43,20 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
           alt="vehículo"
           className="rounded-md object-contain"
         />
+
         <Box className="flex flex-col flex-wrap justify-evenly">
-          <BookingDetail label="ID" value={reserva.id.toString()} />
+          {isAdmin && (
+            <BookingDetail label="ID" value={reserva.id.toString()} />
+          )}
+          {isAdmin && (
+            <BookingDetail
+              label="Usuario"
+              value={`${reserva.usuario.nombre} ${reserva.usuario.apellido}`}
+            />
+          )}
           <BookingDetail
-            label="Usuario"
-            value={`${reserva.usuario.nombre} ${reserva.usuario.apellido}`}
+            label="Vehículo"
+            value={`${reserva.vehiculo.marca} ${reserva.vehiculo.modelo} ${reserva.vehiculo.transmision}`}
           />
         </Box>
         <Box className="flex flex-col justify-evenly">
