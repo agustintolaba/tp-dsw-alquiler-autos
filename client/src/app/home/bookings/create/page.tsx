@@ -61,7 +61,7 @@ const CreateBooking = () => {
   };
 
   return (
-    <LoadableScreen isLoading={isLoadingAdmin || isAdmin == null}>
+    <LoadableScreen isLoading={isLoadingAdmin}>
       <div className={`${confirmModal ? "h-screen overflow-hidden" : ""}`}>
         {confirmModal ? (
           <ConfirmModal

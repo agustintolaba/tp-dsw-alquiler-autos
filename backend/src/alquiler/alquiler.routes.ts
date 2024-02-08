@@ -14,7 +14,6 @@ export const alquilerRouter = Router();
 alquilerRouter.get("/getAll", validateToken, getAll);
 alquilerRouter.get("/:id", findOne);
 alquilerRouter.post("/", validateToken, sanitizeAlquilerInput, add);
-// alquilerRouter.put("/:id", sanitizeAlquilerInput, update);
 alquilerRouter.patch(
   "/:id",
   validateToken,

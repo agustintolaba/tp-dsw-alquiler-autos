@@ -78,7 +78,7 @@ async function findOne(req: Request, res: Response) {
     );
     res
       .status(200)
-      .json({ message: "Alquiler encontrado", data: alquilerBuscado });
+      .json({ message: "Alquiler encontrado", bookings: [alquilerBuscado] });
   } catch (error: any) {
     res
       .status(500)

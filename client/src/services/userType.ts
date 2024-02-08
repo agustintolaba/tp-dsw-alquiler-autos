@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const useAdmin = () => {
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoadingAdmin, setIsLoadingAdmin] = useState(true);
 
   useEffect(() => {

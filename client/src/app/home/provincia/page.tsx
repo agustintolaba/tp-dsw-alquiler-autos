@@ -24,7 +24,6 @@ const Provincia: React.FC = () => {
     useState<boolean>(false);
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
-  
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient()
       .post("/provincia", JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
@@ -73,7 +72,7 @@ const Provincia: React.FC = () => {
   };
 
   return (
-    <LoadableScreen isLoading={isLoading || isAdmin == null}>
+    <LoadableScreen isLoading={isLoading || isLoadingAdmin}>
       <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin

@@ -1,9 +1,8 @@
 "use client";
 import LoadableScreen from "@/components/LoadableScreen";
 import BookingItem from "@/components/items/BookingItem";
-import apiClient from "@/services/api";
-import { getBookings } from "@/services/booking";
-import { verifyAdmin } from "@/services/userType";
+import useBooking, { getBookings } from "@/services/booking";
+import useAdmin, { verifyAdmin } from "@/services/userType";
 import { Reserva } from "@/types";
 import { NUMERIC_FORMAT } from "@/utils/constants";
 import { alertError } from "@/utils/errorHandling";
@@ -14,26 +13,9 @@ import { useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 const Bookings = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [bookings, setBookings] = useState<Reserva[]>([]);
+  const { isAdmin, isLoadingAdmin } = useAdmin();
+  const { bookings, isLoadingBookings, search: searchBooking } = useBooking();
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const isAdmin = await verifyAdmin();
-        const bookings = await getBookings();
-        console.log(bookings);
-        setBookings(bookings);
-        setIsAdmin(isAdmin);
-        setIsLoading(false);
-      } catch (error: any) {
-        alertError(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -45,10 +27,12 @@ const Bookings = () => {
     setSearch(value);
   };
 
-  const handleSearchBooking = () => {};
+  const handleSearchBooking = () => {
+    searchBooking(search);
+  };
 
   return (
-    <LoadableScreen isLoading={isLoading}>
+    <LoadableScreen isLoading={isLoadingBookings || isLoadingAdmin}>
       <div className="flex flex-col items-center p-8 gap-8">
         <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center sm:justify-between">
           <span className="text-4xl font-extralight text-center">
@@ -67,7 +51,7 @@ const Bookings = () => {
             No hay reservas para mostrar
           </span>
         ) : (
-          <Box>
+          <Box className="w-full">
             {isAdmin && (
               <Box className="w-full mb-4 gap-4 flex flex-row flex-wrap-reverse justify-center text-center sm:justify-between">
                 <Typography variant="h6">
@@ -84,11 +68,8 @@ const Bookings = () => {
                     onChange={handleInputChange}
                   />
                   <SearchOutlined
-                    className={`${
-                      search.length === 0
-                        ? "text-gray-400 bg-gray-500"
-                        : "text-white bg-slate-600 cursor-pointer hover:bg-slate-400"
-                    } p-1 h-full w-10 rounded transition-all`}
+                    onClick={handleSearchBooking}
+                    className="text-white bg-slate-600 cursor-pointer hover:bg-slate-400 p-1 h-full w-10 rounded transition-all"
                   />
                 </Box>
               </Box>
