@@ -72,6 +72,10 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
             label="Fecha hasta"
             value={formatAPIDate(reserva.fechaHasta)}
           />
+          <BookingDetail
+            label={isAdmin ? "Sucursal" : "Retirar en"}
+            value={`${reserva.vehiculo.sucursal.calle} ${reserva.vehiculo.sucursal.numeroCalle}, ${reserva.vehiculo.sucursal.localidad.descripcion}, ${reserva.vehiculo.sucursal.localidad.provincia.descripcion}`}
+          />
         </Box>
       </Box>
       <BookingStatusHandler
