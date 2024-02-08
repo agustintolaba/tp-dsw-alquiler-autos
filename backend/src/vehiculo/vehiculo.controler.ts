@@ -4,6 +4,7 @@ import { Vehiculo } from "./vehiculo.entity.js";
 import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js"; //Para el filter desactivado
 
 import cloudinary from "../shared/cloudinaryConfig.js";
+import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js";
 
 const em = orm.em.fork(); //Es fork porque sino tira error
 
@@ -207,9 +208,13 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(vehiculoBorrar);
     res.status(200).send({ message: "Vehiculo eliminado correctamente" });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: "No se pudo eliminar el vehiculo", dato: error });
+    if (isSQLError(error)) {
+      res.status(500).json({ message: getSQLErrorMessage(error, "Vehículo") });
+    } else {
+      res
+        .status(500)
+        .json({ message: "No se pudo eliminar la provincia", data: error });
+    }
   }
 }
 
