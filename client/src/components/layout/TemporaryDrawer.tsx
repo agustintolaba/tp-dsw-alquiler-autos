@@ -1,58 +1,73 @@
-"use client";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import ChecklistIcon from "@mui/icons-material/Checklist";
-import Link from "next/link";
-import { CarRental, Map, People } from "@mui/icons-material";
-import { useState, useEffect, Fragment } from "react";
+'use client';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import Link from 'next/link';
+import { CarRental, Map, People } from '@mui/icons-material';
+import { useState, useEffect, Fragment } from 'react';
 
 const sharedMenuItems = [
   {
-    title: "Home",
+    title: 'Home',
     icon: <HomeIcon />,
-    destination: "/home",
+    destination: '/home',
   },
 ];
 
 const userMenuItems = [
   {
-    title: "Mis reservas",
+    title: 'Mis reservas',
     icon: <ChecklistIcon />,
-    destination: "/home/bookings",
+    destination: '/home/bookings',
   },
   {
-    title: "Vehículos disponibles",
+    title: 'Vehículos disponibles',
     icon: <CarRental />,
-    destination: "/home/vehicles",
+    destination: '/home/vehicles',
   },
 ];
 
-const adminMenuItems = [{
-  title: 'Administrar reservas',
-  icon: <ChecklistIcon />,
-  destination: "/home/bookings"
-}, {
-  title: 'Administrar vehículos',
-  icon: <CarRental />,
-  destination: "/home/vehicles"
-}, {
-  title: 'Administrar usuarios',
-  icon: <People />,
-  destination: "/home/users"
-}, {
-  title: 'Administrar provincias',
-  icon: <Map />,
-  destination: "/home/provincia"
-}]
+const adminMenuItems = [
+  {
+    title: 'Administrar reservas',
+    icon: <ChecklistIcon />,
+    destination: '/home/bookings',
+  },
+  {
+    title: 'Administrar vehículos',
+    icon: <CarRental />,
+    destination: '/home/vehicles',
+  },
+  {
+    title: 'Administrar usuarios',
+    icon: <People />,
+    destination: '/home/users',
+  },
+  {
+    title: 'Administrar provincias',
+    icon: <Map />,
+    destination: '/home/provincia',
+  },
+  {
+    title: 'Administrar localidades',
+    icon: <Map />,
+    destination: '/home/localidad',
+  },
+  {
+    title: 'Administrar sucursales',
+    icon: <Map />,
+    destination: '/home/sucursal',
+  },
+];
 
 interface TemporaryDrawerProps {
   isAdmin: boolean;
@@ -64,9 +79,9 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
       }
@@ -124,7 +139,7 @@ const TemporaryDrawer: React.FC<TemporaryDrawerProps> = ({ isAdmin }) => {
       {
         <Fragment>
           <Button onClick={toggleDrawer(true)}>
-            <MenuIcon sx={{ color: "white", fontSize: "2rem" }} />
+            <MenuIcon sx={{ color: 'white', fontSize: '2rem' }} />
           </Button>
           <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
             {list()}

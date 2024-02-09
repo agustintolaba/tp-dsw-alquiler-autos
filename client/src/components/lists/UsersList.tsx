@@ -58,7 +58,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
   }
 
   return (
-    <TableContainer sx={{ maxWidth: 600}} component={Paper}>
+    <TableContainer sx={{ maxWidth: 600 }} component={Paper}>
       <Table padding="normal" size="small" stickyHeader>
         <TableHead>
           <TableRow>
@@ -96,7 +96,11 @@ const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
                 </Button>
               </TableCell>
               <TableCell>
-                <Delete onClick={() => handleRemove(user)} color="error" />
+                <Delete
+                  className="cursor-pointer text-white hover:text-red-600"
+                  onClick={() => handleRemove(user)}
+                  color="error"
+                />
               </TableCell>
             </TableRow>
           ))}

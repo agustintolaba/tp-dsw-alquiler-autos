@@ -4,6 +4,7 @@ import { Provincia } from "./provincias.entity.js";
 import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js";
 import { Usuario } from "../usuario/usuario.entity.js";
 import { ADMIN_DESCRIPTION } from "../shared/constants.js";
+import { Localidad } from "../localidad/localidad.entity.js";
 
 const em = orm.em;
 
@@ -44,6 +45,25 @@ async function findOne(req: Request, res: Response) {
     res.status(200).json({ message: "Provincia encontrada", data: provincia });
   } catch (error: any) {
     res.status(500).json({ message: "Provincia no encontrada", data: error });
+  }
+}
+
+async function findFilter(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const provincia = await em.findOneOrFail(Provincia, { id })
+    if (provincia) {
+      const localidades = await em.find(Localidad, { provincia }, { populate: ['provincia'] })
+      if (localidades.length > 0) {
+        res.status(200).json({ message: 'Localidades encontradas', data: localidades })
+      } else {
+        res.status(200).json({ message: 'No se encontraron localidades en la provincia', data: localidades })
+      }
+    } else {
+      res.status(404).json({ message: 'Provincia no encontrada' })
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error al buscar localidades', data: error })
   }
 }
 
@@ -117,4 +137,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeProvinciaInput, findAll, findOne, add, update, remove };
+export { sanitizeProvinciaInput, findAll, findOne, findFilter, add, update, remove };

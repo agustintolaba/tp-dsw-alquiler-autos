@@ -1,12 +1,23 @@
 import { Router } from "express";
-import { sanitizeAlquilerInput, getAll, findOne, add, update, remove } from "./alquiler.controler.js";
+import {
+  sanitizeAlquilerInput,
+  getAll,
+  findOne,
+  add,
+  updateStatus,
+  remove,
+} from "./alquiler.controler.js";
 import { validateToken } from "../shared/accessToken.js";
 
-export const alquilerRouter= Router()
+export const alquilerRouter = Router();
 
-alquilerRouter.get('/getAll', validateToken, getAll) 
-alquilerRouter.get('/:id', findOne)
-alquilerRouter.post('/', sanitizeAlquilerInput, add)
-alquilerRouter.put('/:id', sanitizeAlquilerInput, update)
-alquilerRouter.patch('/:id', sanitizeAlquilerInput, update)
-alquilerRouter.delete('/:id', remove)
+alquilerRouter.get("/getAll", validateToken, getAll);
+alquilerRouter.get("/:id", findOne);
+alquilerRouter.post("/", validateToken, sanitizeAlquilerInput, add);
+alquilerRouter.patch(
+  "/:id",
+  validateToken,
+  sanitizeAlquilerInput,
+  updateStatus
+);
+alquilerRouter.delete("/:id", remove);

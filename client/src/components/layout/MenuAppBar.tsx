@@ -16,9 +16,9 @@ import useAdmin from "@/services/userType";
 const MenuAppBar: React.FC = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { isAdmin } = useAdmin();
+  const { isAdmin, isLoadingAdmin } = useAdmin();
 
-  if (isAdmin == null) {
+  if (isLoadingAdmin) {
     return <></>;
   }
 
