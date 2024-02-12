@@ -12,7 +12,7 @@ import { NO_ACCESS, seatings, transmisions } from "@/utils/constants";
 import VehicleTypesSelectField from "../VehicleTypesSelectField";
 import { patenteValidator } from "@/utils/validators";
 
-interface INewVehicleFormData {
+interface NewVehicleFormData {
   marca: string;
   modelo: string;
   patente: string;
@@ -45,16 +45,11 @@ const NewVehicleForm = () => {
   const [licensePlateError, setLicensePlateError] = useState<string>("");
   const [officeLocations, setOfficeLocations] = useState<SelectMenuItem[]>();
   const [formData, setFormData] =
-    useState<INewVehicleFormData>(emptyVehicleForm);
+    useState<NewVehicleFormData>(emptyVehicleForm);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const isAdmin = await verifyAdmin();
-        if (!isAdmin) {
-          alert(NO_ACCESS);
-          router.replace("/home");
-        }
         const locations = await getBranchOptions();
         setOfficeLocations(locations);
 
@@ -103,7 +98,7 @@ const NewVehicleForm = () => {
     }
   };
 
-  const enableButton = (formData: INewVehicleFormData) => {
+  const enableButton = (formData: NewVehicleFormData) => {
     const someFieldIsEmpty =
       formData.marca.length == 0 ||
       formData.modelo.length == 0 ||
@@ -186,7 +181,7 @@ const NewVehicleForm = () => {
           />
           <TextField
             type="number"
-            name="year"            
+            name="year"
             label="Año"
             fullWidth
             value={formData.year}

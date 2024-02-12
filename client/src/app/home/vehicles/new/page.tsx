@@ -1,35 +1,24 @@
-'use client'
-import NewVehicleForm from "@/components/forms/NewVehiculeForm"
-import { verifyAdmin } from "@/services/userType"
-import { NO_ACCESS } from "@/utils/constants"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+"use client";
+import LoadableScreen from "@/components/LoadableScreen";
+import Spinner from "@/components/Spinner";
+import NewVehicleForm from "@/components/forms/NewVehiculeForm";
+import useAdmin, { verifyAdmin } from "@/services/userType";
+import { NO_ACCESS } from "@/utils/constants";
+import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/navigation";
+import router from "next/router";
+import { useEffect, useState } from "react";
 
 const NewVehicle: React.FC = () => {
-    const router = useRouter()
-    const [isAdmin, setIsAdmin] = useState(true)
+  const { isAdmin, isLoadingAdmin } = useAdmin();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            verifyAdmin()
-                .then((isAdmin) => {
-                    setIsAdmin(isAdmin)
-                })
-                .catch((error: any) => {
-                    alert('Error al verificar acceso')
-                    router.replace('/')
-                })
-        }
-        fetchData()
-    }, [])
+  if (isLoadingAdmin) {
+    return <Spinner />;
+  }
+  if (!isAdmin) {
+    router.push(`/error?name=noAccess`);
+  }
+  return <NewVehicleForm />;
+};
 
-    if (!isAdmin) {
-        router.push(`/error?name=noAccess`)
-        return
-    } else {
-        return <NewVehicleForm />
-    }
-
-}
-
-export default NewVehicle
+export default NewVehicle;
