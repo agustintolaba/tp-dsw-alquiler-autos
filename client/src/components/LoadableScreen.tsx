@@ -1,21 +1,21 @@
-import React, { ReactNode } from "react"
-import { CircularProgress } from "@mui/material"
+import React, { ReactNode } from "react";
+import { CircularProgress } from "@mui/material";
+import Spinner from "./Spinner";
 
 interface LoadableScreenProps {
-    children: ReactNode,
-    isLoading: boolean
+  children: ReactNode;
+  isLoading: boolean;
 }
 
-const LoadableScreen: React.FC<LoadableScreenProps> = ({ children, isLoading }) => {
-    if (isLoading) {
-        return (
-            <div className="relative flex items-center justify-center w-screen h-screen">
-                <CircularProgress />
-            </div>
-        )
-    }
+const LoadableScreen: React.FC<LoadableScreenProps> = ({
+  children,
+  isLoading,
+}) => {
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-    return children
-}
+  return children;
+};
 
-export default LoadableScreen
+export default LoadableScreen;
