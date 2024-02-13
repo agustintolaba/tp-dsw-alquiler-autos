@@ -90,7 +90,15 @@ async function findOne(req: Request, res: Response) {
     const alquilerBuscado = await em.findOneOrFail(
       Alquiler,
       { id },
-      { populate: ["usuario", "vehiculo"] }
+      {
+        populate: [
+          "usuario",
+          "vehiculo",
+          "vehiculo.sucursal",
+          "vehiculo.sucursal.localidad",
+          "vehiculo.sucursal.localidad.provincia",
+        ],
+      }
     );
     res
       .status(200)

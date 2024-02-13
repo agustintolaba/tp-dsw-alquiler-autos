@@ -45,9 +45,7 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
         />
 
         <Box className="flex flex-col flex-wrap justify-evenly">
-          {isAdmin && (
-            <BookingDetail label="ID" value={reserva.id.toString()} />
-          )}
+          <BookingDetail label="ID" value={reserva.id.toString()} />
           {isAdmin && (
             <BookingDetail
               label="Usuario"
