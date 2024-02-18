@@ -1,9 +1,9 @@
 /* Para crear el componente de una sola provincia */
-"use client";
-import apiClient from "@/services/api";
-import { alertError } from "@/utils/errorHandling";
-import { Button, TextField } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+'use client';
+import apiClient from '@/services/api';
+import { alertError } from '@/utils/errorHandling';
+import { Button, TextField } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface Provincia {
   id: number;
@@ -47,28 +47,28 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
           descripcion: newName,
         })
         .then(() => {
-          alert("Se edito provincia");
+          alert('Se edito provincia');
           onProvinciaListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert("No se pudo editar");
-      console.error("Error:", error.message);
+      alert('No se pudo editar');
+      console.error('Error:', error.message);
     }
   };
 
   const deleteProvincia = async (id: string) => {
-    const respuesta = confirm("Desea eliminar la provincia?");
+    const respuesta = confirm('Desea eliminar la provincia?');
     if (respuesta) {
       try {
         const response = await apiClient(true).delete(`/provincia/${id}`);
-        alert("Se elimino una provincia");
+        alert('Se elimino una provincia');
         onProvinciaListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error("Error:", error.message);
+        console.error('Error:', error.message);
       }
     }
   };
@@ -113,6 +113,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
             value={newName}
             onChange={handleChange}
             ref={editFieldRef}
+            data-testid={`new-name-provincia-${descripcion}`}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
@@ -124,6 +125,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
               Cancelar
             </Button>
             <Button
+              data-testid={`edit-provincia-${newName}`}
               variant="outlined"
               color="success"
               disabled={!buttonEnabled}
@@ -144,6 +146,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
         {isAdmin && (
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
+              data-testid={`edit-provincia-${descripcion}`}
               variant="outlined"
               color="success"
               onClick={() => setEditing(true)}

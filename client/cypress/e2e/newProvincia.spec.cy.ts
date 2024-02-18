@@ -31,13 +31,24 @@ describe("CRUD provincia", () => {
       .click()
       .then(() => {
         expect(stub.getCall(0)).to.be.calledWith(
-          "La provincia ya existe"
+          "No se pudo cargar la nueva provincia"
         );
       });
   });
 
   it('Editar una provincia',()=>{
-    
+    const stub = cy.stub();
+    cy.on("window:alert", stub); 
+    cy.get('[data-testid="edit-provincia-ProvinciaTest"]').click();
+    cy.get('[data-testid="new-name-provincia-ProvinciaTest"]').type('Edit-ProvinciaTest');
+    cy.get('[data-testid="edit-provincia-ProvinciaTest"]')
+      .contains("Guardar")
+      .click()
+      .then(() => {
+        expect(stub.getCall(0)).to.be.calledWith(
+          "Se edito provincia"
+        );
+      });
   });
 
   it("Eliminar una provincia", () => {
