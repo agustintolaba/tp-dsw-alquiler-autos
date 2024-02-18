@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
-import LoadableScreen from '@/components/LoadableScreen';
-import ProvinciaList from '@/components/lists/ProvinciaList';
-import apiClient from '@/services/api';
-import axios, { AxiosError } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import useAdmin from '@/services/userType';
+import { Button, TextField } from "@mui/material";
+import { useState } from "react";
+import LoadableScreen from "@/components/LoadableScreen";
+import ProvinciaList from "@/components/lists/ProvinciaList";
+import apiClient from "@/services/api";
+import axios, { AxiosError } from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import useAdmin from "@/services/userType";
 
 interface ProvinciaFormData {
   descripcion: string;
@@ -18,7 +18,7 @@ const Provincia: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<ProvinciaFormData>({
-    descripcion: '',
+    descripcion: "",
   });
   const [provinciaListChanged, setProvinciaListChanged] =
     useState<boolean>(false);
@@ -26,11 +26,11 @@ const Provincia: React.FC = () => {
 
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient(true)
-      .post('/provincia', JSON.stringify(data)) //TIENE QUE SER EL ADMIN?? NO
+      .post("/provincia", JSON.stringify(data))
       .then((res) => {
-        alert('Se cargo una nueva provincia');
-        setFormData({ descripcion: '' });
-        enableButton({ descripcion: '' });
+        alert("Se cargó una nueva provincia");
+        setFormData({ descripcion: "" });
+        enableButton({ descripcion: "" });
         handleProvinciaListChanged();
       })
       .catch((error: Error | AxiosError) => {
@@ -41,7 +41,7 @@ const Provincia: React.FC = () => {
           if (error.message) {
             alert(error.message);
           } else {
-            alert('Ha ocurrido un error');
+            alert("Ha ocurrido un error");
           }
         }
       })
@@ -76,14 +76,14 @@ const Provincia: React.FC = () => {
       <div className="flex flex-col items-center p-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin
-            ? 'Administración de Provincias'
-            : 'Provincias en las que nos encontramos!'}
+            ? "Administración de Provincias"
+            : "Provincias en las que nos encontramos!"}
         </span>
         {isAdmin && (
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">
             <div className="flex flex-col space-y-4">
               <TextField
-                className=""
+                data-testid="input-new-provincia"
                 name="descripcion"
                 label="Nombre"
                 variant="outlined"
