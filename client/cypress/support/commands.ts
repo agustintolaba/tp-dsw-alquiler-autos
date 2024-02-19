@@ -1,17 +1,17 @@
 /// <reference types="cypress" />
 
 declare namespace Cypress {
-    interface Chainable {
-        typeLogin(username: string, password: string): void;
-    }
+  interface Chainable {
+    typeLogin(username: string, password: string): void;
+  }
 }
 
-Cypress.Commands.add('typeLogin', (username: string, password: string)=>{
-    cy.get('[id="simple-tab-0"]').click();
-    cy.get('[type="email"]').type(username);
-    cy.get('[type="password"]').type(password);
-    cy.get('[type="submit"]').should("not.be.disabled").click();
-})
+Cypress.Commands.add("typeLogin", (username: string, password: string) => {
+  cy.get('[id="simple-tab-0"]').click();
+  cy.get('[type="email"]').type(username);
+  cy.get('[type="password"]').type(password);
+  cy.get('[type="submit"]').should("not.be.disabled").click();
+});
 
 // ***********************************************
 // This example commands.ts shows you how to

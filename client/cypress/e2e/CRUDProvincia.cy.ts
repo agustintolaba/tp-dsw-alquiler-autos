@@ -1,7 +1,8 @@
-describe("CRUD provincia", () => {
+// Eliminar provincia existente con nombre ProvinciaTest
+describe("CRUD Provincia", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3001");
-    cy.typeLogin(Cypress.env('userTest'), Cypress.env('passwordTest'));
+    cy.typeLogin(Cypress.env("userTest"), Cypress.env("passwordTest"));
     cy.url().should("eq", "http://localhost:3001/home");
     cy.get('[data-testid="MenuIcon"]').click();
     cy.get('[role="button"]').contains("Administrar provincias").click();
@@ -10,7 +11,7 @@ describe("CRUD provincia", () => {
 
   it("Agregar una nueva provincia satisfactoriamente", () => {
     const stub = cy.stub();
-    cy.on("window:alert", stub); 
+    cy.on("window:alert", stub);
     cy.get('[data-testid="input-new-provincia"]').type("ProvinciaTest");
     cy.get('[type="submit"]')
       .contains("Añadir")
@@ -22,9 +23,9 @@ describe("CRUD provincia", () => {
       });
   });
 
-  it('Agregar una provincia ya existente', ()=>{
+  it("Agregar una provincia ya existente", () => {
     const stub = cy.stub();
-    cy.on("window:alert", stub); 
+    cy.on("window:alert", stub);
     cy.get('[data-testid="input-new-provincia"]').type("ProvinciaTest");
     cy.get('[type="submit"]')
       .contains("Añadir")
@@ -36,27 +37,25 @@ describe("CRUD provincia", () => {
       });
   });
 
-  it('Editar una provincia',()=>{
+  it("Editar una provincia", () => {
     const stub = cy.stub();
-    cy.on("window:alert", stub); 
+    cy.on("window:alert", stub);
     cy.get('[data-testid="edit-provincia-ProvinciaTest"]').click();
-    cy.get('[data-testid="new-name-provincia-ProvinciaTest"]').type('Edit-ProvinciaTest');
-    cy.get('[data-testid="edit-provincia-ProvinciaTest"]')
+    cy.get('input[name="new-name-provincia-ProvinciaTest"]')
+      .clear()
+      .type("ProvinciaTest1");
+    cy.get('[data-testid="edit-provincia-ProvinciaTest1-save-button"]')
       .contains("Guardar")
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith(
-          "Se edito provincia"
-        );
+        expect(stub.getCall(0)).to.be.calledWith("Se edito provincia");
       });
   });
 
   it("Eliminar una provincia", () => {
-    const stub = cy.stub();
-    cy.on("window:alert", stub);
-
-    cy.get('[data-testid="delete-provincia-ProvinciaTest"]').click();
-    cy.get('[data-testid="delete-provincia-ProvinciaTest"]').should(
+    cy.get('[data-testid="delete-provincia-ProvinciaTest1"]').click();
+    cy.on("window:confirm", () => true);
+    cy.get('[data-testid="delete-provincia-ProvinciaTest1"]').should(
       "not.exist"
     );
   });
