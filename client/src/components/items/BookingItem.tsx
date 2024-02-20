@@ -45,9 +45,7 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
         />
 
         <Box className="flex flex-col flex-wrap justify-evenly">
-          {isAdmin && (
-            <BookingDetail label="ID" value={reserva.id.toString()} />
-          )}
+          <BookingDetail label="ID" value={reserva.id.toString()} />
           {isAdmin && (
             <BookingDetail
               label="Usuario"
@@ -71,6 +69,10 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
           <BookingDetail
             label="Fecha hasta"
             value={formatAPIDate(reserva.fechaHasta)}
+          />
+          <BookingDetail
+            label={isAdmin ? "Sucursal" : "Retirar en"}
+            value={`${reserva.vehiculo.sucursal.calle} ${reserva.vehiculo.sucursal.numeroCalle}, ${reserva.vehiculo.sucursal.localidad.descripcion}, ${reserva.vehiculo.sucursal.localidad.provincia.descripcion}`}
           />
         </Box>
       </Box>
