@@ -90,7 +90,7 @@ return (
               <TextField
                 className=""
                 name="descripcion"
-                label="Nombre"
+                label="descripcion"
                 variant="outlined"
                 fullWidth
                 value={formData.descripcion}

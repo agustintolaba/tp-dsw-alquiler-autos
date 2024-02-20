@@ -19,7 +19,7 @@ const TipoVehiculoList: React.FC<TipoVehiculoListProps> = ({
     const fetchTipoVehiculoItems = async () => {
       try {
         const response = apiClient().get('/tipoVehiculo').then((res) => {
-          const list = res.data.data.map((item: TipoVehiculo) => {
+          const list = res.data.types.map((item: TipoVehiculo) => {
             return {
               id: item.id.toString(),
               descripcion: item.descripcion,
