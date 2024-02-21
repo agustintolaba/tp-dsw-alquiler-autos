@@ -10,9 +10,8 @@ Authorization: // probar con un token nuevo
 POST http://localhost:3000/api/usuario/login
 Content-Type: application/json
 
-{
-    "email": "nino@gmail.com",
-    "password": "ntell"
+{  "email": "agus@gmail.com",
+    "password": "Hola1"
 }
 
 ### Crear un nuevo usuario
