@@ -5,19 +5,19 @@ let idProv: number = 10
 
 const newProvincia: Provincia = {
   "id": idProv,
-  "descripcion": "ProvinciaTest2",
+  "descripcion": "ProvinciaTest6",
   "localidades": []
 }
 
 const patchProvincia: Provincia ={
   "id": idProv,
-  "descripcion": "ProvinciaTestPatch2",
+  "descripcion": "ProvinciaTestPatch6",
   "localidades": []
 }
 
 const userLogin= { 
-  "email": Cypress.env("userTest"),
-  "password": Cypress.env("passwordTest")
+  "email": "agus@gmail.com",//Cypress.env("userTest"),
+  "password": "Hola1"//Cypress.env("passwordTest")
 }
 
 let authToken: string
@@ -32,8 +32,27 @@ cy.request({
     body: newProvincia
   })
   .then((data) => {
-      authToken = data.id;
+      idProv = data.body.id;
     })
+  .its('body.message')
+  .should('eq', 'Se cargo nueva provincia')
+}
+
+const addProvinciaWrong = (newProvincia: Provincia) =>{
+cy.request({
+    method: 'POST',
+    url: endPoint,
+    headers: {
+      Authorization: authToken
+    },
+    body: newProvincia,
+    failOnStatusCode: false
+  })
+  .then((data) => {
+      idProv = data.body.id;
+    })
+  .its('body.message')
+  .should('eq', 'No se pudo cargar la nueva provincia')
 }
 
 const updateProvincia = (patchProvincia: Provincia) =>{
@@ -45,7 +64,25 @@ cy.request(
       Authorization: authToken
     },
     body: patchProvincia
-  })}
+  })
+.its('body.message')
+.should('eq', 'Provincia actualizada correctamente')
+}
+
+const updateProvinciaWrong = (patchProvincia: Provincia) =>{
+cy.request(
+  {
+    method: 'PATCH',
+    url: `${endPoint}/-1`,
+    headers: {
+      Authorization: authToken
+    },
+    body: patchProvincia,
+    failOnStatusCode: false
+  })
+.its('body.message')
+.should('eq', 'La provincia no existe')
+}
 
 
 const deleteProvincia = (deleteProvincia: Provincia) =>{
@@ -57,6 +94,22 @@ const deleteProvincia = (deleteProvincia: Provincia) =>{
       Authorization: authToken
     },
   })
+  .its('body.message')
+  .should('eq', 'Provincia eliminada correctamente')
+}
+
+const deleteProvinciaWrong = (deleteProvincia: Provincia) =>{
+  cy.request(
+    {
+    method: 'DELETE',
+    url: `${endPoint}/-1`,
+    headers: {
+      Authorization: authToken
+    },
+    failOnStatusCode: false
+  })
+  .its('body.message')
+  .should('eq', 'La provincia no existe')
 }
 
 describe('API testing', ()=>{
@@ -69,28 +122,39 @@ describe('API testing', ()=>{
   });
 
 
-  it('Add a new provincia', ()=>{
+  it('Add a new provincia correctly', ()=>{
     addProvincia(newProvincia)
 
     cy.request('GET', `${endPoint}/${newProvincia.id}`)
-    .its('body')
-    .should('deep.equal', newProvincia)
+    .its('body.message')
+    .should('eq', 'Provincia encontrada')
   })
 
-  it('Update a provincia', ()=>{
+  it('Add a new provincia wrong', ()=>{
+    addProvinciaWrong(newProvincia)
+  })
+
+  it('Update a provincia correctly', ()=>{
     updateProvincia(patchProvincia)
 
     cy.request('GET', `${endPoint}/${patchProvincia.id}`)
-    .its('body')
-    .should('deep.equal', patchProvincia)
+    .its('body.message')
+    .should('eq', 'Provincia encontrada')
   })
 
-  it('Delete a provincia', ()=>{
-    deleteProvincia(patchProvincia)
-    cy.request('GET', `${endPoint}/${patchProvincia.id}`)
-    .its('body')
-    .its('message')
-    .should('Provincia no encontrada')
+  it('Update a provincia wrong', ()=>{
+    updateProvinciaWrong(patchProvincia)
+  })
+
+  it('Delete a provincia correctly', ()=>{
+    deleteProvincia(newProvincia)
+    cy.request({method: 'GET', url: `${endPoint}/${newProvincia.id}`, failOnStatusCode: false})
+    .its('body.message')
+    .should('eq', 'Provincia no encontrada')
+  })
+
+  it('Delete a provincia wrong', ()=>{
+    deleteProvinciaWrong(newProvincia)
   })
 
 })
