@@ -1,10 +1,10 @@
 /* Para crear el componente de una sola localidad */
-'use client';
-import apiClient from '@/services/api';
-import { alertError } from '@/utils/errorHandling';
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import ProvinciaSelectField from '../ProvinciaSelectField';
+"use client";
+import apiClient from "@/services/api";
+import { alertError } from "@/utils/alerts";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import ProvinciaSelectField from "../ProvinciaSelectField";
 
 export interface Localidad {
   id: number;
@@ -54,28 +54,28 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
           provincia: newProv,
         })
         .then(() => {
-          alert('Se edito una localidad');
+          alert("Se edito una localidad");
           onLocalidadListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert('No se pudo editar');
-      console.error('Error:', error.message);
+      alert("No se pudo editar");
+      console.error("Error:", error.message);
     }
   };
 
   const deleteLocalidad = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la localidad?');
+    const respuesta = confirm("Desea eliminar la localidad?");
     if (respuesta) {
       try {
         const response = await apiClient(true).delete(`/localidad/${id}`);
-        alert('Se elimino una localidad');
+        alert("Se elimino una localidad");
         onLocalidadListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   };

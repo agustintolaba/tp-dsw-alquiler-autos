@@ -1,7 +1,7 @@
 import { Vehiculo } from "@/types";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);

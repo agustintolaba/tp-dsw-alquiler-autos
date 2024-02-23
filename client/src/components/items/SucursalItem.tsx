@@ -1,11 +1,11 @@
 /* Para crear el componente de una sola localidad */
-'use client';
-import apiClient from '@/services/api';
-import { alertError } from '@/utils/errorHandling';
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import ProvinciaSelectField from '../ProvinciaSelectField';
-import LocalidadSelectField from '../LocalidadSelectField';
+"use client";
+import apiClient from "@/services/api";
+import { alertError } from "@/utils/alerts";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import ProvinciaSelectField from "../ProvinciaSelectField";
+import LocalidadSelectField from "../LocalidadSelectField";
 
 export interface Sucursal {
   id: number;
@@ -86,28 +86,28 @@ const SucursalItem: React.FC<SucursalProps> = ({
           numeroCalle: newNroCalle,*/
         })
         .then(() => {
-          alert('Se edito una sucursal');
+          alert("Se edito una sucursal");
           onSucursalListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert('No se pudo editar');
-      console.error('Error:', error.message);
+      alert("No se pudo editar");
+      console.error("Error:", error.message);
     }
   };
 
   const deleteSucursal = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la sucursal?');
+    const respuesta = confirm("Desea eliminar la sucursal?");
     if (respuesta) {
       try {
         const response = await apiClient(true).delete(`/sucursal/${id}`);
-        alert('Se elimino una sucursal');
+        alert("Se elimino una sucursal");
         onSucursalListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   };
