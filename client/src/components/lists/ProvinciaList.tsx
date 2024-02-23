@@ -1,8 +1,8 @@
 /*Para crear el componente de la lista de Provincias*/
-'use client';
-import { useState, useEffect } from 'react';
-import ProvinciaItem, { Provincia } from '../items/ProvinciaItem';
-import apiClient from '@/services/api';
+"use client";
+import { useState, useEffect } from "react";
+import ProvinciaItem, { Provincia } from "../items/ProvinciaItem";
+import apiClient from "@/services/api";
 
 interface ProvinciaListProps {
   isAdmin: boolean;
@@ -18,17 +18,19 @@ const ProvinciaList: React.FC<ProvinciaListProps> = ({
   useEffect(() => {
     const fetchProvinciaItems = async () => {
       try {
-        const response = apiClient().get('/provincia').then((res) => {
-          const list = res.data.data.map((item: Provincia) => {
-            return {
-              id: item.id.toString(),
-              descripcion: item.descripcion,
-            };
+        const response = apiClient()
+          .get("/provincia")
+          .then((res) => {
+            const list = res.data.data.map((item: Provincia) => {
+              return {
+                id: item.id.toString(),
+                descripcion: item.descripcion,
+              };
+            });
+            setProvinciaItems(list);
           });
-          setProvinciaItems(list);
-        });
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     };
     fetchProvinciaItems();
