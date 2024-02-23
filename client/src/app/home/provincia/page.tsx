@@ -8,7 +8,6 @@ import apiClient from '@/services/api';
 import axios, { AxiosError } from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useAdmin from '@/services/userType';
-//import AlertMessage from '@/components/modals/AlertMessage';
 
 interface ProvinciaFormData {
   descripcion: string;
@@ -24,18 +23,12 @@ const Provincia: React.FC = () => {
   const [provinciaListChanged, setProvinciaListChanged] =
     useState<boolean>(false);
   const { isAdmin, isLoadingAdmin } = useAdmin();
-  //const [showAlert, setShowAlert] = useState<boolean>(false);
-
-  //const handleAlert = (message: string) => {
-  //return <AlertMessage text={message} onClose={() => setShowAlert(true)} />;
-  //};
 
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient(true)
       .post('/provincia', JSON.stringify(data))
       .then((res) => {
         alert('Se cargó una nueva provincia');
-        //handleAlert('Se cargó una nueva provincia');
         setFormData({ descripcion: '' });
         enableButton({ descripcion: '' });
         handleProvinciaListChanged();

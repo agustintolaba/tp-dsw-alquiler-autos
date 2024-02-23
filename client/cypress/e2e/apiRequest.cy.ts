@@ -16,8 +16,8 @@ const patchProvincia: Provincia ={
 }
 
 const userLogin= { 
-  "email": "agus@gmail.com",//Cypress.env("userTest"),
-  "password": "Hola1"//Cypress.env("passwordTest")
+  "email": Cypress.env("userTest"),
+  "password": Cypress.env("passwordTest")
 }
 
 let authToken: string

@@ -4,17 +4,13 @@ import { ProvinciaProps } from './ProvinciaItem';
 
 const item: ProvinciaProps = {
   isAdmin: true,
-  onProvinciaListChanged: () => {
-    console.log('Aqui va una funcion, como la uso?');
-  },
-  //"key": 1
+  onProvinciaListChanged: () => {},
   id: 1,
   descripcion: 'Santa Fe',
 };
 
 describe('<ProvinciaItem />', () => {
   it('renders ProvinciaItem', () => {
-    // see: https://on.cypress.io/mounting-react
     cy.mount(
       <ProvinciaItem
         isAdmin={item.isAdmin}
