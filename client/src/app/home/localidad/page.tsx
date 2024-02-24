@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
-import LoadableScreen from '@/components/LoadableScreen';
-import LocalidadList from '@/components/lists/LocalidadList';
-import ProvinciaSelectField from '@/components/ProvinciaSelectField';
-import apiClient from '@/services/api';
-import axios, { AxiosError } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import useAdmin from '@/services/userType';
+import { Button, TextField } from "@mui/material";
+import { useState } from "react";
+import LoadableScreen from "@/components/LoadableScreen";
+import LocalidadList from "@/components/lists/LocalidadList";
+import ProvinciaSelectField from "@/components/ProvinciaSelectField";
+import apiClient from "@/services/api";
+import axios, { AxiosError } from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import useAdmin from "@/services/userType";
+import Swal from "sweetalert2";
 
 interface LocalidadFormData {
   descripcion: string;
@@ -20,7 +21,7 @@ const Localidad: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<LocalidadFormData>({
-    descripcion: '',
+    descripcion: "",
     provincia: 0,
   });
   const [localidadListChanged, setLocalidadListChanged] =
@@ -29,11 +30,15 @@ const Localidad: React.FC = () => {
 
   const newLocalidad = (data: LocalidadFormData) => {
     const res = apiClient(true)
-      .post('/localidad', JSON.stringify(data))
+      .post("/localidad", JSON.stringify(data))
       .then((res) => {
-        alert('Se cargo una nueva Localidad');
-        setFormData({ descripcion: '', provincia: parseInt('') });
-        enableButton({ descripcion: '', provincia: parseInt('') });
+        Swal.fire({
+          title: "¡Bien hecho!",
+          text: "Has agregado una nueva localidad",
+          icon: "success",
+        });
+        setFormData({ descripcion: "", provincia: parseInt("") });
+        enableButton({ descripcion: "", provincia: parseInt("") });
         handleLocalidadListChanged();
       })
       .catch((error: Error | AxiosError) => {
@@ -44,7 +49,11 @@ const Localidad: React.FC = () => {
           if (error.message) {
             alert(error.message);
           } else {
-            alert('Ha ocurrido un error');
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ha ocurrido un error",
+            });
           }
         }
       })
@@ -81,8 +90,8 @@ const Localidad: React.FC = () => {
       <div className="flex flex-col items-center p-4  space-y-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin
-            ? 'Administración de Localidades'
-            : 'Localidades en las que nos encontramos!'}
+            ? "Administración de Localidades"
+            : "Localidades en las que nos encontramos!"}
         </span>
         {isAdmin && (
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">

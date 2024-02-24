@@ -4,7 +4,7 @@ import apiClient from "@/services/api";
 import { alertError } from "@/utils/alerts";
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-
+import Swal from "sweetalert2";
 export interface Provincia {
   id: number;
   descripcion: string;
@@ -47,29 +47,49 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
           descripcion: newName,
         })
         .then(() => {
-          alert("Se edito provincia");
+          Swal.fire({
+            title: "¡LISTO!",
+            text: "Se editó una provincia",
+            icon: "success",
+          });
           onProvinciaListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert("No se pudo editar");
+      Swal.fire({
+        icon: "warning",
+        title: "Alerta",
+        text: "¡No se pudo editar la provincia!",
+      });
       console.error("Error:", error.message);
     }
   };
 
   const deleteProvincia = async (id: string) => {
-    const respuesta = confirm("Desea eliminar la provincia?");
-    if (respuesta) {
-      try {
-        const response = await apiClient(true).delete(`/provincia/${id}`);
-        alert("Se elimino una provincia");
-        onProvinciaListChanged();
-      } catch (error: any) {
-        alertError(error);
-        console.error("Error:", error.message);
-      }
+    const respuesta = Swal.fire({
+      icon: "question",
+      title: "¿Desea eliminar una provincia?",
+      showDenyButton: true,
+      confirmButtonText: "Eliminar",
+      denyButtonText: `Cancelar`,
+    });
+    if ((await respuesta).isConfirmed) {
+      apiClient(true)
+        .delete(`/provincia/${id}`)
+        .then((response) => {
+          Swal.fire({
+            title: "¡Listo!",
+            text: response.data.message,
+            icon: "success",
+          });
+          onProvinciaListChanged();
+        })
+        .catch((error: any) => {
+          alertError(error);
+          console.error("Error:", error.message);
+        });
     }
   };
 

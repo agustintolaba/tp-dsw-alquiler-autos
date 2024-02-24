@@ -1,18 +1,19 @@
-'use client';
-import apiClient from '@/services/api';
-import { TOKEN_STORAGE_KEY } from '@/utils/constants';
+"use client";
+import apiClient from "@/services/api";
+import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import {
   emailValidator,
   passwordValidator,
   repeatPasswordValidator,
-} from '@/utils/validators';
-import { Button, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import axios, { AxiosError } from 'axios';
-import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+} from "@/utils/validators";
+import { Button, TextField } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import axios, { AxiosError } from "axios";
+import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 interface IUserRegisterFormData {
   nombre: string;
@@ -35,19 +36,19 @@ const SignUp: React.FC = ({}) => {
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<IUserRegisterFormData>({
-    nombre: '',
-    apellido: '',
-    email: '',
-    password: '',
-    repeatPassword: '',
-    fechaNacimiento: dayjs().subtract(18, 'years'),
-    numeroDocumento: '',
-    telefono: '',
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
+    fechaNacimiento: dayjs().subtract(18, "years"),
+    numeroDocumento: "",
+    telefono: "",
   });
   const [formErrors, setFormErrors] = useState<IUserRegisterFormErrors>({
-    email: '',
-    password: '',
-    repeatPassword: '',
+    email: "",
+    password: "",
+    repeatPassword: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,13 +73,17 @@ const SignUp: React.FC = ({}) => {
   };
 
   const signUp = (data: IUserRegisterFormData) => {
-    const res = apiClient().post('usuario/signup', {
+    const res = apiClient().post("usuario/signup", {
       ...formData,
       fechaNacimiento: formData.fechaNacimiento.toISOString(),
     });
     res
       .then(() => {
-        alert('Bienvenido! Ya puede iniciar sesión');
+        Swal.fire({
+          title: "¡Bienvenido!",
+          text: "Ya puede iniciar sesión",
+          icon: "success",
+        });
         location.reload();
       })
       .catch((error: Error | AxiosError) => {
@@ -90,7 +95,11 @@ const SignUp: React.FC = ({}) => {
           if (error.message) {
             alert(error.message);
           } else {
-            alert('Ha ocurrido un error');
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Ha ocurrido un error",
+            });
           }
         }
       });
@@ -101,7 +110,7 @@ const SignUp: React.FC = ({}) => {
       setFormErrors((prevFormData) => {
         const newFormData = {
           ...prevFormData,
-          fechaNacimiento: 'La fecha no puede estar vacía',
+          fechaNacimiento: "La fecha no puede estar vacía",
         };
         return newFormData;
       });
@@ -198,8 +207,8 @@ const SignUp: React.FC = ({}) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Fecha de nacimiento"
-            minDate={dayjs().subtract(80, 'years')}
-            maxDate={dayjs().subtract(18, 'years')}
+            minDate={dayjs().subtract(80, "years")}
+            maxDate={dayjs().subtract(18, "years")}
             onChange={onDateChange}
           />
         </LocalizationProvider>

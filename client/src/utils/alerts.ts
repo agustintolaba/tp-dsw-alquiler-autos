@@ -1,13 +1,13 @@
-import axios from "axios"
+import axios, { AxiosError, isAxiosError } from "axios"
+import Swal from 'sweetalert2';
 
-export const alertError = (error: any) => {
-    if (axios.isAxiosError(error) && error.response?.data.message != undefined) {
-        alert(error.response?.data.message)
-    } else {
-        if (error.message != undefined) {
-            alert(error.message)
-        } else {
-            alert("Ha ocurrido un error")
-        }
+export const alertError = (error: Error | AxiosError) => {
+    let message = isAxiosError(error) ? error.response?.data.message : error.message
+
+        Swal.fire({
+            icon: "error",
+            title: "Ha ocurrido un error",
+            text: message ?? 'Contacta al administrador' ,
+          });
     }
-}
+
