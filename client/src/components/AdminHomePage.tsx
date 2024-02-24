@@ -25,11 +25,11 @@ const homeItems = [
     href: "/home/users",
   },
   {
-    icon: "",
+    icon: "garage",
     title: "Administrar Tipo-Vehículo",
     subtitle: "Aquí puedes eliminar y editar los tipos de vehículos",
     bgColor: "bg-teal-800",
-    href: "/home/tipoVehiculo"
+    href: "/home/vehicleType",
   },
 ];
 

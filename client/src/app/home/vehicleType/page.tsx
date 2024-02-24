@@ -12,7 +12,7 @@ import useAdmin from "@/services/userType";
 interface TipoVehiculoFormData {
   descripcion: string;
   nombre: string
-  precio: number // ACA NO SE SI VAN O NO OTROS ATRIBUTOS DE TIPOVEHICULO
+  precio: number 
 }
 
 const TipoVehiculo: React.FC = () => {

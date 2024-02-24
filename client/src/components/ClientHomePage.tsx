@@ -32,7 +32,6 @@ const homeItems = [
 export default function ClientHomePage() {
   const [vehicleTypes, setVehicleTypes] = useState<TipoVehiculo[]>([]);
 
-
   useEffect(() => {
     const fetchVehicleTypes = async () => {
       try {
