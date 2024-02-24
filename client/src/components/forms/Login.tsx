@@ -3,11 +3,11 @@ import apiClient from "@/services/api";
 import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import { emailValidator, passwordValidator } from "@/utils/validators";
 import { Button, TextField } from "@mui/material";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoadableScreen from "../LoadableScreen";
-import Swal from "sweetalert2";
+import { alertError } from "@/utils/alerts";
 
 export interface LoginFormData {
   email: string;
@@ -70,20 +70,7 @@ const Login: React.FC = () => {
         router.push("/home");
       })
       .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          alert(error.response?.data.message);
-        } else {
-          console.error(error);
-          if (error.message) {
-            alert(error.message);
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Ha ocurrido un error",
-            });
-          }
-        }
+        alertError(error);
       })
       .finally(() => setIsLoading(false));
   };

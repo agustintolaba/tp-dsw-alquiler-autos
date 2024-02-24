@@ -6,6 +6,8 @@ import BookingStatusHandler from "./BookingStateHandler";
 import apiClient from "@/services/api";
 import { useState } from "react";
 import { BookingState } from "@/utils/bookingState";
+import { AxiosError } from "axios";
+import { alertError } from "@/utils/alerts";
 
 interface BookingItemProps {
   isAdmin: boolean;
@@ -28,9 +30,10 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
         .then((res: UpdateBookingStatusResponse) => {
           console.log(res.data);
           setStatus(res.data.updatedBooking.estado);
-          alert(res.data.message);
         })
-        .catch((error: any) => {});
+        .catch((error: AxiosError | Error) => {
+          alertError(error);
+        });
     }
   };
   return (

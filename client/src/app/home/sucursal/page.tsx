@@ -45,20 +45,7 @@ const Sucursal: React.FC = () => {
         handleSucursalListChanged();
       })
       .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          alert(error.response?.data.message);
-        } else {
-          console.log(error);
-          if (error.message) {
-            alert(error.message);
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Ha ocurrido un error",
-            });
-          }
-        }
+        alertError(error);
       })
       .finally(() => setIsLoading(false));
   };

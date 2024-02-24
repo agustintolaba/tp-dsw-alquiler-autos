@@ -87,21 +87,7 @@ const SignUp: React.FC = ({}) => {
         location.reload();
       })
       .catch((error: Error | AxiosError) => {
-        console.log(error);
-        if (axios.isAxiosError(error)) {
-          alert(error.response?.data.message);
-        } else {
-          console.log(error);
-          if (error.message) {
-            alert(error.message);
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Ha ocurrido un error",
-            });
-          }
-        }
+        alertError(error);
       });
   };
 
