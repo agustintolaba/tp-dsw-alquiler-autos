@@ -1,7 +1,7 @@
 /* Para crear el componente de un solo TipoVehiculo */
 "use client";
 import apiClient from "@/services/api";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
