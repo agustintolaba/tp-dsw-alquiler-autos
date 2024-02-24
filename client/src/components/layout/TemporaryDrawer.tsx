@@ -14,6 +14,7 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import Link from "next/link";
 import {
   CarRental,
+  Garage,
   LocationCity,
   Map,
   People,
@@ -73,6 +74,11 @@ const adminMenuItems = [
     title: "Administrar sucursales",
     icon: <Warehouse />,
     destination: "/home/sucursal",
+  },
+  {
+    title: "Administrar tipos de vehículo",
+    icon: <Garage />,
+    destination: "/home/vehicleType",
   },
 ];
 
