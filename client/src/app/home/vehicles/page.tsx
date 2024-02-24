@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const Vehicles = () => {
   const router = useRouter();
@@ -19,7 +20,11 @@ const Vehicles = () => {
         })
         .catch((error: any) => {
           console.log(error);
-          alert("Error al verificar acceso");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "error al verificar acceso",
+          });
           router.replace("/");
         });
     };

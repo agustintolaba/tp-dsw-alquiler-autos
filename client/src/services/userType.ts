@@ -1,7 +1,7 @@
 import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { usePathname, useRouter } from "next/navigation";
 
 const useAdmin = () => {

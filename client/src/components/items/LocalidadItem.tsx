@@ -1,10 +1,11 @@
 /* Para crear el componente de una sola localidad */
-'use client';
-import apiClient from '@/services/api';
-import { alertError } from '@/utils/errorHandling';
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import ProvinciaSelectField from '../ProvinciaSelectField';
+"use client";
+import apiClient from "@/services/api";
+import { alertError } from "@/utils/alerts";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import ProvinciaSelectField from "../ProvinciaSelectField";
+import Swal from "sweetalert2";
 
 export interface Localidad {
   id: number;
@@ -40,9 +41,7 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
   const [oldName, setOldName] = useState(descripcion);
   const [newProv, setNewProv] = useState(provincia.id);
   const [oldProv, setOldProv] = useState(provincia.id);
-  const wasEditing = usePrevious(isEditing);
-  const editFieldRef = useRef<HTMLInputElement>(null);
-  const editButtonRef = useRef<HTMLButtonElement>(null);
+
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
   const editLocalidad = async () => {
@@ -54,28 +53,46 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
           provincia: newProv,
         })
         .then(() => {
-          alert('Se edito una localidad');
+          Swal.fire({
+            title: "¡LISTO!",
+            text: "Se editó una localidad",
+            icon: "success",
+          });
           onLocalidadListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert('No se pudo editar');
-      console.error('Error:', error.message);
+      Swal.fire({
+        icon: "warning",
+        title: "Alerta",
+        text: "¡No se pudo editar la localidad!",
+      });
+      console.error("Error:", error.message);
     }
   };
 
   const deleteLocalidad = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la localidad?');
-    if (respuesta) {
+    const respuesta = Swal.fire({
+      icon: "question",
+      title: "¿Desea eliminar una localidad?",
+      showDenyButton: true,
+      confirmButtonText: "Eliminar",
+      denyButtonText: `Cancelar`,
+    });
+    if ((await respuesta).isConfirmed) {
       try {
         const response = await apiClient(true).delete(`/localidad/${id}`);
-        alert('Se elimino una localidad');
+        Swal.fire({
+          title: "¡Listo!",
+          text: "Se eliminó una localidad",
+          icon: "success",
+        });
         onLocalidadListChanged();
       } catch (error: any) {
         alertError(error);
-        console.error('Error:', error.message);
+        console.error("Error:", error.message);
       }
     }
   };
@@ -125,7 +142,6 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
             fullWidth
             value={newName}
             onChange={handleChange}
-            ref={editFieldRef}
           />
           <ProvinciaSelectField
             value={newProv}
@@ -136,7 +152,6 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
               variant="outlined"
               color="error"
               onClick={() => setEditing(false)}
-              ref={editButtonRef}
             >
               Cancelar
             </Button>
@@ -167,7 +182,6 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
               variant="outlined"
               color="success"
               onClick={() => setEditing(true)}
-              ref={editButtonRef}
             >
               Editar
             </Button>
@@ -183,15 +197,6 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
       </div>
     </div>
   );
-
-  useEffect(() => {
-    if (!wasEditing && isEditing) {
-      editFieldRef.current?.focus();
-    }
-    if (wasEditing && !isEditing) {
-      editButtonRef.current?.focus();
-    }
-  }, [wasEditing, isEditing]);
 
   return <>{isEditing ? editingTemplate : viewTemplate}</>;
 };

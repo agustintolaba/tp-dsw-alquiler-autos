@@ -1,7 +1,7 @@
 import { TipoUsuario, Usuario } from "@/types";
 import { useEffect, useState } from "react";
 import apiClient from "./api";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { useRouter } from "next/navigation";
 
 const useUser = () => {

@@ -3,7 +3,7 @@ import { getBranchOptions } from "@/services/branch";
 import { getVehicleTypesOptions } from "@/services/vehicleTypes";
 import { SelectMenuItem, Vehiculo } from "@/types";
 import { MAX_WORKING_HOUR, NINE_AM, transmisions } from "@/utils/constants";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { disableNotWorkingTime, getDateError } from "@/utils/validators";
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";

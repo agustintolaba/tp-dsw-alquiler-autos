@@ -1,6 +1,6 @@
 "use client";
 import { SelectMenuItem } from "@/types";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect } from "react";
 import LoadableScreen from "../LoadableScreen";

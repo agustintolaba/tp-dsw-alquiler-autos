@@ -3,7 +3,7 @@ import apiClient from "./api";
 import { Reserva } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 
 export const getBookings = async (): Promise<Reserva[]> => {
   const res = await apiClient(true).get("/alquiler/getAll");

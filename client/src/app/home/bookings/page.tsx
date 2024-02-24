@@ -5,7 +5,7 @@ import useBooking, { getBookings } from "@/services/booking";
 import useAdmin, { verifyAdmin } from "@/services/userType";
 import { Reserva } from "@/types";
 import { NUMERIC_FORMAT } from "@/utils/constants";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { SearchOutlined } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Link from "next/link";

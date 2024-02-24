@@ -1,14 +1,15 @@
-'use client';
-import { Button, TextField } from '@mui/material';
-import { useState, useEffect } from 'react';
-import LoadableScreen from '@/components/LoadableScreen';
-import SucursalList from '@/components/lists/SucursalList';
-import ProvinciaSelectField from '@/components/ProvinciaSelectField';
-import LocalidadSelectField from '@/components/LocalidadSelectField';
-import apiClient from '@/services/api';
-import axios, { AxiosError } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
-import useAdmin from '@/services/userType';
+"use client";
+import { Button, TextField } from "@mui/material";
+import { useState, useEffect } from "react";
+import LoadableScreen from "@/components/LoadableScreen";
+import SucursalList from "@/components/lists/SucursalList";
+import ProvinciaSelectField from "@/components/ProvinciaSelectField";
+import LocalidadSelectField from "@/components/LocalidadSelectField";
+import apiClient from "@/services/api";
+import axios, { AxiosError } from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import useAdmin from "@/services/userType";
+import Swal from "sweetalert2";
 
 interface SucursalFormData {
   calle: string;
@@ -21,8 +22,8 @@ const Sucursal: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [formData, setFormData] = useState<SucursalFormData>({
-    calle: '',
-    numeroCalle: '',
+    calle: "",
+    numeroCalle: "",
     localidad: 0,
   });
   const [sucursalListChanged, setSucursalListChanged] =
@@ -32,24 +33,19 @@ const Sucursal: React.FC = () => {
 
   const newSucursal = (data: SucursalFormData) => {
     const res = apiClient(true)
-      .post('/sucursal', JSON.stringify(data))
+      .post("/sucursal", JSON.stringify(data))
       .then((res) => {
-        alert('Se cargo una nueva Sucursal');
-        setFormData({ calle: '', numeroCalle: '', localidad: 0 });
-        enableButton({ calle: '', numeroCalle: '', localidad: 0 });
+        Swal.fire({
+          title: "¡Bien hecho!",
+          text: "Has agregado una nueva sucursal",
+          icon: "success",
+        });
+        setFormData({ calle: "", numeroCalle: "", localidad: 0 });
+        enableButton({ calle: "", numeroCalle: "", localidad: 0 });
         handleSucursalListChanged();
       })
       .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          alert(error.response?.data.message);
-        } else {
-          console.log(error);
-          if (error.message) {
-            alert(error.message);
-          } else {
-            alert('Ha ocurrido un error');
-          }
-        }
+        alertError(error);
       })
       .finally(() => setIsLoading(false));
   };
@@ -90,8 +86,8 @@ const Sucursal: React.FC = () => {
       <div className="flex flex-col items-center p-4  space-y-4 md:p-8 lg:p-12 gap-4 w-full sm:w-11/12 md:w-3/4 lg:w-1/2 mx-auto">
         <span className="w-full text-2xl md:text-4xl lg:text-5xl font-extralight text-center">
           {isAdmin
-            ? 'Administración de Sucursales'
-            : 'Sucursales en donde nos podes encontrar!'}
+            ? "Administración de Sucursales"
+            : "Sucursales en donde nos podes encontrar!"}
         </span>
         {isAdmin && (
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">

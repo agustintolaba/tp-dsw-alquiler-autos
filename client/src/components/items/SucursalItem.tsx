@@ -1,11 +1,12 @@
 /* Para crear el componente de una sola localidad */
-'use client';
-import apiClient from '@/services/api';
-import { alertError } from '@/utils/errorHandling';
-import { Button, TextField } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import ProvinciaSelectField from '../ProvinciaSelectField';
-import LocalidadSelectField from '../LocalidadSelectField';
+"use client";
+import apiClient from "@/services/api";
+import { alertError } from "@/utils/alerts";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import ProvinciaSelectField from "../ProvinciaSelectField";
+import LocalidadSelectField from "../LocalidadSelectField";
+import Swal from "sweetalert2";
 
 export interface Sucursal {
   id: number;
@@ -34,14 +35,6 @@ interface SucursalProps {
   onSucursalListChanged: () => void;
 }
 
-function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 const SucursalItem: React.FC<SucursalProps> = ({
   isAdmin,
   id,
@@ -50,12 +43,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [provincia, setProvincia] = useState(sucursal.localidad.provincia.id);
-  /*const [newLoc, setNewLoc] = useState(sucursal.localidad.id);
-  const [oldLoc, setOldLoc] = useState(sucursal.localidad.id);
-  const [newCalle, setNewCalle] = useState(sucursal.calle);
-  const [oldCalle, setOldCalle] = useState(sucursal.calle);
-  const [newNroCalle, setNewNroCalle] = useState(sucursal.numeroCalle);
-  const [oldNroCalle, setOldNroCalle] = useState(sucursal.numeroCalle);*/
 
   const [formData, setFormData] = useState<SucursalFormData>({
     calle: sucursal.calle,
@@ -69,9 +56,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
     localidad: sucursal.localidad.id,
   });
 
-  const wasEditing = usePrevious(isEditing);
-  const editFieldRef = useRef<HTMLInputElement>(null);
-  const editButtonRef = useRef<HTMLButtonElement>(null);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
   const editSucursal = async (formData: SucursalFormData) => {
@@ -80,46 +64,56 @@ const SucursalItem: React.FC<SucursalProps> = ({
         .put(`/sucursal/${id}`, {
           ...formData,
           id: id,
-          /*id: id,
-          localidad: newLoc,
-          calle: newCalle,
-          numeroCalle: newNroCalle,*/
         })
         .then(() => {
-          alert('Se edito una sucursal');
+          Swal.fire({
+            title: "¡LISTO!",
+            text: "Se editó una sucursal",
+            icon: "success",
+          });
           onSucursalListChanged();
         })
         .catch((error: any) => {
           alertError(error);
         });
     } catch (error: any) {
-      alert('No se pudo editar');
-      console.error('Error:', error.message);
+      Swal.fire({
+        icon: "warning",
+        title: "Alerta",
+        text: "¡No se pudo editar la sucursal!",
+      });
+      console.error("Error:", error.message);
     }
   };
 
   const deleteSucursal = async (id: string) => {
-    const respuesta = confirm('Desea eliminar la sucursal?');
-    if (respuesta) {
-      try {
-        const response = await apiClient(true).delete(`/sucursal/${id}`);
-        alert('Se elimino una sucursal');
-        onSucursalListChanged();
-      } catch (error: any) {
-        alertError(error);
-        console.error('Error:', error.message);
+    Swal.fire({
+      icon: "question",
+      title: "¿Desea eliminar una sucursal?",
+      showDenyButton: true,
+      confirmButtonText: "Eliminar",
+      denyButtonText: `Cancelar`,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        apiClient(true)
+          .delete(`/sucursal/${id}`)
+          .then((res) => {
+            Swal.fire({
+              title: "¡Listo!",
+              text: res.data.message,
+              icon: "success",
+            });
+            onSucursalListChanged();
+          })
+          .catch((error: any) => {
+            alertError(error);
+          });
       }
-    }
+    });
   };
 
   useEffect(() => {
     setButtonEnabled(false);
-    /*setNewCalle(sucursal.calle);
-    setOldCalle(sucursal.calle);
-    setNewNroCalle(sucursal.numeroCalle);
-    setOldNroCalle(sucursal.numeroCalle);
-    setNewLoc(sucursal.localidad.id);
-    setOldLoc(sucursal.localidad.id);*/
     setFormData({
       calle: sucursal.calle,
       numeroCalle: sucursal.numeroCalle,
@@ -133,9 +127,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
   }, [isEditing]);
 
   useEffect(() => {
-    /*setOldCalle(newCalle);
-    setOldNroCalle(newNroCalle);
-    setOldLoc(newLoc);*/
     setOldFormData({
       calle: sucursal.calle,
       numeroCalle: sucursal.numeroCalle,
@@ -155,22 +146,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
   const handleProvinciaSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProvincia(parseInt(e.target.value));
   };
-
-  /*const handleLocalidadInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNewLoc(parseInt(e.target.value));
-  };
-
-  const handleCalleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewCalle(e.target.value);
-  };
-
-  const handleNroCalleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setNewNroCalle(e.target.value);
-  };*/
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -205,7 +180,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
             fullWidth
             value={formData.calle}
             onChange={handleInputChange}
-            ref={editFieldRef}
           />
           <TextField
             id={id.toString()}
@@ -214,14 +188,12 @@ const SucursalItem: React.FC<SucursalProps> = ({
             fullWidth
             value={formData.numeroCalle}
             onChange={handleInputChange}
-            ref={editFieldRef}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
               variant="outlined"
               color="error"
               onClick={() => setEditing(false)}
-              ref={editButtonRef}
             >
               Cancelar
             </Button>
@@ -258,7 +230,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
               variant="outlined"
               color="success"
               onClick={() => setEditing(true)}
-              ref={editButtonRef}
             >
               Editar
             </Button>
@@ -274,15 +245,6 @@ const SucursalItem: React.FC<SucursalProps> = ({
       </div>
     </div>
   );
-
-  useEffect(() => {
-    if (!wasEditing && isEditing) {
-      editFieldRef.current?.focus();
-    }
-    if (wasEditing && !isEditing) {
-      editButtonRef.current?.focus();
-    }
-  }, [wasEditing, isEditing]);
 
   return <>{isEditing ? editingTemplate : viewTemplate}</>;
 };

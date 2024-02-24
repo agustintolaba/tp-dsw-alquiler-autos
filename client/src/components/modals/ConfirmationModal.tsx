@@ -39,7 +39,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         vehiculo: vehicle.id,
       })
       .then(() => {
-        alert("¡¡Felicidades!! Se realizó la reserva correctamente.");
+        Swal.fire({
+          title: "¡FELICIDADES!",
+          text: "¡Se realizó la reserva correctamente!",
+          icon: "success",
+        });
         router.push("/home");
       });
   };
