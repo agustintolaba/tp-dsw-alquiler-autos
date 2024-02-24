@@ -13,7 +13,7 @@ const TipoVehiculoList: React.FC<TipoVehiculoListProps> = ({
   isAdmin,
   onTipoVehiculoListChanged,
 }) => {
-  const [TipoVehiculoItems, setTipoVehiculoItems] = useState<TipoVehiculo[]>([]);
+  const [tipoVehiculoItems, setTipoVehiculoItems] = useState<TipoVehiculo[]>([]);
 
   useEffect(() => {
     const fetchTipoVehiculoItems = async () => {
@@ -22,7 +22,9 @@ const TipoVehiculoList: React.FC<TipoVehiculoListProps> = ({
           const list = res.data.types.map((item: TipoVehiculo) => {
             return {
               id: item.id.toString(),
+              nombre: item.nombre,
               descripcion: item.descripcion,
+              precio: item.precio, 
             };
           });
           setTipoVehiculoItems(list);
@@ -37,8 +39,8 @@ const TipoVehiculoList: React.FC<TipoVehiculoListProps> = ({
   return (
     <div className="flex flex-col items-center p-4 sm:p-8 gap-4 sm:gap-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-        {TipoVehiculoItems.length > 0 ? (
-          TipoVehiculoItems.map((item: TipoVehiculo ) => (
+        {tipoVehiculoItems.length > 0 ? (
+          tipoVehiculoItems.map((item: TipoVehiculo ) => (
             <TipoVehiculoItem
               isAdmin={isAdmin}
               onTipoVehiculoListChanged={onTipoVehiculoListChanged}

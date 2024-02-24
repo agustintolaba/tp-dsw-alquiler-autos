@@ -38,14 +38,13 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
   onTipoVehiculoListChanged,
 }) =>  {
   const [isEditing, setEditing] = useState(false);
-  const [newId, setNewId] = useState(id);
   const [newName, setNewName] = useState(nombre);
   const [newDescription, setNewDescription] = useState(descripcion);
-  const [newPrecio, setNewPrecio] = useState(precio);
+  const [newPrecio, setNewPrecio] = useState(precio.toString());
   const wasEditing = usePrevious(isEditing);
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
-  const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
+  
 
   const editTipoVehiculo = async () => {
     try {
@@ -83,17 +82,24 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
     }
   };
 
-  useEffect(() => {
-    setButtonEnabled(false);
-  }, [isEditing]);
-
-  const enableButton = (value: string) => {
-    setButtonEnabled(value.trim().length > 0);
-  };
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNewName(e.target.value);
-    enableButton(e.target.value);
+    const {name, value} = e.target;
+    switch (name) {
+      case "nombre":
+      setNewName(value);
+      break;
+      case "descripcion":
+      setNewDescription(value);
+      break;
+      case "precio":
+      if (!isNaN(Number(value))) {
+        setNewPrecio(value);
+
+      }
+      break;
+      default:
+        break;
+    }
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -107,16 +113,6 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
       <div className="flex flex-col items-center gap-4 px-4 py-8 rounded-2xl bg-slate-500 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:p-8">
         <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
           <TextField
-            id={id.toString()}
-            name="descripcion"
-            variant="outlined"
-            fullWidth
-            value={newId}
-            onChange={handleChange}
-            ref={editFieldRef}
-          />
-          <TextField
-            id={id.toString()}
             name="nombre"
             variant="outlined"
             fullWidth
@@ -125,7 +121,6 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
             ref={editFieldRef}
           />
           <TextField
-            id={id.toString()}
             name="descripcion"
             variant="outlined"
             fullWidth
@@ -134,7 +129,6 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
             ref={editFieldRef}
           />
           <TextField
-            id={id.toString()}
             name="precio"
             variant="outlined"
             fullWidth
@@ -154,7 +148,6 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
             <Button
               variant="outlined"
               color="success"
-              disabled={!buttonEnabled}
               type="submit"
             >
               Guardar

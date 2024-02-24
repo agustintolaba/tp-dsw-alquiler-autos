@@ -89,20 +89,20 @@ return (
             <div className="flex flex-col space-y-4">
               <TextField
                 className=""
-                name="descripcion"
-                label="descripcion"
-                variant="outlined"
-                fullWidth
-                value={formData.descripcion}
-                onChange={handleInputChange}
-              />
-              <TextField
-                className=""
                 name="nombre"
                 label="Nombre"
                 variant="outlined"
                 fullWidth
                 value={formData.nombre}
+                onChange={handleInputChange}
+              />
+              <TextField
+                className=""
+                name="descripcion"
+                label="Descripcion"
+                variant="outlined"
+                fullWidth
+                value={formData.descripcion}
                 onChange={handleInputChange}
               />
               <TextField
