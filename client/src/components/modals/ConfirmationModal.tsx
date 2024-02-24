@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import apiClient from "@/services/api";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 interface ConfirmModalProps {
   open: boolean;
