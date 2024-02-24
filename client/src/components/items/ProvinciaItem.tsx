@@ -10,7 +10,7 @@ export interface Provincia {
   descripcion: string;
 }
 
-interface ProvinciaProps {
+export interface ProvinciaProps {
   isAdmin: boolean;
   id: number;
   descripcion: string;
@@ -107,12 +107,12 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
         <div className="flex flex-col items-center text-white w-full lg:w-full lg:text-center mx-auto">
           <TextField
             id={id.toString()}
-            name="descripcion"
             variant="outlined"
             fullWidth
             value={newName}
             onChange={handleChange}
             ref={editFieldRef}
+            name={`new-name-provincia-${descripcion}`}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
@@ -124,6 +124,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
               Cancelar
             </Button>
             <Button
+              data-testid={`edit-provincia-${newName}-save-button`}
               variant="outlined"
               color="success"
               disabled={!buttonEnabled}
@@ -144,6 +145,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
         {isAdmin && (
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
             <Button
+              data-testid={`edit-provincia-${descripcion}`}
               variant="outlined"
               color="success"
               onClick={() => setEditing(true)}
@@ -152,6 +154,7 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
               Editar
             </Button>
             <Button
+              data-testid={`delete-provincia-${descripcion}`}
               variant="outlined"
               color="error"
               onClick={() => deleteProvincia(id.toString())}

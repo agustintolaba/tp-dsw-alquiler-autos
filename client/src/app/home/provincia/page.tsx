@@ -26,9 +26,9 @@ const Provincia: React.FC = () => {
 
   const newProvincia = (data: ProvinciaFormData) => {
     const res = apiClient(true)
-      .post('/provincia', JSON.stringify(data)) 
+      .post('/provincia', JSON.stringify(data))
       .then((res) => {
-        alert('Se cargo una nueva provincia');
+        alert('Se cargó una nueva provincia');
         setFormData({ descripcion: '' });
         enableButton({ descripcion: '' });
         handleProvinciaListChanged();
@@ -83,7 +83,7 @@ const Provincia: React.FC = () => {
           <form onSubmit={handleSubmit} className="w-full sm:w-1/2">
             <div className="flex flex-col space-y-4">
               <TextField
-                className=""
+                data-testid="input-new-provincia"
                 name="descripcion"
                 label="Nombre"
                 variant="outlined"
