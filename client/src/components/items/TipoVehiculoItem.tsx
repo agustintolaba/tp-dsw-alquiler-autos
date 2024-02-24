@@ -1,9 +1,10 @@
 /* Para crear el componente de un solo TipoVehiculo */
 "use client";
 import apiClient from "@/services/api";
-import { alertError } from "@/utils/errorHandling";
+import { alertError } from "@/utils/alerts";
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export interface TipoVehiculo {
   id: number;
@@ -51,13 +52,23 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
       });
   };
 
-  const deleteTipoVehiculo = (id: string) => {
-    const respuesta = confirm("Desea eliminar el Tipo de Vehiculo?");
-    if (respuesta) {
+  const deleteTipoVehiculo = async (id: string) => {
+    const respuesta = Swal.fire({
+      icon: "question",
+      title: "¿Desea eliminar un tipo vehiculo?",
+      showDenyButton: true,
+      confirmButtonText: "Eliminar",
+      denyButtonText: `Cancelar`,
+    });
+    if ((await respuesta).isConfirmed) {
       apiClient(true)
         .delete(`/tipoVehiculo/${id}`)
         .then(() => {
-          alert("Se elimino un Tipo de Vehiculo");
+          Swal.fire({
+            title: "¡Listo!",
+            text: "Se eliminó un tipo vehiculo",
+            icon: "success",
+          });
           onTipoVehiculoListChanged();
         })
         .catch((error: any) => {

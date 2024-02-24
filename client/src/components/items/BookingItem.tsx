@@ -8,6 +8,7 @@ import { useState } from "react";
 import { BookingState } from "@/utils/bookingState";
 import { AxiosError } from "axios";
 import { alertError } from "@/utils/alerts";
+import Swal from "sweetalert2";
 
 interface BookingItemProps {
   isAdmin: boolean;
@@ -22,20 +23,27 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
   const [status, setStatus] = useState<BookingState>(reserva.estado);
 
   const handleChangeStateClick = (isCancel: boolean) => {
-    if (isCancel && !confirm("Desea cancelar la reserva?")) {
-      return;
-    } else {
-      apiClient(true)
-        .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
-        .then((res: UpdateBookingStatusResponse) => {
-          console.log(res.data);
-          setStatus(res.data.updatedBooking.estado);
-        })
-        .catch((error: AxiosError | Error) => {
-          alertError(error);
-        });
-    }
+    Swal.fire({
+      icon: "question",
+      title: "Desea cancelar la reserva?",
+      showDenyButton: true,
+      confirmButtonText: "Aceptar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed && isCancel) {
+        apiClient(true)
+          .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
+          .then((res: UpdateBookingStatusResponse) => {
+            console.log(res.data);
+            setStatus(res.data.updatedBooking.estado);
+          })
+          .catch((error: AxiosError | Error) => {
+            alertError(error);
+          });
+      }
+    });
   };
+
   return (
     <Box className="flex flex-row w-full flex-wrap justify-center items-center rounded-md bg-slate-700 p-4 gap-4 md:justify-between">
       <Box className="flex flex-wrap gap-4">

@@ -11,6 +11,7 @@ import { verifyAdmin } from "@/services/userType";
 import { NO_ACCESS, seatings, transmisions } from "@/utils/constants";
 import VehicleTypesSelectField from "../VehicleTypesSelectField";
 import { patenteValidator } from "@/utils/validators";
+import Swal from "sweetalert2";
 
 interface NewVehicleFormData {
   marca: string;
@@ -124,11 +125,19 @@ const NewVehicleForm = () => {
         },
       })
       .then(() => {
-        if (confirm("Vehículo agregado correctamente, ¿desea agregar otro?")) {
-          cleanFields();
-        } else {
-          router.push("/home/vehicles");
-        }
+        Swal.fire({
+          icon: "question",
+          title: "Has agregado un vehículo ¿Desea agregar otro?",
+          showDenyButton: true,
+          confirmButtonText: "Si",
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            cleanFields();
+          } else {
+            router.push("/home/vehicles");
+          }
+        });
       })
       .catch((error: any) => {
         alertError(error);
