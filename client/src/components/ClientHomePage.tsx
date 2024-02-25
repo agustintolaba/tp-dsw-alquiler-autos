@@ -1,31 +1,33 @@
-'use client';
-import { useState, useEffect } from 'react';
-import HomeGridItem, { HomeGridItemProps } from '@/components/items/ClientHomeGridItem';
-import HomeDetailItem from '@/components/items/ClientHomeDetailItem';
-import apiClient from '@/services/api';
-import Link from 'next/link';
-import { Button } from '@mui/material';
-import { getVehicleTypes } from '@/services/vehicleTypes';
-import { TipoVehiculo } from '@/types';
+"use client";
+import { useState, useEffect } from "react";
+import HomeGridItem, {
+  HomeGridItemProps,
+} from "@/components/items/ClientHomeGridItem";
+import HomeDetailItem from "@/components/items/ClientHomeDetailItem";
+import apiClient from "@/services/api";
+import Link from "next/link";
+import { Button } from "@mui/material";
+import { getVehicleTypes } from "@/services/vehicleTypes";
+import { TipoVehiculo } from "@/types";
 
 const homeItems = [
   {
-    image: '/assets/images/cardsIcon.png',
-    title: 'Recogida más rápida',
-    subtitle: 'Ya tenemos tu contrato preparado',
-    bgColor: 'bg-emerald-800',
+    image: "/assets/images/cardsIcon.png",
+    title: "Recogida más rápida",
+    subtitle: "Ya tenemos tu contrato preparado",
+    bgColor: "bg-emerald-800",
   },
   {
-    image: '/assets/images/carIcon.png',
-    title: 'Viaje de alquiler',
-    subtitle: 'Más de 20 años de experiencia',
-    bgColor: 'bg-teal-950',
+    image: "/assets/images/carIcon.png",
+    title: "Viaje de alquiler",
+    subtitle: "Más de 20 años de experiencia",
+    bgColor: "bg-teal-950",
   },
   {
-    image: '/assets/images/bagageIcon.png',
-    title: 'Mejor servicio',
-    subtitle: 'Te conocemos mejor, te servimos mejor',
-    bgColor: 'bg-cyan-950',
+    image: "/assets/images/bagageIcon.png",
+    title: "Mejor servicio",
+    subtitle: "Te conocemos mejor, te servimos mejor",
+    bgColor: "bg-cyan-950",
   },
 ];
 
@@ -42,13 +44,12 @@ export default function ClientHomePage() {
             nombre: item.nombre,
             descripcion: item.descripcion,
             precio: item.precio,
-            image: item.image,
           };
         });
         console.log(list);
         setVehicleTypes(list);
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     };
     fetchVehicleTypes();
