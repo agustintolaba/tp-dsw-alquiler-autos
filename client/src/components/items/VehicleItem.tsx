@@ -8,7 +8,7 @@ import {
   transmisionDescriptions,
 } from "@/utils/constants";
 import { Person } from "@mui/icons-material";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -30,8 +30,17 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   edit,
   select,
 }) => {
-  const { id, patente, image, marca, modelo, capacidad, transmision, km } =
-    vehicle;
+  const {
+    id,
+    patente,
+    image,
+    marca,
+    modelo,
+    capacidad,
+    transmision,
+    km,
+    sucursal,
+  } = vehicle;
   const [newKm, setNewKm] = useState(km);
 
   const handleRemove = () => {
@@ -85,7 +94,11 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col justify-center items-center gap-6 pt-12 p-6 md:p-6 rounded-md bg-slate-900 md:flex-row">
+    <Box
+      className={`relative w-full flex flex-col gap-6 pt-12 p-6 md:p-6 rounded-md ${
+        isAdmin ? "justify-between  max-w-5xl" : "justify-center  max-w-xl"
+      } items-center bg-slate-900 md:flex-row`}
+    >
       {isAdmin && (
         <span
           className={`absolute top-0 w-24 flex items-center bg-white justify-center rounded-sm ${
@@ -108,49 +121,58 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
           </span>
         </span>
       )}
-      <Image
-        src={image}
-        alt={"vehiculo"}
-        width={200}
-        height={200}
-        className="object-cover"
-      />
-      <div className="flex flex-col justify-end items-center gap-6 sm:items-end">
-        <div className="flex flex-col items-start gap-4 text-white">
-          <span className="font-bold text-2xl tracking-wider">
-            {marca} {modelo}
-          </span>
-          <div className="flex flex-col items-start gap-1 text-white">
-            <div className="flex flex-row gap-1 justify-center items-center">
-              <span className="font-semibold">Capacidad:</span>
-              <span className="flex items-center gap-1">
-                {capacidad} <Person fontSize="small" />
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-row flex-wrap gap-1 justify-center items-center">
-            <span className="font-semibold">Transmisión:</span>
-            <span className="">{transmisionDescriptions[transmision]}</span>
-          </div>
-          {isAdmin && (
-            <TextField
-              variant="outlined"
-              onChange={handleKmChange}
-              type="number"
-              value={newKm}
-              name="km"
-              label="Kilómetros"
-            />
-          )}
-        </div>
-      </div>
+      <Box className="flex flex-col gap-6 items-center sm:flex-row">
+        <Image
+          src={image}
+          alt={"vehiculo"}
+          width={200}
+          height={200}
+          className="object-contain"
+        />
+        <Box className="flex flex-col justify-end items-center gap-6 sm:items-end">
+          <Box className="flex flex-col items-start gap-4 text-white">
+            <span className="font-bold text-2xl tracking-wider">
+              {marca} {modelo}
+            </span>
+            <Box className="flex flex-col items-start gap-1 text-white">
+              <Box className="flex flex-row gap-1 justify-start items-center">
+                <span className="font-semibold">Capacidad:</span>
+                <span className="flex items-center gap-1">
+                  {capacidad} <Person fontSize="small" />
+                </span>
+              </Box>
+            </Box>
+            <Box className="flex flex-row flex-wrap gap-1 justify-start items-center">
+              <span className="font-semibold">Transmisión:</span>
+              <span className="">{transmisionDescriptions[transmision]}</span>
+            </Box>
+            {isAdmin && (
+              <Box className="flex flex-row flex-wrap gap-1 justify-start items-center">
+                <span className="font-semibold">Sucursal:</span>
+                <span className="">{`${sucursal.calle} ${sucursal.numeroCalle}, ${sucursal.localidad.descripcion}, ${sucursal.localidad.provincia.descripcion}`}</span>
+              </Box>
+            )}
+            {isAdmin && (
+              <TextField
+                variant="outlined"
+                className="w-full sm:w-auto"
+                onChange={handleKmChange}
+                type="number"
+                value={newKm}
+                name="km"
+                label="Kilómetros"
+              />
+            )}
+          </Box>
+        </Box>
+      </Box>
       {isBooking && (
         <Button onClick={handleBook} variant="outlined" color="success">
           Lo quiero!
         </Button>
       )}
       {isAdmin && (
-        <div className="flex flex-col gap-4">
+        <Box className="flex flex-col gap-4">
           <Button
             onClick={handleEdit}
             variant="outlined"
@@ -162,9 +184,9 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
           <Button onClick={handleRemove} variant="outlined" color="error">
             Eliminar
           </Button>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

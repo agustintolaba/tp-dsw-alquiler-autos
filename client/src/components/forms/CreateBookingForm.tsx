@@ -11,6 +11,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 
 const getBookingDateDefaultValue = (isDateFrom: boolean): Dayjs => {
   const isLateForToday = dayjs().hour() > MAX_WORKING_HOUR;
@@ -135,10 +136,11 @@ const CreateBookingForm: React.FC<CreateBookingFormProps> = ({
       )
       .then((res) => {
         const vehicles = res.data.vehicles;
+        console.log(vehicles);
         setAvailableVehicles(vehicles);
       })
-      .catch((error: any) => {
-        console.log(error);
+      .catch((error: Error | AxiosError) => {
+        alertError(error);
       });
   };
 

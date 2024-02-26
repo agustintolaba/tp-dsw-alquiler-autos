@@ -78,7 +78,7 @@ const adminMenuItems = [
   {
     title: "Administrar tipos de vehículo",
     icon: <Garage />,
-    destination: "/home/vehicleType",
+    destination: "/home/vehicles/vehicleType",
   },
 ];
 

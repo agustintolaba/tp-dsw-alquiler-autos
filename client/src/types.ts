@@ -50,7 +50,6 @@ export interface TipoVehiculo extends Identifiable {
   nombre: string;
   descripcion: string;
   precio: number;
-  image: string;
 }
 
 export interface Sucursal extends Identifiable {

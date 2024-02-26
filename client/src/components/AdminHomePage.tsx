@@ -24,13 +24,6 @@ const homeItems = [
     bgColor: "bg-cyan-800",
     href: "/home/users",
   },
-  {
-    icon: "garage",
-    title: "Administrar Tipo-Vehículo",
-    subtitle: "Aquí puedes eliminar y editar los tipos de vehículos",
-    bgColor: "bg-teal-800",
-    href: "/home/vehicleType",
-  },
 ];
 
 const AdminHomePage = () => {

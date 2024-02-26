@@ -3,15 +3,8 @@
 import apiClient from "@/services/api";
 import { alertError } from "@/utils/alerts";
 import { Button, TextField } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
-
-export interface TipoVehiculo {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-}
 
 interface TipoVehiculoProps {
   isAdmin: boolean;
@@ -43,8 +36,12 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
         descripcion: newDescription,
         precio: newPrecio,
       })
-      .then(() => {
-        alert("Se edito el Tipo de Vehiculo");
+      .then((res) => {
+        Swal.fire({
+          title: "¡Bien hecho!",
+          text: res.data.message,
+          icon: "success",
+        });
         onTipoVehiculoListChanged();
       })
       .catch((error: any) => {
@@ -63,10 +60,10 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
     if ((await respuesta).isConfirmed) {
       apiClient(true)
         .delete(`/tipoVehiculo/${id}`)
-        .then(() => {
+        .then((res) => {
           Swal.fire({
-            title: "¡Listo!",
-            text: "Se eliminó un tipo vehiculo",
+            title: "¡Bien hecho!",
+            text: res.data.message,
             icon: "success",
           });
           onTipoVehiculoListChanged();
