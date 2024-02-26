@@ -26,18 +26,6 @@ interface UsersListProps {
   remove: (user: Usuario) => void;
   edit: (user: Usuario, newTipoUsuario: TipoUsuario) => void;
 }
-/*
-const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
-  const handleRemove = (user: Usuario) => {
-    if (
-      !confirm(
-        `¿Desea eliminar ${user.nombre} ${user.apellido} con email: ${user.email}?`
-      )
-    ) {
-      return;
-    }
-    remove(user);
-  };*/
 
 const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
   const handleRemove = (user: Usuario) => {
