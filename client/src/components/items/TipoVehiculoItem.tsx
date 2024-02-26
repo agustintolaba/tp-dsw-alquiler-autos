@@ -49,30 +49,31 @@ const TipoVehiculoItem: React.FC<TipoVehiculoProps> = ({
       });
   };
 
-  const deleteTipoVehiculo = async (id: string) => {
-    const respuesta = Swal.fire({
+  const deleteTipoVehiculo = (id: string) => {
+    Swal.fire({
       icon: "question",
       title: "¿Desea eliminar un tipo vehiculo?",
       showDenyButton: true,
       confirmButtonText: "Eliminar",
       denyButtonText: `Cancelar`,
-    });
-    if ((await respuesta).isConfirmed) {
-      apiClient(true)
-        .delete(`/tipoVehiculo/${id}`)
-        .then((res) => {
-          Swal.fire({
-            title: "¡Bien hecho!",
-            text: res.data.message,
-            icon: "success",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiClient(true)
+          .delete(`/tipoVehiculo/${id}`)
+          .then((res) => {
+            Swal.fire({
+              title: "¡Bien hecho!",
+              text: res.data.message,
+              icon: "success",
+            });
+            onTipoVehiculoListChanged();
+          })
+          .catch((error: any) => {
+            alertError(error);
+            console.error("Error:", error.message);
           });
-          onTipoVehiculoListChanged();
-        })
-        .catch((error: any) => {
-          alertError(error);
-          console.error("Error:", error.message);
-        });
-    }
+      }
+    });
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

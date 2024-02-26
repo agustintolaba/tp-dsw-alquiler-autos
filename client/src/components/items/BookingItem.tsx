@@ -23,25 +23,29 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
   const [status, setStatus] = useState<BookingState>(reserva.estado);
 
   const handleChangeStateClick = (isCancel: boolean) => {
-    Swal.fire({
-      icon: "question",
-      title: "Desea cancelar la reserva?",
-      showDenyButton: true,
-      confirmButtonText: "Aceptar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed && isCancel) {
-        apiClient(true)
-          .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
-          .then((res: UpdateBookingStatusResponse) => {
-            console.log(res.data);
-            setStatus(res.data.updatedBooking.estado);
-          })
-          .catch((error: AxiosError | Error) => {
-            alertError(error);
-          });
-      }
-    });
+    let confirm = true;
+    if (isCancel) {
+      Swal.fire({
+        icon: "question",
+        title: "Desea cancelar la reserva?",
+        showDenyButton: true,
+        confirmButtonText: "Aceptar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        confirm = result.isConfirmed;
+      });
+    }
+    if (confirm) {
+      apiClient(true)
+        .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
+        .then((res: UpdateBookingStatusResponse) => {
+          console.log(res.data);
+          setStatus(res.data.updatedBooking.estado);
+        })
+        .catch((error: AxiosError | Error) => {
+          alertError(error);
+        });
+    }
   };
 
   return (
