@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 import LoadableScreen from "@/components/LoadableScreen";
 import TipoVehiculoList from "@/components/lists/TipoVehiculoList";
 import apiClient from "@/services/api";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import useAdmin from "@/services/userType";
 import { alertError } from "@/utils/alerts";
+import Swal from "sweetalert2";
 
 interface TipoVehiculoFormData {
   descripcion: string;
@@ -42,7 +43,11 @@ const TipoVehiculo: React.FC = () => {
     const res = apiClient()
       .post("/tipoVehiculo", JSON.stringify(data))
       .then((res) => {
-        alert("Se cargo un nuevo tipo de vehiculo");
+        Swal.fire({
+          title: "¡Bien hecho!",
+          text: res.data.message,
+          icon: "success",
+        });
         setFormData({ descripcion: "", nombre: "", precio: 0 });
         enableButton({ descripcion: "", nombre: "", precio: 0 });
         handleTipoVehiculoListChanged();
