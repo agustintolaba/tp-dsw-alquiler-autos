@@ -5,13 +5,6 @@ import { alertError } from "@/utils/alerts";
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 
-export interface TipoVehiculo {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-}
-
 interface TipoVehiculoProps {
   isAdmin: boolean;
   id: number;

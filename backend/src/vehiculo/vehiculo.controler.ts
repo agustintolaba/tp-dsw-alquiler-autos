@@ -41,7 +41,14 @@ async function findAll(req: Request, res: Response) {
     const vehiculos = await em.find(
       Vehiculo,
       {},
-      { populate: ["tipoVehiculo", "sucursal"] }
+      {
+        populate: [
+          "tipoVehiculo",
+          "sucursal",
+          "sucursal.localidad",
+          "sucursal.localidad.provincia",
+        ],
+      }
     );
     res
       .status(200)

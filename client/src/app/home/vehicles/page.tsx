@@ -32,9 +32,9 @@ const Vehicles = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-8 pb-20 gap-8">
+    <div className="flex flex-col items-center pb-20 gap-8">
       <div className="flex flex-row w-full flex-wrap gap-4 items-center justify-center md:justify-between">
-        <span className="text-4xl font-extralight text-center">
+        <span className="mx-8 mt-8 text-4xl font-extralight text-center">
           {isAdmin ? "Administración de vehículos" : "Nuestros vehículos"}
         </span>
         {isAdmin && (
