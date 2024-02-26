@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import Swal from "sweetalert2";
 
 const adminUserType: TipoUsuario = {
   id: 1,
@@ -25,7 +26,7 @@ interface UsersListProps {
   remove: (user: Usuario) => void;
   edit: (user: Usuario, newTipoUsuario: TipoUsuario) => void;
 }
-
+/*
 const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
   const handleRemove = (user: Usuario) => {
     if (
@@ -36,17 +37,35 @@ const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
       return;
     }
     remove(user);
+  };*/
+
+const UsersList: React.FC<UsersListProps> = ({ users, remove, edit }) => {
+  const handleRemove = (user: Usuario) => {
+    Swal.fire({
+      icon: "question",
+      title: `¿Desea eliminar ${user.nombre} ${user.apellido} con email: ${user.email}?`,
+      showDenyButton: true,
+      confirmButtonText: "Aceptar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        remove(user);
+      }
+    });
   };
 
   const handleEdit = (user: Usuario, newTipoUsuario: TipoUsuario) => {
-    if (
-      !confirm(
-        `¿Desea convertir a ${newTipoUsuario.descripcion} al usuario ${user.nombre} ${user.apellido} con email: ${user.email}?`
-      )
-    ) {
-      return;
-    }
-    edit(user, newTipoUsuario);
+    Swal.fire({
+      icon: "question",
+      title: `¿Desea convertir a ${newTipoUsuario.descripcion} al usuario ${user.nombre} ${user.apellido} con email: ${user.email}?`,
+      showDenyButton: true,
+      confirmButtonText: "Aceptar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        edit(user, newTipoUsuario);
+      }
+    });
   };
 
   if (!users) {

@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import useAdmin from "@/services/userType";
 import Swal from "sweetalert2";
+import { alertError } from "@/utils/alerts";
 interface ProvinciaFormData {
   descripcion: string;
 }
