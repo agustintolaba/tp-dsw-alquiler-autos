@@ -8,6 +8,7 @@ import { useState } from "react";
 import { BookingState } from "@/utils/bookingState";
 import { AxiosError } from "axios";
 import { alertError } from "@/utils/alerts";
+import Swal from "sweetalert2";
 
 interface BookingItemProps {
   isAdmin: boolean;
@@ -22,9 +23,19 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
   const [status, setStatus] = useState<BookingState>(reserva.estado);
 
   const handleChangeStateClick = (isCancel: boolean) => {
-    if (isCancel && !confirm("Desea cancelar la reserva?")) {
-      return;
-    } else {
+    let confirm = true;
+    if (isCancel) {
+      Swal.fire({
+        icon: "question",
+        title: "Desea cancelar la reserva?",
+        showDenyButton: true,
+        confirmButtonText: "Aceptar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        confirm = result.isConfirmed;
+      });
+    }
+    if (confirm) {
       apiClient(true)
         .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
         .then((res: UpdateBookingStatusResponse) => {
@@ -36,6 +47,7 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
         });
     }
   };
+
   return (
     <Box className="flex flex-row w-full flex-wrap justify-center items-center rounded-md bg-slate-700 p-4 gap-4 md:justify-between">
       <Box className="flex flex-wrap gap-4">

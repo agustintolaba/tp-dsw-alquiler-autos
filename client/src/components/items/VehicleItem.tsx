@@ -11,6 +11,7 @@ import { Person } from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 interface VehicleListItemProps {
   isAdmin: boolean;
@@ -43,21 +44,31 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   const [newKm, setNewKm] = useState(km);
 
   const handleRemove = () => {
-    if (!confirm(`¿Desea eliminar ${marca} ${modelo}?`)) {
-      return;
-    }
-    remove ? remove(vehicle) : alert(NO_ACCESS);
+    Swal.fire({
+      icon: "question",
+      title: `¿Desea eliminar ${marca} ${modelo}?`,
+      showDenyButton: true,
+      confirmButtonText: "Si",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        remove ? remove(vehicle) : alert(NO_ACCESS);
+      }
+    });
   };
 
   const handleEdit = () => {
-    if (
-      !confirm(
-        `¿Desea actualizar los km de ${marca} ${modelo} de ${km} a ${newKm}?`
-      )
-    ) {
-      return;
-    }
-    edit ? edit(id, newKm) : alert(NO_ACCESS);
+    Swal.fire({
+      icon: "question",
+      title: `¿Desea actualizar los km de ${marca} ${modelo} de ${km} a ${newKm}?`,
+      showDenyButton: true,
+      confirmButtonText: "Si",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        edit ? edit(id, newKm) : alert(NO_ACCESS);
+      }
+    });
   };
 
   const handleBook = () => {

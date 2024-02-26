@@ -12,6 +12,7 @@ import { TOKEN_STORAGE_KEY } from "@/utils/constants";
 import Image from "next/image";
 import Link from "next/link";
 import useAdmin from "@/services/userType";
+import Swal from "sweetalert2";
 
 const MenuAppBar: React.FC = () => {
   const router = useRouter();
@@ -32,10 +33,18 @@ const MenuAppBar: React.FC = () => {
 
   const logout = () => {
     handleClose();
-    if (confirm("¿Desea cerrar sesión?")) {
-      window.localStorage.removeItem(TOKEN_STORAGE_KEY);
-      router.replace("/");
-    }
+    Swal.fire({
+      icon: "question",
+      title: "¿Desea cerrar sesión?",
+      showDenyButton: true,
+      confirmButtonText: "Cerrar Sesión",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+        router.replace("/");
+      }
+    });
   };
 
   return (
