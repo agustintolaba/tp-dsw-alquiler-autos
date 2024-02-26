@@ -83,7 +83,11 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
   };
 
   return (
-    <Box className="relative w-full max-w-5xl flex flex-col justify-between items-center gap-6 pt-12 p-6 md:p-6 rounded-md bg-slate-900 md:flex-row">
+    <Box
+      className={`relative w-full flex flex-col gap-6 pt-12 p-6 md:p-6 rounded-md ${
+        isAdmin ? "justify-between  max-w-5xl" : "justify-center  max-w-xl"
+      } items-center bg-slate-900 md:flex-row`}
+    >
       {isAdmin && (
         <span
           className={`absolute top-0 w-24 flex items-center bg-white justify-center rounded-sm ${
