@@ -33,12 +33,12 @@ describe("CRUD Provincia", () => {
     cy.get('[data-testid="edit-provincia-ProvinciaTest1-save-button"]')
       .contains("Guardar")
       .click();
-    cy.get('[class="swal2-html-container"]').contains("Se edito provincia");
+    cy.get('[class="swal2-html-container"]').contains("Se editó una provincia");
   });
 
   it("Eliminar una provincia", () => {
     cy.get('[data-testid="delete-provincia-ProvinciaTest1"]').click();
-    cy.get('[class="swal2-confirm"]').click();
+    cy.get('[class="swal2-confirm swal2-styled"]').click();
     cy.get('[data-testid="delete-provincia-ProvinciaTest1"]').should(
       "not.exist"
     );
