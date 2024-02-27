@@ -116,7 +116,7 @@ const NewVehicleForm = () => {
   };
 
   const add = async () => {
-    console.log(formData);
+    setIsLoading(true);
     apiClient()
       .post("/vehiculo", formData, {
         headers: {
@@ -129,7 +129,7 @@ const NewVehicleForm = () => {
           title: "Has agregado un vehículo ¿Desea agregar otro?",
           showDenyButton: true,
           confirmButtonText: "Si",
-          denyButtonText: `Cancelar`,
+          denyButtonText: `Volver al inicio`,
         }).then((result) => {
           if (result.isConfirmed) {
             cleanFields();
@@ -140,7 +140,8 @@ const NewVehicleForm = () => {
       })
       .catch((error: any) => {
         alertError(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const cleanFields = () => {
@@ -285,7 +286,7 @@ const NewVehicleForm = () => {
               className="w-full sm:w-auto"
               variant="outlined"
               color="success"
-              disabled={!buttonEnabled}
+              disabled={!buttonEnabled || isLoading}
               type="submit"
             >
               Agregar vehículo
