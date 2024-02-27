@@ -21,14 +21,6 @@ interface LocalidadProps {
   onLocalidadListChanged: () => void;
 }
 
-function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 const LocalidadItem: React.FC<LocalidadProps> = ({
   isAdmin,
   id,
@@ -38,9 +30,7 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
-  const [oldName, setOldName] = useState(descripcion);
   const [newProv, setNewProv] = useState(provincia.id);
-  const [oldProv, setOldProv] = useState(provincia.id);
 
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
@@ -48,7 +38,6 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
     try {
       await apiClient(true)
         .put(`/localidad/${id}`, {
-          id: id,
           descripcion: newName,
           provincia: newProv,
         })
@@ -98,21 +87,20 @@ const LocalidadItem: React.FC<LocalidadProps> = ({
   };
 
   useEffect(() => {
+    if (!isEditing) return;
     setButtonEnabled(false);
     setNewName(descripcion);
-    setOldName(descripcion);
     setNewProv(provincia.id);
-    setOldProv(provincia.id);
   }, [isEditing]);
 
   useEffect(() => {
-    setOldName(newName);
-    setOldProv(newProv);
     enableButton();
   }, [newName, newProv]);
 
   const enableButton = () => {
-    setButtonEnabled(newName.trim() !== oldName.trim() || oldProv !== newProv);
+    setButtonEnabled(
+      newName.trim() !== descripcion || newProv !== provincia.id
+    );
   };
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
