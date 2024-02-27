@@ -17,14 +17,6 @@ export interface ProvinciaProps {
   onProvinciaListChanged: () => void;
 }
 
-function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 const ProvinciaItem: React.FC<ProvinciaProps> = ({
   isAdmin,
   id,
@@ -33,38 +25,25 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState(descripcion);
-  const [oldName, setOldName] = useState(descripcion);
-  const wasEditing = usePrevious(isEditing);
-  const editFieldRef = useRef<HTMLInputElement>(null);
-  const editButtonRef = useRef<HTMLButtonElement>(null);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
-  const editProvincia = async () => {
-    try {
-      await apiClient(true)
-        .put(`/provincia/${id}`, {
-          id: id,
-          descripcion: newName,
-        })
-        .then(() => {
-          Swal.fire({
-            title: "¡LISTO!",
-            text: "Se editó una provincia",
-            icon: "success",
-          });
-          onProvinciaListChanged();
-        })
-        .catch((error: any) => {
-          alertError(error);
+  const editProvincia = () => {
+    apiClient(true)
+      .put(`/provincia/${id}`, {
+        id: id,
+        descripcion: newName,
+      })
+      .then(() => {
+        Swal.fire({
+          title: "¡LISTO!",
+          text: "Se editó una provincia",
+          icon: "success",
         });
-    } catch (error: any) {
-      Swal.fire({
-        icon: "warning",
-        title: "Alerta",
-        text: "¡No se pudo editar la provincia!",
+        onProvinciaListChanged();
+      })
+      .catch((error: any) => {
+        alertError(error);
       });
-      console.error("Error:", error.message);
-    }
   };
 
   const deleteProvincia = async (id: string) => {
@@ -96,17 +75,15 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
   useEffect(() => {
     setButtonEnabled(false);
     setNewName(descripcion);
-    setOldName(descripcion);
   }, [isEditing]);
 
   useEffect(() => {
-    setOldName(newName);
     enableButton();
   }, [newName]);
 
   const enableButton = () => {
     setButtonEnabled(
-      newName.trim().length > 0 && newName.trim() !== oldName.trim()
+      newName.trim().length > 0 && newName.trim() !== descripcion
     );
   };
 
@@ -131,7 +108,6 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
             fullWidth
             value={newName}
             onChange={handleChange}
-            ref={editFieldRef}
             name={`new-name-provincia-${descripcion}`}
           />
           <div className="flex flex-col items-center gap-2 mt-4 lg:flex-row lg:justify-center lg:w-full">
@@ -139,7 +115,6 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
               variant="outlined"
               color="error"
               onClick={() => setEditing(false)}
-              ref={editButtonRef}
             >
               Cancelar
             </Button>
@@ -169,7 +144,6 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
               variant="outlined"
               color="success"
               onClick={() => setEditing(true)}
-              ref={editButtonRef}
             >
               Editar
             </Button>
@@ -186,15 +160,6 @@ const ProvinciaItem: React.FC<ProvinciaProps> = ({
       </div>
     </div>
   );
-
-  useEffect(() => {
-    if (!wasEditing && isEditing) {
-      editFieldRef.current?.focus();
-    }
-    if (wasEditing && !isEditing) {
-      editButtonRef.current?.focus();
-    }
-  }, [wasEditing, isEditing]);
 
   return <>{isEditing ? editingTemplate : viewTemplate}</>;
 };
