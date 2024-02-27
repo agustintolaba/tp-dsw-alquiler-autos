@@ -41,6 +41,7 @@ const emptyVehicleForm = {
 const NewVehicleForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddingVehicle, setIsAddingVehicle] = useState(false);
   const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
   const [licensePlateError, setLicensePlateError] = useState<string>("");
   const [officeLocations, setOfficeLocations] = useState<SelectMenuItem[]>();
@@ -116,7 +117,7 @@ const NewVehicleForm = () => {
   };
 
   const add = async () => {
-    setIsLoading(true);
+    setIsAddingVehicle(true);
     apiClient()
       .post("/vehiculo", formData, {
         headers: {
@@ -141,7 +142,7 @@ const NewVehicleForm = () => {
       .catch((error: any) => {
         alertError(error);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsAddingVehicle(false));
   };
 
   const cleanFields = () => {
@@ -286,7 +287,7 @@ const NewVehicleForm = () => {
               className="w-full sm:w-auto"
               variant="outlined"
               color="success"
-              disabled={!buttonEnabled || isLoading}
+              disabled={!buttonEnabled || isAddingVehicle}
               type="submit"
             >
               Agregar vehículo
