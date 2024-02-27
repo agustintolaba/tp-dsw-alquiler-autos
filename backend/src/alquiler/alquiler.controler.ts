@@ -161,6 +161,14 @@ async function updateStatus(req: Request, res: Response) {
       return res.status(400).json({ message: "Nuevo estado inválido" });
     }
 
+    if (newState == BookingState.Iniciada && alquiler.fechaDesde > new Date()) {
+      return res.status(400).json({
+        message: `No se puede retirar el vehículo antes de la fecha prevista (${
+          alquiler.fechaDesde.toISOString().split("T")[0]
+        })`,
+      });
+    }
+
     alquiler.estado = newState;
     const referenciaAlquiler = em.getReference(Alquiler, id);
     em.assign(referenciaAlquiler, alquiler);

@@ -71,7 +71,7 @@ async function availables(req: Request, res: Response) {
       and v.sucursal_id = ${sucursal}
       and v.id not in (select vehiculo_id from alquiler a
       where a.fecha_hasta > ${fecha_desde} and a.fecha_desde < ${fecha_hasta}
-      and a.estado != 'Cancelada' and a.estado !='Finalizada')`);
+      and a.estado != 'Cancelada' and a.estado != 'Finalizada')`);
     res.status(200).json({ vehicles: availableVehicles });
   } catch (error: any) {
     res.status(500).json({ message: "Ocurrió un error", data: error });
