@@ -13,26 +13,17 @@ import Image from "next/image";
 import Link from "next/link";
 import useAdmin from "@/services/userType";
 import Swal from "sweetalert2";
+import { Logout } from "@mui/icons-material";
 
 const MenuAppBar: React.FC = () => {
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
   if (isLoadingAdmin) {
     return <></>;
   }
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const logout = () => {
-    handleClose();
     Swal.fire({
       icon: "question",
       title: "¿Desea cerrar sesión?",
@@ -71,29 +62,11 @@ const MenuAppBar: React.FC = () => {
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={handleMenu}
+            onClick={logout}
             color="inherit"
           >
-            <AccountCircle />
+            <Logout />
           </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Perfil</MenuItem>
-            <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
-          </Menu>
         </div>
       </Toolbar>
     </AppBar>
