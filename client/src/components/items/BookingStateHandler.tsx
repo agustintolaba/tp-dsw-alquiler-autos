@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 interface BookingStatusHandlerProps {
   isAdmin?: boolean;
   estado: BookingState;
-  onChangeStateClick: (isCancel: boolean) => void;
+  onChangeStateClick: (nextState: string) => void;
 }
 const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
   isAdmin,
@@ -39,9 +39,7 @@ const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
     case BookingState.Realizada:
       return (
         <Button
-          onClick={() =>
-            onChangeStateClick(nextState == BookingState.Cancelada)
-          }
+          onClick={() => onChangeStateClick(nextState)}
           variant="outlined"
           color={nextState == BookingState.Cancelada ? "error" : "warning"}
         >
@@ -54,7 +52,7 @@ const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
       if (isAdmin) {
         return (
           <Button
-            onClick={() => onChangeStateClick(false)}
+            onClick={() => onChangeStateClick(nextState)}
             variant="outlined"
             color={"warning"}
           >

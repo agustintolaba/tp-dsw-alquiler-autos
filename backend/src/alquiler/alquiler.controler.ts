@@ -155,42 +155,19 @@ async function updateStatus(req: Request, res: Response) {
         .json({ message: "No tiene acceso a esta reserva" });
     }
 
-    let alquilerModificado = alquiler;
+    let newState = req.body.newState;
 
-    if (req.body.isCancel) {
-      if (alquilerModificado.estado === BookingState.Cancelada) {
-        return res
-          .status(400)
-          .json({ message: "La reserva ya se encuentra cancelada" });
-      } else {
-        alquilerModificado.estado = BookingState.Cancelada;
-      }
-    } else {
-      switch (alquiler.estado) {
-        case BookingState.Realizada:
-          alquilerModificado.estado = BookingState.Iniciada;
-          break;
-        case BookingState.Iniciada:
-          alquilerModificado.estado = BookingState.Finalizada;
-          alquilerModificado.fechaRealDevolucion = new Date();
-          break;
-        case BookingState.Finalizada:
-        case BookingState.Cancelada:
-          return res
-            .status(400)
-            .json({ message: "La reserva ya fue cancelada o finalizada" });
-        default:
-          return res
-            .status(400)
-            .json({ message: "No se pudo actualizar la reserva" });
-      }
+    if (!newState || !Object.values(BookingState).includes(req.body.newState)) {
+      return res.status(400).json({ message: "Nuevo estado inválido" });
     }
+
+    alquiler.estado = newState;
     const referenciaAlquiler = em.getReference(Alquiler, id);
-    em.assign(referenciaAlquiler, alquilerModificado);
+    em.assign(referenciaAlquiler, alquiler);
     await em.flush();
     res.status(200).json({
-      message: "Alquiler actualizado correctamente",
-      updatedBooking: alquilerModificado,
+      message: `Nuevo estado de alquiler: ${alquiler.estado}`,
+      updatedBooking: alquiler,
     });
   } catch (error: any) {
     res

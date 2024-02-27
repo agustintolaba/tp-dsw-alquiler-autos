@@ -22,34 +22,40 @@ interface UpdateBookingStatusResponse {
 const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
   const [status, setStatus] = useState<BookingState>(reserva.estado);
 
-  const handleChangeStateClick = (isCancel: boolean) => {
-    if (isCancel) {
-      Swal.fire({
-        icon: "question",
-        title: "Desea cancelar la reserva?",
-        showDenyButton: true,
-        confirmButtonText: "Aceptar",
-        denyButtonText: `Cancelar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          changeState(isCancel);
-        }
-      });
-    } else {
-      changeState(isCancel);
+  const handleChangeStateClick = (nextState: string) => {
+    let title = "";
+    switch (nextState) {
+      case BookingState.Cancelada:
+        title = "¿Desea cancelar la reserva?";
+        break;
+      case BookingState.Iniciada:
+        title = "¿Iniciar reserva?";
+        break;
+      case BookingState.Finalizada:
+        title = "¿Finalizar reserva?";
+        break;
+      default:
+        break;
     }
-  };
-
-  const changeState = (isCancel: boolean) => {
-    apiClient(true)
-      .patch(`alquiler/${reserva.id}`, { isCancel: isCancel })
-      .then((res: UpdateBookingStatusResponse) => {
-        console.log(res.data);
-        setStatus(res.data.updatedBooking.estado);
-      })
-      .catch((error: AxiosError | Error) => {
-        alertError(error);
-      });
+    Swal.fire({
+      icon: "question",
+      title: title,
+      showDenyButton: true,
+      confirmButtonText: "Aceptar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiClient(true)
+          .patch(`alquiler/${reserva.id}`, { newState: nextState })
+          .then((res: UpdateBookingStatusResponse) => {
+            console.log(res.data);
+            setStatus(res.data.updatedBooking.estado);
+          })
+          .catch((error: AxiosError | Error) => {
+            alertError(error);
+          });
+      }
+    });
   };
 
   return (
