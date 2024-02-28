@@ -84,8 +84,12 @@ const SignUp: React.FC = ({}) => {
           title: "¡Bienvenido!",
           text: "Ya puede iniciar sesión",
           icon: "success",
+          confirmButtonColor: "Aceptar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
         });
-        location.reload();
       })
       .catch((error: Error | AxiosError) => {
         alertError(error);
@@ -178,6 +182,7 @@ const SignUp: React.FC = ({}) => {
         <TextField
           name="numeroDocumento"
           label="Número de documento"
+          type="number"
           variant="outlined"
           fullWidth
           value={formData.numeroDocumento}
@@ -187,6 +192,7 @@ const SignUp: React.FC = ({}) => {
           name="telefono"
           label="Número de teléfono"
           variant="outlined"
+          type="number"
           fullWidth
           value={formData.telefono}
           onChange={handleInputChange}

@@ -54,7 +54,7 @@ const BookingStatusHandler: React.FC<BookingStatusHandlerProps> = ({
           <Button
             onClick={() => onChangeStateClick(nextState)}
             variant="outlined"
-            color={"warning"}
+            color={"error"}
           >
             {`Pasar a ${nextState}`}
           </Button>

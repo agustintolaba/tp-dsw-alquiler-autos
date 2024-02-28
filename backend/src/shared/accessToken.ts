@@ -2,7 +2,6 @@ import { Usuario } from "../usuario/usuario.entity";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
-import { ADMIN_DESCRIPTION } from "./constants";
 dotenv.config();
 
 export const generateAccessToken = (user: Usuario): string => {

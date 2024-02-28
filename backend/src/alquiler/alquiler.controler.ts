@@ -45,8 +45,8 @@ async function getAll(req: Request, res: Response) {
         Alquiler,
         {
           $and: [
-            { fechaDesde: { $gte: new Date() } },
             { fechaDesde: { $lte: addDays(new Date(), 30) } },
+            { estado: { $ne: BookingState.Cancelada } },
           ],
         },
         {

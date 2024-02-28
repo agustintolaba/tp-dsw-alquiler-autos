@@ -168,7 +168,7 @@ const VehicleListItem: React.FC<VehicleListItemProps> = ({
       </Box>
       {isBooking && (
         <Button onClick={handleBook} variant="outlined" color="success">
-          Lo quiero!
+          RESERVAR
         </Button>
       )}
       {isAdmin && (
