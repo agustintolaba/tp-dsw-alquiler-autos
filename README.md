@@ -18,6 +18,10 @@ Trabajo practico DSW
 - [Frontend](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/client)
 - [Backend](https://github.com/agustintolaba/tpalquilervehiculos/tree/develop/server)
 
+### Video
+
+https://www.youtube.com/watch?v=Z4p_1SQMbww
+
 ## Tema
 
 ### Descripción de la empresa
