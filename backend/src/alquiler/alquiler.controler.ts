@@ -109,33 +109,38 @@ async function findOne(req: Request, res: Response) {
       .json({ message: "No se encontro el alquiler", data: error });
   }
 }
-
 async function add(req: Request, res: Response) {
   try {
     const isAdmin = req.isAdmin;
     if (isAdmin) {
-      res.status(401).json({ message: "No tiene acceso a este recurso" });
+      return res.status(401).json({ message: "No tiene acceso a este recurso" });
     }
-    const userId = req.userId;
-    const input = req.body.sanitizedInput;
 
-    console.log(input);
+    const vehiculoId = req.body.sanitizedInput.vehiculo;
+    const usuarioId = req.userId;
+    const vehiculoReservado = await em.findOne(Alquiler, { vehiculo: vehiculoId, estado: BookingState.Realizada });
+    if (vehiculoReservado) {
+      return res.status(400).json({ message: "El vehículo ya está reservado por otro usuario" });
+    }
+    const input = req.body.sanitizedInput;
     const alquilerNuevo = em.create(Alquiler, {
       ...input,
-      estado: "Realizada",
+      estado: BookingState.Realizada,
       fechaRealizacion: new Date().toISOString(),
-      usuario: userId,
+      usuario: usuarioId,
     });
-    await em.flush();
-    res
-      .status(201)
-      .json({ message: "Se cargo nuevo alquiler", data: alquilerNuevo });
+    await em.flush().then(async () => {
+      res.status(201).json({ message: "Se ha creado una nueva reserva de alquiler", data: alquilerNuevo });
+    }).catch((error: any) => {
+      console.error("Error al guardar la reserva:", error);
+      res.status(500).json({ message: "No se pudo crear la nueva reserva de alquiler", data: error });
+    });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: "No se pudo cargar el nuevo alquiler", data: error });
+        console.error("Error al crear la reserva:", error);
+    res.status(500).json({ message: "No se pudo crear la nueva reserva de alquiler", data: error });
   }
 }
+
 
 async function updateStatus(req: Request, res: Response) {
   try {
