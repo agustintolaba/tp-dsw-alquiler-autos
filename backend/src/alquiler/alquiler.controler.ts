@@ -119,7 +119,6 @@ async function add(req: Request, res: Response) {
     const userId = req.userId;
     const input = req.body.sanitizedInput;
 
-    console.log(input);
     const alquilerNuevo = em.create(Alquiler, {
       ...input,
       estado: "Realizada",

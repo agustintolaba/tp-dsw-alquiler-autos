@@ -164,7 +164,6 @@ async function add(req: Request, res: Response) {
 
       // forma original de hacer el flush
       const input = req.body.sanitizedInput;
-      console.log(input);
       const vehiculoNuevo = em.create(Vehiculo, input);
       await em.flush();
 

@@ -32,7 +32,6 @@ async function findAll(req: Request, res: Response) {
       {},
       { orderBy: { nombre: "asc" } }
     );
-    console.log(tiposVehiculos);
     res.status(200).json({
       message: "Tipos de Vehiculos encontrados",
       types: tiposVehiculos,

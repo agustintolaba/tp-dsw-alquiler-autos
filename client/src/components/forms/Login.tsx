@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LoadableScreen from "../LoadableScreen";
 import { alertError } from "@/utils/alerts";
+import Swal from "sweetalert2";
 
 export interface LoginFormData {
   email: string;
@@ -66,6 +67,14 @@ const Login: React.FC = () => {
     res
       .then((response) => {
         const token = response.data.token;
+        if (!token) {
+          Swal.fire({
+            icon: "error",
+            title: "Ha ocurrido un error",
+            text: "Contacta al administrador",
+          });
+          return;
+        }
         window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
         router.push("/home");
       })

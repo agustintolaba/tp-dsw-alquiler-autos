@@ -46,7 +46,6 @@ export default function ClientHomePage() {
             precio: item.precio,
           };
         });
-        console.log(list);
         setVehicleTypes(list);
       } catch (error) {
         console.error("Error:", error);

@@ -1,8 +1,8 @@
 /*Para crear el componente de la lista de Sucursales*/
-'use client';
-import { useState, useEffect } from 'react';
-import SucursalItem, { Sucursal } from '../items/SucursalItem';
-import apiClient from '@/services/api';
+"use client";
+import { useState, useEffect } from "react";
+import SucursalItem, { Sucursal } from "../items/SucursalItem";
+import apiClient from "@/services/api";
 
 interface SucursalListProps {
   isAdmin: boolean;
@@ -19,9 +19,8 @@ const SucursalList: React.FC<SucursalListProps> = ({
     const fetchSucursalItems = async () => {
       try {
         const response = apiClient()
-          .get('/sucursal')
+          .get("/sucursal")
           .then((res) => {
-            console.log(res.data.branches);
             const list = res.data.branches.map((item: Sucursal) => {
               return {
                 id: item.id.toString(),
@@ -37,11 +36,10 @@ const SucursalList: React.FC<SucursalListProps> = ({
                 },
               };
             });
-            console.log(list);
             setSucursalesItems(list);
           });
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     };
     fetchSucursalItems();

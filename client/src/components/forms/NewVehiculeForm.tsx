@@ -91,7 +91,6 @@ const NewVehicleForm = () => {
     if (files && files.length > 0) {
       setFormData((prevFormData) => {
         const newFormData = { ...prevFormData, image: files[0] };
-        console.log(newFormData);
         enableButton(newFormData);
 
         return newFormData;

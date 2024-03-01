@@ -136,7 +136,6 @@ const CreateBookingForm: React.FC<CreateBookingFormProps> = ({
       )
       .then((res) => {
         const vehicles = res.data.vehicles;
-        console.log(vehicles);
         setAvailableVehicles(vehicles);
       })
       .catch((error: Error | AxiosError) => {

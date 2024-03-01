@@ -48,7 +48,6 @@ const BookingItem: React.FC<BookingItemProps> = ({ isAdmin, reserva }) => {
         apiClient(true)
           .patch(`alquiler/${reserva.id}`, { newState: nextState })
           .then((res: UpdateBookingStatusResponse) => {
-            console.log(res.data);
             setStatus(res.data.updatedBooking.estado);
           })
           .catch((error: AxiosError | Error) => {

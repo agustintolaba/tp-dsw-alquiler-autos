@@ -5,7 +5,7 @@ import { Vehiculo } from "@/types";
 import useVehicle, { getVehicles } from "@/services/vehicle";
 import LoadableScreen from "../LoadableScreen";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ALPHANUMERIC_FORMAT } from "@/utils/constants";
 
 interface IVehiclesListProps {

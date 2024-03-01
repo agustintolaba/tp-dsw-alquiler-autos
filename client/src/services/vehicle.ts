@@ -2,7 +2,7 @@ import { Vehiculo } from "@/types";
 import apiClient from "./api";
 import { useEffect, useState } from "react";
 import { alertError } from "@/utils/alerts";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const useVehicle = (vehicleTypeId: number | null = null) => {
   const [isLoadingVehicle, setIsLoadingVehicle] = useState(true);
@@ -16,7 +16,6 @@ const useVehicle = (vehicleTypeId: number | null = null) => {
   const getAllVehicules = async () => {
     getVehicles(vehicleTypeId)
       .then((vehicles) => {
-        console.log(vehicles);
         setVehicles(vehicles);
         setIsLoadingVehicle(false);
       })
