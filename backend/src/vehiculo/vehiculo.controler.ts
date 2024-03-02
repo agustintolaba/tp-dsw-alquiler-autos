@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction, Express } from "express";
-import { orm } from "../shared/db/orm.js";
-import { Vehiculo } from "./vehiculo.entity.js";
-import { TipoVehiculo } from "../tipovehiculo/tipovehiculo.entity.js"; //Para el filter desactivado
+import { Request, Response, NextFunction, Express } from 'express';
+import { orm } from '../shared/db/orm.js';
+import { Vehiculo } from './vehiculo.entity.js';
+import { TipoVehiculo } from '../tipovehiculo/tipovehiculo.entity.js'; //Para el filter desactivado
 
-import cloudinary from "../shared/cloudinaryConfig.js";
-import { getSQLErrorMessage, isSQLError } from "../shared/errorHandling.js";
+import cloudinary from '../shared/cloudinaryConfig.js';
+import { getSQLErrorMessage, isSQLError } from '../shared/errorHandling.js';
 
 const em = orm.em.fork(); //Es fork porque sino tira error
 
@@ -43,20 +43,20 @@ async function findAll(req: Request, res: Response) {
       {},
       {
         populate: [
-          "tipoVehiculo",
-          "sucursal",
-          "sucursal.localidad",
-          "sucursal.localidad.provincia",
+          'tipoVehiculo',
+          'sucursal',
+          'sucursal.localidad',
+          'sucursal.localidad.provincia',
         ],
       }
     );
     res
       .status(200)
-      .json({ message: "Vehiculos encontrados", vehicles: vehiculos });
+      .json({ message: 'Vehiculos encontrados', vehicles: vehiculos });
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "No se encontraron vehiculos", data: error });
+      .json({ message: 'No se encontraron vehiculos', data: error });
   }
 }
 
@@ -74,7 +74,7 @@ async function availables(req: Request, res: Response) {
       and a.estado != 'Cancelada' and a.estado != 'Finalizada')`);
     res.status(200).json({ vehicles: availableVehicles });
   } catch (error: any) {
-    res.status(500).json({ message: "Ocurrió un error", data: error });
+    res.status(500).json({ message: 'Ocurrió un error', data: error });
   }
 }
 
@@ -86,16 +86,16 @@ async function findOne(req: Request, res: Response) {
       { id },
       {
         populate: [
-          "tipoVehiculo",
-          "sucursal",
-          "sucursal.localidad",
-          "sucursal.localidad.provincia",
+          'tipoVehiculo',
+          'sucursal',
+          'sucursal.localidad',
+          'sucursal.localidad.provincia',
         ],
       }
     );
-    res.status(200).json({ message: "Vehiculo encontrado", vehicle: vehiculo });
+    res.status(200).json({ message: 'Vehiculo encontrado', vehicle: vehiculo });
   } catch (error: any) {
-    res.status(500).json({ message: "No se encontro vehiculo", data: error });
+    res.status(500).json({ message: 'No se encontro vehiculo', data: error });
   }
 }
 
@@ -103,12 +103,12 @@ async function search(req: Request, res: Response) {
   try {
     const isAdmin = req.isAdmin;
     if (!isAdmin) {
-      res.status(401).json({ message: "No tiene acceso a este recurso" });
+      res.status(401).json({ message: 'No tiene acceso a este recurso' });
     }
     const search = req.params.search.trim();
 
-    if (search == "" || search.length == 0) {
-      res.status(400).json({ message: "La búsqueda está vacía" });
+    if (search == '' || search.length == 0) {
+      res.status(400).json({ message: 'La búsqueda está vacía' });
     }
     const vehiculos = await em.find(
       Vehiculo,
@@ -119,34 +119,33 @@ async function search(req: Request, res: Response) {
       },
       {
         populate: [
-          "tipoVehiculo",
-          "sucursal",
-          "sucursal.localidad",
-          "sucursal.localidad.provincia",
+          'tipoVehiculo',
+          'sucursal',
+          'sucursal.localidad',
+          'sucursal.localidad.provincia',
         ],
       }
     );
     res
       .status(200)
-      .json({ message: "Vehiculos encontrados", vehicles: vehiculos });
+      .json({ message: 'Vehiculos encontrados', vehicles: vehiculos });
   } catch (error: any) {
     res
       .status(400)
-      .json({ message: "Error al procesar la búsqueda", data: error });
+      .json({ message: 'Error al procesar la búsqueda', data: error });
   }
 }
 
 async function add(req: Request, res: Response) {
-  try {
-    const image = req.file;
-    if (image) {
-      // Para subir la imagen a Cloudinary
-      const result = await cloudinary.uploader.upload(image.path, {
-        public_id: `${Date.now()}`,
-        resource_type: "auto",
-        folder: "images",
-      });
-
+  const image = req.file;
+  if (image) {
+    // Para subir la imagen a Cloudinary
+    const result = await cloudinary.uploader.upload(image.path, {
+      public_id: `${Date.now()}`,
+      resource_type: 'auto',
+      folder: 'images',
+    });
+    try {
       // Crear objeto para almacenar en bd
       req.body.sanitizedInput = {
         //id: parseInt(req.body.id), NO SE ENVIA EL ID CUANDO SE CREA, ES AUTOINCREMENTAL EN LA BASE DE DATOS
@@ -170,17 +169,18 @@ async function add(req: Request, res: Response) {
       // Devolver res
       res
         .status(201)
-        .json({ message: "Se cargó un nuevo vehículo", data: vehiculoNuevo });
-    } else {
-      // Caso en el que no se proporciona una imagen, es obligatoria
+        .json({ message: 'Se cargó un nuevo vehículo', data: vehiculoNuevo });
+    } catch (error) {
       res
-        .status(400)
-        .json({ message: "No se proporcionó una imagen en la solicitud" });
+        .status(500)
+        .json({ message: 'Error al procesar el formulario', data: error });
+      await cloudinary.uploader.destroy(result.public_id);
     }
-  } catch (error) {
+  } else {
+    // Caso en el que no se proporciona una imagen, es obligatoria
     res
-      .status(500)
-      .json({ message: "Error al procesar el formulario", data: error });
+      .status(400)
+      .json({ message: 'No se proporcionó una imagen en la solicitud' });
   }
 }
 
@@ -189,17 +189,17 @@ async function update(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const vehiculoExistente = await em.findOne(Vehiculo, { id });
     if (!vehiculoExistente) {
-      return res.status(404).json({ message: "El vehiculo no existe" });
+      return res.status(404).json({ message: 'El vehiculo no existe' });
     }
     req.body.sanitizedInput.id = req.params.id;
     const vehiculoModificado = em.getReference(Vehiculo, id);
     em.assign(vehiculoModificado, req.body.sanitizedInput);
     await em.flush();
-    res.status(200).json({ message: "Vehiculo actualizado correctamente" });
+    res.status(200).json({ message: 'Vehiculo actualizado correctamente' });
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "No se pudo actualizar el vehiculo", dato: error });
+      .json({ message: 'No se pudo actualizar el vehiculo', dato: error });
   }
 }
 
@@ -208,18 +208,18 @@ async function remove(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id);
     const vehiculoExistente = await em.findOne(Vehiculo, { id });
     if (!vehiculoExistente) {
-      return res.status(404).json({ message: "El vehiculo no existe" });
+      return res.status(404).json({ message: 'El vehiculo no existe' });
     }
     const vehiculoBorrar = em.getReference(Vehiculo, id);
     await em.removeAndFlush(vehiculoBorrar);
-    res.status(200).send({ message: "Vehiculo eliminado correctamente" });
+    res.status(200).send({ message: 'Vehiculo eliminado correctamente' });
   } catch (error: any) {
     if (isSQLError(error)) {
-      res.status(500).json({ message: getSQLErrorMessage(error, "Vehículo") });
+      res.status(500).json({ message: getSQLErrorMessage(error, 'Vehículo') });
     } else {
       res
         .status(500)
-        .json({ message: "No se pudo eliminar la provincia", data: error });
+        .json({ message: 'No se pudo eliminar la provincia', data: error });
     }
   }
 }
