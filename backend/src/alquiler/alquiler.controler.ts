@@ -119,6 +119,29 @@ async function add(req: Request, res: Response) {
     const userId = req.userId;
     const input = req.body.sanitizedInput;
 
+    const samePreferencesBookings = await em.find(
+      Alquiler,
+      {
+        $and: [
+          { fechaHasta: { $gt: input.fechaDesde } },
+          { fechaDesde: { $lt: input.fechaHasta } },
+          { estado: { $ne: BookingState.Cancelada } },
+          { estado: { $ne: BookingState.Finalizada } },
+        ],
+      },
+      {
+        populate: ["vehiculo"],
+      }
+    );
+
+    if (
+      samePreferencesBookings.find((el) => el.vehiculo.id == input.vehiculo)
+    ) {
+      return res
+        .status(500)
+        .json({ message: "El vehículo no se encuentra disponible" });
+    }
+
     const alquilerNuevo = em.create(Alquiler, {
       ...input,
       estado: "Realizada",

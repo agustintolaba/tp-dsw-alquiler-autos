@@ -7,11 +7,14 @@ import { useState } from "react";
 import apiClient from "@/services/api";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { alertError } from "@/utils/alerts";
+import { AxiosError } from "axios";
 
 interface ConfirmModalProps {
   open: boolean;
   confirmData: ConfirmModalData;
   cancel: () => void;
+  onFailure: () => void;
 }
 
 export interface ConfirmModalData {
@@ -24,6 +27,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   open,
   confirmData,
   cancel,
+  onFailure,
 }) => {
   const router = useRouter();
   const [confirming, setConfirming] = useState<boolean>(false);
@@ -46,6 +50,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           icon: "success",
         });
         router.push("/home");
+      })
+      .catch((error: Error | AxiosError) => {
+        onFailure();
+        alertError(error);
       });
   };
 
