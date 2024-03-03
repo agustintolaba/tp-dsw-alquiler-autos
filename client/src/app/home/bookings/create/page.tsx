@@ -32,7 +32,6 @@ const getBookingDateDefaultValue = (isDateFrom: boolean): Dayjs => {
 const CreateBooking = () => {
   const { isAdmin, isLoadingAdmin } = useAdmin();
   const [confirmModal, setConfirmModal] = useState<ConfirmModalData>();
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<CreateBookingFormData>({
     fechaDesde: getBookingDateDefaultValue(true),
     fechaHasta: getBookingDateDefaultValue(false),
