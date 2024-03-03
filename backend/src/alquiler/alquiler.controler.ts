@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { orm } from "../shared/db/orm.js";
 import { Alquiler } from "./alquiler.entity.js";
 import { Usuario } from "../usuario/usuario.entity.js";
-import { ADMIN_DESCRIPTION } from "../shared/constants.js";
 import { BookingState } from "../shared/bookingState.js";
-import { addDays } from "../shared/dateUtils.js";
+import { addDays, dateDiffInDays } from "../shared/dateUtils.js";
+import { Vehiculo } from "../vehiculo/vehiculo.entity.js";
 
 const em = orm.em;
 
@@ -19,7 +19,6 @@ function sanitizeAlquilerInput(
     fechaDesde: req.body.fechaDesde,
     fechaHasta: req.body.fechaHasta,
     fechaCancelacion: req.body.fechaCancelacion,
-    precioTotal: req.body.precioTotal,
     fechaRealEntrega: req.body.fechaRealEntrega,
     fechaRealDevolucion: req.body.fechaRealEntrega,
     estado: req.body.estado,
@@ -106,7 +105,7 @@ async function findOne(req: Request, res: Response) {
   } catch (error: any) {
     res
       .status(500)
-      .json({ message: "No se encontro el alquiler", data: error });
+      .json({ message: "No se encontró el alquiler", data: error });
   }
 }
 
@@ -137,13 +136,24 @@ async function add(req: Request, res: Response) {
     if (
       samePreferencesBookings.find((el) => el.vehiculo.id == input.vehiculo)
     ) {
-      return res
-        .status(500)
-        .json({ message: "El vehículo no se encuentra disponible" });
+      throw new Error("El vehículo no se encuentra disponible");
     }
 
-    const alquilerNuevo = em.create(Alquiler, {
+    const vehicle = await em.findOne(
+      Vehiculo,
+      { id: input.vehiculo },
+      { populate: ["tipoVehiculo"] }
+    );
+
+    if (!vehicle) {
+      throw new Error("El vehículo no existe");
+    }
+
+    const newBooking = em.create(Alquiler, {
       ...input,
+      precioTotal:
+        dateDiffInDays(input.fechaHasta, input.fechaDesde) *
+        vehicle.tipoVehiculo.precio,
       estado: "Realizada",
       fechaRealizacion: new Date().toISOString(),
       usuario: userId,
@@ -151,11 +161,12 @@ async function add(req: Request, res: Response) {
     await em.flush();
     res
       .status(201)
-      .json({ message: "Se cargo nuevo alquiler", data: alquilerNuevo });
+      .json({ message: "Se cargo nuevo alquiler", data: newBooking });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: "No se pudo cargar el nuevo alquiler", data: error });
+    res.status(500).json({
+      message: error.message ?? "No se pudo cargar el nuevo alquiler",
+      data: error,
+    });
   }
 }
 
