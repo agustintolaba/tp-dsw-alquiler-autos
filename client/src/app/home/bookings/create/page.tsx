@@ -51,13 +51,17 @@ const CreateBooking = () => {
       .then((res) => {
         const vehiculo: Vehiculo = res.data.vehicle;
         const sucursal = vehiculo.sucursal;
-        window.scrollTo({ top: 0, behavior: "smooth" });
         setConfirmModal({
           formData,
           vehicle: vehiculo,
           location: `${sucursal.calle} ${sucursal.numeroCalle}, ${sucursal.localidad.descripcion}, ${sucursal.localidad.provincia.descripcion}`,
         });
       });
+  };
+
+  const onConfirmFailure = () => {
+    setConfirmModal(undefined);
+    setAvailableVehicles(undefined);
   };
 
   return (
@@ -68,6 +72,7 @@ const CreateBooking = () => {
             open={confirmModal !== undefined}
             confirmData={confirmModal}
             cancel={() => setConfirmModal(undefined)}
+            onFailure={() => onConfirmFailure()}
           />
         ) : (
           <></>
