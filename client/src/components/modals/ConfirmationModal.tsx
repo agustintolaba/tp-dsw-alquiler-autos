@@ -1,12 +1,12 @@
-import { Vehiculo } from "@/types";
-import { transmisionDescriptions } from "@/utils/constants";
-import { Button, Dialog } from "@mui/material";
-import { CreateBookingFormData } from "../forms/CreateBookingForm";
-import Image from "next/image";
-import { useState } from "react";
-import apiClient from "@/services/api";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { Vehiculo } from '@/types';
+import { transmisionDescriptions } from '@/utils/constants';
+import { Button, Dialog } from '@mui/material';
+import { CreateBookingFormData } from '../forms/CreateBookingForm';
+import Image from 'next/image';
+import { useState } from 'react';
+import apiClient from '@/services/api';
+import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 interface ConfirmModalProps {
   open: boolean;
@@ -28,24 +28,52 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   const router = useRouter();
   const [confirming, setConfirming] = useState<boolean>(false);
   const { vehicle, formData, location } = confirmData;
-  const totalDays = formData.fechaHasta.diff(formData.fechaDesde, "day");
+  const totalDays = formData.fechaHasta.diff(formData.fechaDesde, 'day');
 
   const onConfirm = () => {
     setConfirming(true);
     apiClient(true)
-      .post("/alquiler", {
+      .post('/alquiler', {
         fechaDesde: formData.fechaDesde.toISOString(),
         fechaHasta: formData.fechaHasta.toISOString(),
-        precioTotal: vehicle.tipoVehiculo.precio * totalDays, // TODO!!
+        precioTotal: vehicle.tipoVehiculo.precio * totalDays,
         vehiculo: vehicle.id,
       })
-      .then(() => {
+      .then((res) => {
+        if (res.status === 201) {
+          Swal.fire({
+            title: '¡FELICIDADES!',
+            text: '¡Se realizó la reserva correctamente!',
+            icon: 'success',
+          });
+          router.push('/home');
+        } else if (res.status === 202) {
+          cancel();
+          Swal.fire({
+            icon: 'error',
+            title: res.data.message,
+            text: 'Intente otra reserva',
+          });
+        } else {
+          cancel();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al realizar la reserva',
+            text: 'Hubo un problema al procesar su solicitud',
+          });
+          router.push('/home');
+        }
+      })
+      .catch((error) => {
+        cancel();
         Swal.fire({
-          title: "¡FELICIDADES!",
-          text: "¡Se realizó la reserva correctamente!",
-          icon: "success",
+          icon: 'error',
+          title: 'Error al realizar la reserva',
+          text: 'Hubo un problema al procesar su solicitud',
         });
-        router.push("/home");
+      })
+      .finally(() => {
+        setConfirming(false);
       });
   };
 
@@ -76,14 +104,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             <div className="flex flex-row gap-8 items-center">
               <ConfirmModalLabel
                 label="Desde:"
-                value={formData.fechaDesde.format("DD/MM/YYYY - HH:mm")}
+                value={formData.fechaDesde.format('DD/MM/YYYY - HH:mm')}
               />
               <ConfirmModalLabel
                 label="Hasta:"
-                value={formData.fechaHasta.format("DD/MM/YYYY - HH:mm")}
+                value={formData.fechaHasta.format('DD/MM/YYYY - HH:mm')}
               />
               <span className="text-center text-sm font-bold">
-                {totalDays} {totalDays == 1 ? "día" : "días"}
+                {totalDays} {totalDays == 1 ? 'día' : 'días'}
               </span>
             </div>
             <div className="flex flex-row gap-8">
@@ -108,7 +136,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             disabled={confirming}
             fullWidth
           >
-            {confirming ? "Generando reserva..." : "Confirmar"}
+            {confirming ? 'Generando reserva...' : 'Confirmar'}
           </Button>
           <Button
             onClick={cancel}
