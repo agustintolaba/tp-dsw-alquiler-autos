@@ -5,6 +5,7 @@ import { Usuario } from "../usuario/usuario.entity.js";
 import { ADMIN_DESCRIPTION } from "../shared/constants.js";
 import { BookingState } from "../shared/bookingState.js";
 import { addDays } from "../shared/dateUtils.js";
+import { error } from "console";
 
 const em = orm.em;
 
@@ -120,16 +121,37 @@ async function add(req: Request, res: Response) {
     const input = req.body.sanitizedInput;
 
     console.log(input);
-    const alquilerNuevo = em.create(Alquiler, {
-      ...input,
-      estado: "Realizada",
-      fechaRealizacion: new Date().toISOString(),
-      usuario: userId,
-    });
-    await em.flush();
-    res
-      .status(201)
-      .json({ message: "Se cargo nuevo alquiler", data: alquilerNuevo });
+
+    // CORRECION VALIDACION
+    const vehiculoYaReservado = await em.getConnection()
+      .execute(`select v.* from alquiler a
+      inner join vehiculo v on alquiler.vehiculo_id = v.id
+      where v.id = ${input.vehiculo}   
+      and (a.estado != 'Cancelada' or a.estado != 'Finalizada')
+      and (( a.fecha_desde < ${input.fechaDesde} and a.fecha_hasta > ${input.fechaHasta})
+      or (a.fecha_desde < ${input.fechaDesde} and a.fecha_hasta < ${input.fechaHasta} and ${input.fechaDesde} < a.fecha_hasta) 
+      or (${input.fechaDesde} < a.fecha_desde and ${input.fechaHasta} < a.fecha_hasta) and ${input.fechaHasta} > a.fecha_desde)
+      `); // ESTO DEBERÍA DEVOLVER UN ARRAY DE OBJETOS VEHICULO O VACÍO
+    //VALIDAR QUE EL ARREGLO NO ESTE VACIO
+    //SI NO ESTA VACIO, YA HAY UNA RESERVA, ENTONCES NO SE PUEDE CREAR OTRA
+    // EN ESE CASO ARROJAR UN ERROR,
+    // SI EL ARREGLO ESTA VACIO, NO HAY RESERVA, POR LO TANTO, AHI SI CREA LA RESERVA
+    if (vehiculoYaReservado.length === 0) {
+      const alquilerNuevo = em.create(Alquiler, {
+        ...input,
+        estado: "Realizada",
+        fechaRealizacion: new Date().toISOString(),
+        usuario: userId,
+      });
+      await em.flush();
+      res
+        .status(201)
+        .json({ message: "Se cargo nuevo alquiler", data: alquilerNuevo });
+    } else {
+      res.status(500).json({
+        message: "Ya existen reservas para este vehículo",
+      });
+    }
   } catch (error: any) {
     res
       .status(500)
