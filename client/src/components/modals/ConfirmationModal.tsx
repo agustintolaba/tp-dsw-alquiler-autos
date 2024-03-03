@@ -47,21 +47,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             icon: 'success',
           });
           router.push('/home');
-        } else if (res.status === 202) {
-          cancel();
-          Swal.fire({
-            icon: 'error',
-            title: res.data.message,
-            text: 'Intente otra reserva',
-          });
-        } else {
-          cancel();
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al realizar la reserva',
-            text: 'Hubo un problema al procesar su solicitud',
-          });
-          router.push('/home');
         }
       })
       .catch((error) => {
@@ -69,7 +54,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         Swal.fire({
           icon: 'error',
           title: 'Error al realizar la reserva',
-          text: 'Hubo un problema al procesar su solicitud',
+          text: error.data.mesage,
         });
       })
       .finally(() => {

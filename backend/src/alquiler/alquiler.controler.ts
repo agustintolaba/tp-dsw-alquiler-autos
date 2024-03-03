@@ -205,7 +205,7 @@ async function add(req: Request, res: Response) {
             data: alquilerNuevo,
           });
         } else {
-          res.status(202).json({
+          res.status(400).json({
             message: 'El vehículo ya no está disponible en esas fechas',
           });
         }
