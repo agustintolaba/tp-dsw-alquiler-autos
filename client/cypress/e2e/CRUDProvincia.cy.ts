@@ -1,12 +1,12 @@
 // Eliminar provincia existente con nombre ProvinciaTest
 describe("CRUD Provincia", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3001");
+    cy.visit(Cypress.env("clientBaseURL"));
     cy.typeLogin(Cypress.env("userTest"), Cypress.env("passwordTest"));
-    cy.url().should("eq", "http://localhost:3001/home");
+    cy.url().should("eq", `${Cypress.env("clientBaseURL")}/home`);
     cy.get('[data-testid="MenuIcon"]').should("exist").click(); // TEST el .should(exist) lo agregue
     cy.get('[role="button"]').contains("Administrar provincias").click();
-    cy.url().should("eq", "http://localhost:3001/home/provincia");
+    cy.url().should("eq", `${Cypress.env("clientBaseURL")}/home/provincia`);
   });
 
   it("Agregar una nueva provincia satisfactoriamente", () => {
