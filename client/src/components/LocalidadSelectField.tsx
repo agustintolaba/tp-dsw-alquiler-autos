@@ -1,8 +1,8 @@
-'use client';
-import { SelectMenuItem } from '@/types';
-import { getLocalidadBranchOptions } from '@/services/localidadBranch';
-import { MenuItem, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+"use client";
+import { SelectMenuItem } from "@/types";
+import { getCitiesOptions } from "@/services/city";
+import { MenuItem, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
 interface ILocalidadSelectFieldProps {
   filterProv: number;
@@ -19,24 +19,24 @@ const LocalidadSelectField: React.FC<ILocalidadSelectFieldProps> = ({
   disabled,
 }) => {
   const [localidades, setLocalidades] = useState<SelectMenuItem[]>([
-    { id: 1, descripcion: 'Cargando...' },
+    { id: 1, descripcion: "Cargando..." },
   ]);
   //const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchLocalidades = async () => {
       //setLoading(true);
-      getLocalidadBranchOptions(filterProv)
+      getCitiesOptions(filterProv)
         .then((loc) => {
           if (loc.length == 0) {
-            throw Error('No se encontraron localidades');
+            throw Error("No se encontraron localidades");
           }
           value = loc.at(0)?.id || 1;
           setLocalidades(loc);
         })
         .catch((error: any) => {
           setLocalidades([
-            { id: 1, descripcion: 'No se encontraron localidades' },
+            { id: 1, descripcion: "No se encontraron localidades" },
           ]);
         });
       //setLoading(false);
@@ -50,7 +50,7 @@ const LocalidadSelectField: React.FC<ILocalidadSelectFieldProps> = ({
       label="Localidad"
       variant="outlined"
       select
-      disabled={localidades.at(0)?.descripcion == 'Cargando...'}
+      disabled={localidades.at(0)?.descripcion == "Cargando..."}
       InputLabelProps={{ shrink: true }}
       fullWidth
       value={value}

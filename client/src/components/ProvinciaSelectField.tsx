@@ -1,8 +1,8 @@
-'use client';
-import { SelectMenuItem } from '@/types';
-import { getProvinciaBranchOptions } from '@/services/provinciaBranch';
-import { MenuItem, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+"use client";
+import { SelectMenuItem } from "@/types";
+import { getProvincesOptions } from "@/services/province";
+import { MenuItem, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
 interface IProvinciaSelectFieldProps {
   value: number;
@@ -14,22 +14,22 @@ const ProvinciaSelectField: React.FC<IProvinciaSelectFieldProps> = ({
   onChange,
 }) => {
   const [provincias, setProvincias] = useState<SelectMenuItem[]>([
-    { id: 1, descripcion: 'Cargando...' },
+    { id: 1, descripcion: "Cargando..." },
   ]);
 
   useEffect(() => {
     const fetchProvincias = async () => {
-      getProvinciaBranchOptions()
+      getProvincesOptions()
         .then((prov) => {
           if (prov.length == 0) {
-            throw Error('No se encontraron provincias');
+            throw Error("No se encontraron provincias");
           }
           value = prov.at(0)?.id || 1;
           setProvincias(prov);
         })
         .catch((error: any) => {
           setProvincias([
-            { id: 1, descripcion: 'No se encontraron provincias' },
+            { id: 1, descripcion: "No se encontraron provincias" },
           ]);
         });
     };
@@ -42,7 +42,7 @@ const ProvinciaSelectField: React.FC<IProvinciaSelectFieldProps> = ({
       label="Provincia"
       variant="outlined"
       select
-      disabled={provincias.at(0)?.descripcion == 'Cargando...'}
+      disabled={provincias.at(0)?.descripcion == "Cargando..."}
       InputLabelProps={{ shrink: true }}
       fullWidth
       value={value}

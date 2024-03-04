@@ -2,11 +2,9 @@
 import { SelectMenuItem, Provincia } from "@/types";
 import apiClient from "./api";
 
-export const getProvinciaBranchOptions = async (): Promise<
-  SelectMenuItem[]
-> => {
+export const getProvincesOptions = async (): Promise<SelectMenuItem[]> => {
   let optionsArray: SelectMenuItem[] = [];
-  const branches = await getBranches();
+  const branches = await getProvinces();
 
   optionsArray = branches.map((t: Provincia) => ({
     id: t.id,
@@ -16,7 +14,7 @@ export const getProvinciaBranchOptions = async (): Promise<
   return optionsArray;
 };
 
-export const getBranches = async (): Promise<Provincia[]> => {
+export const getProvinces = async (): Promise<Provincia[]> => {
   const res = await apiClient().get("/provincia");
   return res.data.data;
 };
