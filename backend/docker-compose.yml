@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysqldb: 
+    image: mysql
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE=MYSQL_DATABASE
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+
+  app: 
+    build: .
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    ports: 
+      -  3000:3000
+
+
+
+
+
