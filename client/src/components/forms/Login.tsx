@@ -63,8 +63,8 @@ const Login: React.FC = () => {
   };
 
   const login = (data: LoginFormData) => {
-    const res = apiClient().post("usuario/login", JSON.stringify(data));
-    res
+    apiClient()
+      .post("usuario/login", data)
       .then((response) => {
         const token = response.data.token;
         if (!token) {

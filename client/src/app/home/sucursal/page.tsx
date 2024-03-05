@@ -33,8 +33,8 @@ const Sucursal: React.FC = () => {
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
   const newSucursal = (data: SucursalFormData) => {
-    const res = apiClient(true)
-      .post("/sucursal", JSON.stringify(data))
+    apiClient(true)
+      .post("/sucursal", data)
       .then((res) => {
         Swal.fire({
           title: "¡Bien hecho!",

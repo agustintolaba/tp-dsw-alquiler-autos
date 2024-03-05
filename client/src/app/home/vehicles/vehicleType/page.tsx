@@ -40,8 +40,8 @@ const TipoVehiculo: React.FC = () => {
   }, [isAdmin, isLoadingAdmin]);
 
   const newTipoVehiculo = (data: TipoVehiculoFormData) => {
-    const res = apiClient()
-      .post("/tipoVehiculo", JSON.stringify(data))
+    apiClient()
+      .post("/tipoVehiculo", data)
       .then((res) => {
         Swal.fire({
           title: "¡Bien hecho!",
