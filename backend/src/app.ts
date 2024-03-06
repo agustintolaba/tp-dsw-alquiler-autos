@@ -26,11 +26,12 @@ app.use((req, res, next) => {
 });
 //antes de las rutas y  diddleware del negocio
 
+const endPoint =
+  process.env.API_PUBLIC_BASE_URL ??
+  'https://tp-dsw-alquiler-autos-nf8gf5j3q-agustin-tolabas-projects.vercel.app';
+
 app.use((req, res, next) => {
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3001'
-  );
+  res.setHeader('Access-Control-Allow-Origin', endPoint);
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, OPTIONS, PUT, PATCH, DELETE'
