@@ -9,7 +9,6 @@ export class Alquiler extends BaseEntity {
     nullable: false,
     unique: false,
     type: "date",
-    columnType: "date",
   })
   fechaRealizacion!: Date;
 
@@ -19,7 +18,7 @@ export class Alquiler extends BaseEntity {
   @Property({ nullable: false, unique: false, type: "date" })
   fechaHasta!: Date;
 
-  @Property({ nullable: true, unique: false, type: "Date", columnType: "date" })
+  @Property({ nullable: true, unique: false, type: "Date" })
   fechaCancelacion?: Date;
 
   @Property({
@@ -34,7 +33,7 @@ export class Alquiler extends BaseEntity {
   @Property({ nullable: true, unique: false, type: "date" })
   fechaRealEntrega!: Date;
 
-  @Property({ nullable: true, unique: false, type: "date", columnType: "date" })
+  @Property({ nullable: true, unique: false, type: "date" })
   fechaRealDevolucion!: Date;
 
   @Property({ nullable: false, unique: false, type: "string", length: 45 })
