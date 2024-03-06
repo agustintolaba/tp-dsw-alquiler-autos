@@ -30,8 +30,8 @@ const Localidad: React.FC = () => {
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
   const newLocalidad = (data: LocalidadFormData) => {
-    const res = apiClient(true)
-      .post("/localidad", JSON.stringify(data))
+    apiClient(true)
+      .post("/localidad", data)
       .then((res) => {
         Swal.fire({
           title: "¡Bien hecho!",

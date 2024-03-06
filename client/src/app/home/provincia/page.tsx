@@ -26,8 +26,8 @@ const Provincia: React.FC = () => {
   const { isAdmin, isLoadingAdmin } = useAdmin();
 
   const newProvincia = (data: ProvinciaFormData) => {
-    const res = apiClient(true)
-      .post("/provincia", JSON.stringify(data))
+    apiClient(true)
+      .post("/provincia", data)
       .then((res) => {
         Swal.fire({
           title: "¡Bien hecho!",

@@ -74,11 +74,11 @@ const SignUp: React.FC = ({}) => {
   };
 
   const signUp = (data: IUserRegisterFormData) => {
-    const res = apiClient().post("usuario/signup", {
-      ...formData,
-      fechaNacimiento: formData.fechaNacimiento.toISOString(),
-    });
-    res
+    apiClient()
+      .post("usuario/signup", {
+        ...formData,
+        fechaNacimiento: formData.fechaNacimiento.toISOString(),
+      })
       .then(() => {
         Swal.fire({
           title: "¡Bienvenido!",
