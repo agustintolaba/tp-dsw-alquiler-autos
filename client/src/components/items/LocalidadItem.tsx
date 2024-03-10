@@ -1,4 +1,3 @@
-/* Para crear el componente de una sola localidad */
 "use client";
 import apiClient from "@/services/api";
 import { alertError } from "@/utils/alerts";

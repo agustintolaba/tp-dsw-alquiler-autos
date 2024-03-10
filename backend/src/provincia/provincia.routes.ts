@@ -12,10 +12,7 @@ import { validateToken } from "../shared/accessToken.js";
 
 export const provinciaRouter = Router();
 
-provinciaRouter.get(
-  "/",
-  findAll
-); /*LA RUTA ES GENERICA, DARLE USOS EN OTRAS PARTES DE LA APP */
+provinciaRouter.get("/", findAll);
 provinciaRouter.get("/:id", findOne);
 provinciaRouter.get("/:id/localidad", findFilter);
 provinciaRouter.post("/", validateToken, sanitizeProvinciaInput, add);

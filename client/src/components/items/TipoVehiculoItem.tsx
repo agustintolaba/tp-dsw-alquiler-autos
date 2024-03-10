@@ -1,4 +1,3 @@
-/* Para crear el componente de un solo TipoVehiculo */
 "use client";
 import apiClient from "@/services/api";
 import { alertError } from "@/utils/alerts";
